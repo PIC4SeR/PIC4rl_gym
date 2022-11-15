@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:if value="$(arg laser_enabled)">    
+    <joint name="laser_joint" type="fixed">
+      <parent link="$(arg laser_mount)"/>
+      <child link="laser_link"/>
+      <origin xyz="$(arg laser_xyz)" rpy="$(arg laser_rpy)"/>
+    </joint>
+
+    <link name="laser_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="file://$(find cheddar_ugv)/meshes/lds.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="dark"/>
+      </visual>
+      <collision>
+        <origin xyz="0.015 0 -0.0065" rpy="0 0 0"/>
+        <geometry>
+          <cylinder length="0.0315" radius="0.055"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="0.114" />
+        <origin xyz="0 0 0" />
+        <inertia ixx="0.001" ixy="0.00" ixz="0.00"
+                iyy="0.001" iyz="0.00"
+                izz="0.001" />
+      </inertial>
+    </link>
+  </xacro:if>
+
+  <!--It includes the IMU-->
+  <xacro:if value="$(arg imu_enabled)">
+    <link name="imu_link">
+      <inertial>
+        <mass value="0.001"/>
+        <origin xyz="$(arg imu_xyz)" rpy="$(arg imu_rpy)"/>
+        <inertia ixx="${dummy_inertia}" ixy="0.0" ixz="0.0" iyy="${dummy_inertia}" iyz="0.0" izz="${dummy_inertia}"/>
+      </inertial>
+    </link>
+    <joint name="imu_joint" type="fixed">
+      <parent link="$(arg imu_mount)" />
+      <child link="imu_link" />
+    </joint>
+  </xacro:if>
+
+  <!--It includes the RGB-D camera-->
+  <xacro:if value="$(arg camera_enabled)">
+    <xacro:include filename="$(find cheddar_ugv)/urdf/_d435.urdf.xacro"/>
+  </xacro:if>
+
+  <!--It includes the stereo camera-->
+  <xacro:if value="$(arg stereo_camera_enabled)">
+    <xacro:include filename="$(find cheddar_ugv)/urdf/stereo_camera_d435.urdf.xacro"/>
+  </xacro:if>
+
+</robot>

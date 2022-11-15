@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:if value="$(arg laser_enabled)">
+    <xacro:property name="frame" value="lidar_link" />
+    <xacro:property name="prefix" value="mid" />
+    <xacro:property name="parent_link" value="$(arg laser_mount)" />
+      
+    <joint name="${prefix}_laser_mount_joint" type="fixed">
+      <origin xyz="$(arg laser_xyz)" rpy="$(arg laser_rpy)" />
+      <parent link="${parent_link}" />
+      <child link="${prefix}_laser_mount" />
+    </joint>
+
+    <link name="${prefix}_laser_mount">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <!-- Origin of this mesh is the base of the bracket. -->
+          <mesh filename="file://$(find jackal_ugv)/meshes/hokuyo_ust10.stl"/>
+        </geometry>
+        <material name="dark_grey" />
+      </visual>
+    </link>
+  </xacro:if>
+
+  <xacro:if value="$(arg imu_enabled)">
+    <xacro:property name="dummy_inertia" value="1e-09"/>
+    <link name="imu_link">
+      <inertial>
+        <mass value="0.001"/>
+        <origin xyz="$(arg imu_xyz)" rpy="$(arg imu_rpy)"/>
+        <inertia ixx="${dummy_inertia}" ixy="0.0" ixz="0.0" iyy="${dummy_inertia}" iyz="0.0" izz="${dummy_inertia}"/>
+      </inertial>
+    </link>
+    <joint name="imu_joint" type="fixed">
+      <parent link="$(arg imu_mount)" />
+      <child link="imu_link" />
+    </joint>
+  </xacro:if>
+
+  <!--It includes the camera model d435-->
+  <xacro:if value="$(arg camera_enabled)">
+    <xacro:include filename="$(find jackal_ugv)/urdf/_d435.urdf.xacro"/>
+  </xacro:if>
+
+  <xacro:if value="$(arg stereo_camera_enabled)">
+    <xacro:include filename="$(find jackal_ugv)/urdf/stereo_camera_d435.urdf.xacro"/>
+  </xacro:if>
+
+</robot>

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+<xacro:macro name="husky_sensors">
+  <xacro:if value="$(arg laser_enabled)">
+    <link name="$(arg laser_frame_id)">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <!-- Origin of this mesh is the base of the bracket. -->
+          <mesh filename="file://$(find husky_ugv)/meshes/accessories/hokuyo_ust10.stl"/>
+        </geometry>
+        <material name="dark_grey" />
+      </visual>
+    </link>
+
+    <joint name="laser_mount_joint" type="fixed">
+      <origin xyz="$(arg laser_xyz)" rpy="$(arg laser_rpy)" />
+      <parent link="$(arg laser_mount)" />
+      <child link="$(arg laser_frame_id)" />
+    </joint>
+
+  </xacro:if>
+
+  <xacro:if value="$(arg imu_enabled)">
+    <link name="$(arg imu_frame_id)"/>
+    <joint name="imu_joint" type="fixed">
+      <origin xyz="$(arg imu_xyz)" rpy="$(arg imu_rpy)" />
+      <parent link="$(arg imu_mount)" />
+      <child link="$(arg imu_frame_id)" />
+    </joint>
+  </xacro:if>
+
+  <xacro:if value="$(arg camera_enabled)">
+    <xacro:include filename="$(find husky_ugv)/urdf/d435.urdf.xacro" />
+  </xacro:if>
+  
+</xacro:macro>
+</robot>

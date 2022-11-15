@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<!--
+Software License Agreement (BSD)
+
+\file      husky.urdf.xacro
+\authors   Paul Bovbel <pbovbel@clearpathrobotics.com>, Devon Ash <dash@clearpathrobotics.com>
+\copyright Copyright (c) 2015, Clearpath Robotics, Inc., All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that
+the following conditions are met:
+ * Redistributions of source code must retain the above copyright notice, this list of conditions and the
+   following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the
+   following disclaimer in the documentation and/or other materials provided with the distribution.
+ * Neither the name of Clearpath Robotics nor the names of its contributors may be used to endorse or promote
+   products derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WAR-
+RANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, IN-
+DIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<robot name="husky" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:arg name="laser_enabled" default="false" />
+  <xacro:arg name="laser_xyz" default="$(optenv HUSKY_LMS1XX_XYZ 0.0 0.0 0.0)" />
+  <xacro:arg name="laser_rpy" default="$(optenv HUSKY_LMS1XX_RPY 0.0 0.0 0.0)" />
+  <xacro:arg name="laser_mount" default="$(optenv HUSKY_LASER_MOUNT_FRAME top_plate_link)" />
+  <xacro:arg name="laser_frame_id" default="$(optenv HUSKY_LASER_FRAME laser_link)" />
+
+  <xacro:arg name="imu_enabled" default="false" />
+  <xacro:arg name="imu_xyz" default="$(optenv HUSKY_IMU_XYZ 0.0 0.0 0.0)" />
+  <xacro:arg name="imu_rpy" default="$(optenv HUSKY_IMU_RPY 0.0 0.0 0.0)" />
+  <xacro:arg name="imu_mount" default="$(optenv HUSKY_IMU_MOUNT_FRAME base_link)" />
+  <xacro:arg name="imu_frame_id" default="$(optenv HUSKY_IMU_FRAME imu_link)" />
+
+  <xacro:arg name="camera_enabled" default="false"/>
+  <xacro:arg name="camera_xyz" default="$(optenv HUSKY_CAMERA_XYZ 0.0 0.0 0.0)" />
+  <xacro:arg name="camera_rpy" default="$(optenv HUSKY_CAMERA_RPY 0.0 0.0 0.0)" />
+  <xacro:arg name="camera_mount" default="$(optenv HUSKY_CAMERA_MOUNT top_plate_front_link)" />
+  <xacro:arg name="camera_frame_id" default="$(optenv HUSKY_CAMERA_FRAME camera_color_frame)" />
+
+
+  <xacro:property name="husky_front_bumper_extend" value="$(optenv HUSKY_FRONT_BUMPER_EXTEND 0)" />
+  <xacro:property name="husky_rear_bumper_extend" value="$(optenv HUSKY_REAR_BUMPER_EXTEND 0)" />
+
+  <xacro:arg name="robot_namespace" default="/" />
+
+  <!-- Included URDF/XACRO Files -->
+  <xacro:include filename="$(find husky_ugv)/urdf/decorations.urdf.xacro" />
+  <xacro:include filename="$(find husky_ugv)/urdf/wheel.urdf.xacro" />
+
+  <xacro:include filename="$(find husky_ugv)/urdf/sensors.urdf.xacro" />
+
+  <xacro:include filename="$(find husky_ugv)/urdf/gazebo_plugins.urdf.xacro" />
+
+  <xacro:property name="M_PI" value="3.14159"/>
+
+  <!-- Base Size -->
+  <xacro:property name="base_x_size" value="0.98740000" />
+  <xacro:property name="base_y_size" value="0.57090000" />
+  <xacro:property name="base_z_size" value="0.24750000" />
+
+  <!-- Wheel Mounting Positions -->
+  <xacro:property name="wheelbase" value="0.5120" />
+  <xacro:property name="track" value="0.5708" />
+  <xacro:property name="wheel_vertical_offset" value="0.03282" />
+
+  <!-- Wheel Properties -->
+  <xacro:property name="wheel_length" value="0.1143" />
+  <xacro:property name="wheel_radius" value="0.1651" />
+
+  <!-- Base link is the center of the robot's bottom plate -->
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file://$(find husky_ugv)/meshes/base_link.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="${( husky_front_bumper_extend - husky_rear_bumper_extend ) / 2.0} 0 ${base_z_size/4}" rpy="0 0 0" />
+      <geometry>
+        <box size="${ base_x_size + husky_front_bumper_extend + husky_rear_bumper_extend } ${base_y_size} ${base_z_size/2}"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin xyz="0 0 ${base_z_size*3/4-0.01}" rpy="0 0 0" />
+      <geometry>
+        <box size="${base_x_size*4/5} ${base_y_size} ${base_z_size/2-0.02}"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- Base footprint is on the ground under the robot -->
+  <link name="base_footprint"/>
+
+  <joint name="base_footprint_joint" type="fixed">
+    <origin xyz="0 0 ${wheel_vertical_offset - wheel_radius}" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="base_footprint" />
+  </joint>
+
+  <!-- Inertial link stores the robot's inertial information -->
+  <link name="inertial_link">
+    <inertial>
+      <mass value="46.034" />
+      <origin xyz="-0.00065 -0.085 0.062" />
+      <inertia ixx="0.6022" ixy="-0.02364" ixz="-0.1197" iyy="1.7386" iyz="-0.001544" izz="2.0296" />
+    </inertial>
+  </link>
+
+  <joint name="inertial_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="inertial_link" />
+  </joint>
+  
+  <!-- Husky wheel macros -->
+  <xacro:husky_wheel wheel_prefix="front_left">
+    <origin xyz="${wheelbase/2} ${track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
+  </xacro:husky_wheel>
+  <xacro:husky_wheel wheel_prefix="front_right">
+    <origin xyz="${wheelbase/2} ${-track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
+  </xacro:husky_wheel>
+  <xacro:husky_wheel wheel_prefix="rear_left">
+    <origin xyz="${-wheelbase/2} ${track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
+  </xacro:husky_wheel>
+  <xacro:husky_wheel wheel_prefix="rear_right">
+    <origin xyz="${-wheelbase/2} ${-track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
+  </xacro:husky_wheel>
+
+  <xacro:husky_decorate />
+  <xacro:husky_sensors />
+  <xacro:husky_sim_plugin />
+  
+</robot>

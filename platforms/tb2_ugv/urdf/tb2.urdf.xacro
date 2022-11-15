@@ -1,0 +1,616 @@
+<?xml version="1.0" ?>
+<robot name="tb2_ugv" xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller" xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface" xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor" xmlns:xacro="http://ros.org/wiki/xacro">
+ 
+  <xacro:arg name="laser_enabled" default="true"/>
+  <xacro:arg name="laser_xyz" default="$(optenv TB2_LIDAR_XYZ 0.0 0.0 0.05)" />
+  <xacro:arg name="laser_rpy" default="$(optenv TB2_LIDAR_RPY 0.0 0.0 0.0)" />
+  <xacro:arg name="laser_mount" default="$(optenv TB2_LIDAR_MOUNT plate_middle_link)" />
+
+  <xacro:arg name="imu_enabled" default="true"/>
+  <xacro:arg name="imu_xyz" default="$(optenv TB2_IMU_XYZ 0.0 0.0 0.0)" />
+  <xacro:arg name="imu_rpy" default="$(optenv TB2_IMU_RPY 0.0 0.0 0.0)" />
+  <xacro:arg name="imu_mount" default="$(optenv TB2_IMU_MOUNT base_link)" />
+
+  <xacro:arg name="camera_enabled" default="true"/>
+  <xacro:arg name="camera_xyz" default="$(optenv TB2_CAMERA_XYZ 0.10 0.0 0.01)" />
+  <xacro:arg name="camera_rpy" default="$(optenv TB2_CAMERA_RPY 0.0 0.0 0.0)" />
+  <xacro:arg name="camera_mount" default="$(optenv TB2_CAMERA_MOUNT plate_bottom_link)" />
+  
+  <xacro:arg name="stereo_camera_enabled" default="true"/>
+  <xacro:arg name="stereo_camera_xyz" default="$(optenv TB2_STEREO_CAMERA_XYZ 0.10 0.0 0.01)" />
+  <xacro:arg name="stereo_camera_rpy" default="$(optenv TB2_STEREO_CAMERA_RPY 0.0 0.0 0.0)" />
+  <xacro:arg name="stereo_camera_mount" default="$(optenv TB2_STEREO_CAMERA_MOUNT plate_bottom_link)" />
+  
+  <!--It includes the base gazebo plugins and materials-->
+  <xacro:include filename="$(find tb2_ugv)/urdf/gazebo_plugins.urdf.xacro"/>
+
+  <!--It includes the sensors-->
+  <xacro:include filename="$(find tb2_ugv)/urdf/sensors.urdf.xacro"/>
+
+ <link name="base_footprint"/>
+  <joint name="base_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0 0.0102"/>
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+  </joint>
+
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <!-- new mesh -->
+        <mesh filename="file://$(find tb2_ugv)/meshes/main_body.dae"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0.001 0 0.05199"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.10938" radius="0.176"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0.0 0 0.05949"/>
+    </collision>
+    <inertial>
+      <mass value="2.4"/>
+      <!-- 2.4/2.6 kg for small/big battery pack -->
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+    </inertial>
+  </link>
+  <joint name="wheel_left_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="wheel_left_link"/>
+    <origin rpy="-1.57079632679 0 0" xyz="0.00 0.115 0.0250"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+  <link name="wheel_left_link">
+    <visual>
+      <geometry>
+        <mesh filename="file://$(find tb2_ugv)/meshes/wheel.dae"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.0206" radius="0.0352"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </collision>
+     <inertial>
+      <mass value="0.1"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+    </inertial>
+     <contact>
+      <lateral_friction value="1.0"/>
+      <rolling_friction value="0.0"/>
+      <stiffness value="30000"/>
+      <damping value="1000"/>
+    </contact>
+  </link>
+  <joint name="wheel_right_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="wheel_right_link"/>
+    <origin rpy="-1.57079632679 0 0" xyz="0.00 -0.115 0.0250"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+  <link name="wheel_right_link">
+    <visual>
+      <geometry>
+        <mesh filename="file://$(find tb2_ugv)/meshes/wheel.dae"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.0206" radius="0.0350"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </collision>
+   <inertial>
+      <mass value="0.1"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+    </inertial>
+   	<contact>
+      <lateral_friction value="1.0"/>
+      <rolling_friction value="0.0"/>
+      <stiffness value="30000"/>
+      <damping value="10000"/>
+    </contact>
+
+  </link>
+  <joint name="caster_front_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="caster_front_link"/>
+    <origin rpy="-1.57079632679 0 0" xyz="0.115 0.0 0.007"/>
+  </joint>
+  <link name="caster_front_link">
+    <collision>
+      <geometry>
+        <cylinder length="0.0176" radius="0.017"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="0.01"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+    <contact>
+      <lateral_friction value="0.0"/>
+      <rolling_friction value="0.0"/>
+      <stiffness value="30000"/>
+      <damping value="10000"/>
+    </contact>
+  </link>
+  <joint name="caster_back_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="caster_back_link"/>
+    <origin rpy="-1.57079632679 0 0" xyz="-0.135 0.0 0.009"/>
+  </joint>
+  <link name="caster_back_link">
+    <collision>
+      <geometry>
+        <cylinder length="0.0176" radius="0.017"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="0.01"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+    <contact>
+      <lateral_friction value="0.0"/>
+      <rolling_friction value="0.0"/>
+      <stiffness value="30000"/>
+      <damping value="1000"/>
+    </contact>
+  </link>
+  
+  <joint name="cliff_sensor_left_joint" type="fixed">
+    <origin rpy="0 1.57079632679 0" xyz="0.08734 0.13601 0.0214"/>
+    <parent link="base_link"/>
+    <child link="cliff_sensor_left_link"/>
+  </joint>
+  <link name="cliff_sensor_left_link">
+    <inertial>
+      <mass value="0.0001"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+    </inertial>
+  </link>
+  <joint name="cliff_sensor_right_joint" type="fixed">
+    <origin rpy="0 1.57079632679 0" xyz="0.085 -0.13601 0.0214"/>
+    <parent link="base_link"/>
+    <child link="cliff_sensor_right_link"/>
+  </joint>
+  <link name="cliff_sensor_right_link">
+    <inertial>
+      <mass value="0.0001"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+    </inertial>
+  </link>
+  <joint name="cliff_sensor_front_joint" type="fixed">
+    <origin rpy="0 1.57079632679 0" xyz="0.156 0.00 0.0214"/>
+    <parent link="base_link"/>
+    <child link="cliff_sensor_front_link"/>
+  </joint>
+  <link name="cliff_sensor_front_link">
+    <inertial>
+      <mass value="0.0001"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+    </inertial>
+  </link>
+  
+  <joint name="pole_bottom_0_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.12 0.082 0.1028"/>
+    <parent link="base_link"/>
+    <child link="pole_bottom_0_link"/>
+  </joint>
+  <link name="pole_bottom_0_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find tb2_ugv)/meshes/pole_bottom.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.0492" radius=".006"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.001"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+    </inertial>
+  </link>
+  <joint name="pole_bottom_1_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.055 0.12 0.1028"/>
+    <parent link="base_link"/>
+    <child link="pole_bottom_1_link"/>
+  </joint>
+  <link name="pole_bottom_1_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find tb2_ugv)/meshes/pole_bottom.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.0492" radius=".006"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.001"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+    </inertial>
+  </link>
+  <joint name="pole_bottom_2_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="-0.055 0.12 0.1028"/>
+    <parent link="base_link"/>
+    <child link="pole_bottom_2_link"/>
+  </joint>
+  <link name="pole_bottom_2_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find tb2_ugv)/meshes/pole_bottom.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.0492" radius=".006"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.001"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+    </inertial>
+  </link>
+  <joint name="pole_bottom_3_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.12 -0.082 0.1028"/>
+    <parent link="base_link"/>
+    <child link="pole_bottom_3_link"/>
+  </joint>
+  <link name="pole_bottom_3_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find tb2_ugv)/meshes/pole_bottom.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.0492" radius=".006"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.001"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+    </inertial>
+  </link>
+  <joint name="pole_bottom_4_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.055 -0.12 0.1028"/>
+    <parent link="base_link"/>
+    <child link="pole_bottom_4_link"/>
+  </joint>
+  <link name="pole_bottom_4_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find tb2_ugv)/meshes/pole_bottom.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.0492" radius=".006"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.001"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+    </inertial>
+  </link>
+  <joint name="pole_bottom_5_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="-0.055 -0.12 0.1028"/>
+    <parent link="base_link"/>
+    <child link="pole_bottom_5_link"/>
+  </joint>
+  <link name="pole_bottom_5_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find tb2_ugv)/meshes/pole_bottom.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.0492" radius=".006"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.001"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+    </inertial>
+  </link>
+  <joint name="plate_bottom_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.02364 0.0 0.1306"/>
+    <parent link="base_link"/>
+    <child link="plate_bottom_link"/>
+  </joint>
+  <link name="plate_bottom_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find tb2_ugv)/meshes/plate_bottom.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.26727 0.340 0.006"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.01"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+    </inertial>
+  </link>
+  <joint name="pole_middle_0_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0381 0.1505 0.164"/>
+    <parent link="base_link"/>
+    <child link="pole_middle_0_link"/>
+  </joint>
+  <link name="pole_middle_0_link">
+    <visual>
+      <origin rpy="0 3.14159265359 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find tb2_ugv)/meshes/pole_middle.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.0608" radius=".006"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.001"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+    </inertial>
+  </link>
+  <joint name="pole_middle_1_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0381 -0.1505 0.164"/>
+    <parent link="base_link"/>
+    <child link="pole_middle_1_link"/>
+  </joint>
+  <link name="pole_middle_1_link">
+    <visual>
+      <origin rpy="0 3.14159265359 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find tb2_ugv)/meshes/pole_middle.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.0608" radius=".006"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.001"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+    </inertial>
+  </link>
+  <joint name="pole_middle_2_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="-0.0381 0.1505 0.164"/>
+    <parent link="base_link"/>
+    <child link="pole_middle_2_link"/>
+  </joint>
+  <link name="pole_middle_2_link">
+    <visual>
+      <origin rpy="0 3.14159265359 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find tb2_ugv)/meshes/pole_middle.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.0608" radius=".006"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.001"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+    </inertial>
+  </link>
+  <joint name="pole_middle_3_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="-0.0381 -0.1505 0.164"/>
+    <parent link="base_link"/>
+    <child link="pole_middle_3_link"/>
+  </joint>
+  <link name="pole_middle_3_link">
+    <visual>
+      <origin rpy="0 3.14159265359 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find tb2_ugv)/meshes/pole_middle.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.0608" radius=".006"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.001"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+    </inertial>
+  </link>
+  <joint name="plate_middle_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="-0.01364 0.0 0.1874"/>
+    <parent link="base_link"/>
+    <child link="plate_middle_link"/>
+  </joint>
+  <link name="plate_middle_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find tb2_ugv)/meshes/plate_middle.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <box size="0.28727 0.340 0.006"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.01"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+    </inertial>
+  </link>
+  <joint name="pole_top_0_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0381 0.1505 0.292"/>
+    <parent link="base_link"/>
+    <child link="pole_top_0_link"/>
+  </joint>
+  <link name="pole_top_0_link">
+    <visual>
+      <origin rpy="0 0 0" xyz=" 0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find tb2_ugv)/meshes/pole_top.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.2032" radius=".006"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.001"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+    </inertial>
+  </link>
+  <joint name="pole_top_1_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0381 -0.1505 0.292"/>
+    <parent link="base_link"/>
+    <child link="pole_top_1_link"/>
+  </joint>
+  <link name="pole_top_1_link">
+    <visual>
+      <origin rpy="0 0 0" xyz=" 0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find tb2_ugv)/meshes/pole_top.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.2032" radius=".006"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.001"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+    </inertial>
+  </link>
+  <joint name="pole_top_2_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="-0.0381 0.1505 0.292"/>
+    <parent link="base_link"/>
+    <child link="pole_top_2_link"/>
+  </joint>
+  <link name="pole_top_2_link">
+    <visual>
+      <origin rpy="0 0 0" xyz=" 0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find tb2_ugv)/meshes/pole_top.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.2032" radius=".006"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.001"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+    </inertial>
+  </link>
+  <joint name="pole_top_3_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="-0.0381 -0.1505 0.292"/>
+    <parent link="base_link"/>
+    <child link="pole_top_3_link"/>
+  </joint>
+  <link name="pole_top_3_link">
+    <visual>
+      <origin rpy="0 0 0" xyz=" 0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find tb2_ugv)/meshes/pole_top.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.2032" radius=".006"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.001"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+    </inertial>
+  </link>
+  <joint name="plate_top_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="-0.01364 0.0  0.3966"/>
+    <parent link="base_link"/>
+    <child link="plate_top_link"/>
+  </joint>
+  <link name="plate_top_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find tb2_ugv)/meshes/plate_top.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.28727 0.340 0.006"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.01"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+    </inertial>
+  </link>
+
+</robot>

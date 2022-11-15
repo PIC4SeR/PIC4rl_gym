@@ -1,0 +1,293 @@
+<?xml version='1.0'?>
+
+<robot name="rosbot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:property name="cameraSize" value="0.05"/>
+  <xacro:property name="cameraMass" value="0.1"/>
+
+  <xacro:arg name="laser_enabled" default="false" />
+  <xacro:arg name="laser_xyz" default="$(optenv ROSBOT_RPLIDAR_XYZ 0.02 0 0.058)" />
+  <xacro:arg name="laser_rpy" default="$(optenv ROSBOT_RPLIDAR_RPY 0 0 3.14)" />
+  <xacro:arg name="laser_mount" default="$(optenv ROSBOT_RPLIDAR_MOUNT_FRAME base_link)" />
+
+  <xacro:arg name="imu_enabled" default="false" />
+  <xacro:arg name="imu_xyz" default="$(optenv ROSBOT_IMU_XYZ 0.0 0.0 0.0)" />
+  <xacro:arg name="imu_rpy" default="$(optenv ROSBOT_IMU_RPY 0.0 0.0 0.0)" />
+  <xacro:arg name="imu_mount" default="$(optenv ROSBOT_IMU_MOUNT_FRAME base_link)" />
+
+  <xacro:arg name="camera_enabled" default="false"/>
+  <xacro:arg name="camera_xyz" default="$(optenv ROSBOT_CAMERA_XYZ -0.03 0 0.18)" />
+  <xacro:arg name="camera_rpy" default="$(optenv ROSBOT_CAMERA_RPY 0.0 0.0 0.0)" />
+  <xacro:arg name="camera_mount" default="$(optenv ROSBOT_CAMERA_MOUNT base_link)" />
+
+  <xacro:include filename="$(find rosbot_ugv)/urdf/gazebo_plugins.urdf.xacro" />
+  <xacro:include filename="$(find rosbot_ugv)/urdf/sensors.urdf.xacro" />
+  <xacro:include filename="$(find rosbot_ugv)/urdf/materials.xacro" />
+
+  <link name="base_footprint"></link> 
+  <joint name="base_footprint_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+  </joint>
+
+  <link name='base_link'>
+    <pose>0 0 0.1 0 0 0</pose>
+
+    <inertial>
+      <mass value="5"/>
+      <origin xyz="0 0 0.04" rpy=" 0 0 0"/>
+      <inertia 
+      ixx="0.01" ixy="0.01" ixz="0" 
+      iyy="0.01" iyz="0.01" 
+      izz="0.01" 
+      />
+    </inertial>
+  
+
+    <collision name='collision'>
+      <origin xyz="0 0 0.02" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.20 0.15 0.04"/>
+      </geometry>
+    </collision>
+
+    <visual name='base_link_visual'>
+      <origin xyz="0 0 -0.02" rpy=" 1.5707 0 1.5707"/>
+      <geometry>
+        <mesh filename="file://$(find rosbot_ugv)/meshes/box.dae" scale="0.001 0.001 0.001" />
+      </geometry>
+    </visual>
+
+  </link>
+
+  <joint name="top_joint" type="fixed">
+    <axis xyz="0 1 0" />
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="top"/>
+  </joint>
+
+  <link name='top'>
+    <pose>0 0 0 0 0 0</pose>
+
+    <inertial>
+      <mass value="0.01"/>
+      <origin xyz="0 0 0.055" rpy=" 0 0 0"/>
+      <inertia 
+      ixx="0.0" ixy="0" ixz="0" 
+      iyy="0.0" iyz="0" 
+      izz="0.0" 
+      />
+    </inertial>
+    <visual name='top'>
+      <origin xyz="0 0 0.055" rpy=" 1.5707 0 1.5707"/>
+      <geometry>
+        <mesh filename="file://$(find rosbot_ugv)/meshes/upper.dae" scale="0.001 0.001 0.001" />
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="front_left_wheel">
+    <collision name="collision">
+      <origin xyz="0 0 0" rpy="0 0 1.5707"/>
+      <geometry>
+        <mesh filename="file://$(find rosbot_ugv)/meshes/wheel-v2.stl" scale="0.001 0.001 0.001" />
+      </geometry>
+      <surface>
+        <friction>
+          <ode>
+            <mu>10</mu>
+            <mu2>10</mu2>
+          </ode>
+        </friction>
+      </surface>
+    </collision>
+    <visual name="front_left_wheel_visual">
+      <origin xyz="0 0 0" rpy="0 0 1.5707"/>
+      <geometry>
+        <mesh filename="file://$(find rosbot_ugv)/meshes/wheel.dae" scale="0.001 0.001 0.001" />
+      </geometry>
+    </visual>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 1.5707 1.5707"/>
+      <mass value="0.5"/>
+      <inertia 
+      ixx="0.001" ixy="0.0" ixz="0.0" 
+      iyy="0.001" iyz="0.0" 
+      izz="0.001"/>
+    </inertial>
+  </link>
+
+  <link name="front_right_wheel">
+    <collision name="collision">
+      <origin xyz="0 0 0" rpy="0 0 -1.5707"/>
+      <geometry>
+        <mesh filename="file://$(find rosbot_ugv)/meshes/wheel-v2.stl" scale="0.001 0.001 0.001" />
+      </geometry>
+      <surface>
+        <friction>
+          <ode>
+            <mu>10</mu>
+            <mu2>10</mu2>
+          </ode>
+        </friction>
+      </surface>
+    </collision>
+    <visual name="front_right_wheel_visual">
+      <origin xyz="0 0 0" rpy="0 0 -1.5707"/>
+      <geometry>
+        <mesh filename="file://$(find rosbot_ugv)/meshes/wheel.dae" scale="0.001 0.001 0.001" />
+      </geometry>
+    </visual>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 1.5707 1.5707"/>
+      <mass value="0.5"/>
+      <inertia 
+      ixx="0.001" ixy="0.0" ixz="0.0" 
+      iyy="0.001" iyz="0.0" 
+      izz="0.001"/>
+    </inertial>
+  </link>
+
+  <link name="rear_left_wheel">
+    <collision name="collision">
+      <origin xyz="0 0 0" rpy="0 0 1.5707"/>
+      <geometry>
+        <mesh filename="file://$(find rosbot_ugv)/meshes/wheel-v2.stl" scale="0.001 0.001 0.001" />
+      </geometry>
+      <surface>
+        <friction>
+          <ode>
+            <mu>10</mu>
+            <mu2>10</mu2>
+          </ode>
+        </friction>
+      </surface>
+    </collision>
+    <visual name="rear_left_wheel_visual">
+      <origin xyz="0 0 0" rpy="0 0 1.5707"/>
+      <geometry>
+        <mesh filename="file://$(find rosbot_ugv)/meshes/wheel.dae" scale="0.001 0.001 0.001" />
+      </geometry>
+    </visual>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 1.5707 1.5707"/>
+      <mass value="0.5"/>
+      <inertia 
+      ixx="0.001" ixy="0.0" ixz="0.0" 
+      iyy="0.001" iyz="0.0" 
+      izz="0.001"/>
+    </inertial>
+  </link>
+
+  <link name="rear_right_wheel">
+    <collision name="collision">
+      <origin xyz="0 0 0" rpy="0 0 -1.5707"/>
+      <geometry>
+        <mesh filename="file://$(find rosbot_ugv)/meshes/wheel-v2.stl" scale="0.001 0.001 0.001" />
+      </geometry>
+      <surface>
+        <friction>
+          <ode>
+            <mu>10</mu>
+            <mu2>10</mu2>
+          </ode>
+        </friction>
+      </surface>
+    </collision>
+    <visual name="rear_right_wheel_visual">
+      <origin xyz="0 0 0" rpy="0 0 -1.5707"/>
+      <geometry>
+        <mesh filename="file://$(find rosbot_ugv)/meshes/wheel.dae" scale="0.001 0.001 0.001" />
+      </geometry>
+    </visual>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 1.5707 1.5707"/>
+      <mass value="0.5"/>
+      <inertia 
+      ixx="0.001" ixy="0.0" ixz="0.0" 
+      iyy="0.001" iyz="0.0" 
+      izz="0.001"/>
+    </inertial>
+  </link>
+
+
+  <joint type="continuous" name="front_left_wheel_hinge">
+    <origin xyz="0.05 0.11 0" rpy="0 0 0"/>
+    <child link="front_left_wheel"/>
+    <parent link="base_link"/>
+    <axis xyz="0 1 0" rpy="0 0 0"/>
+    <limit effort="1" velocity="10"/>
+    <joint_properties damping="5.0" friction="1.0"/>
+  </joint>
+
+  <transmission name="front_left_wheel_trans" type="SimpleTransmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="front_left_wheel_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="front_left_wheel_hinge">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+
+  <joint type="continuous" name="front_right_wheel_hinge">
+    <origin xyz="0.05 -0.11 0" rpy="0 0 0"/>
+    <child link="front_right_wheel"/>
+    <parent link="base_link"/>
+    <axis xyz="0 1 0" rpy="0 0 0"/>
+    <limit effort="1" velocity="10"/>
+    <joint_properties damping="5.0" friction="1.0"/>
+  </joint>
+
+  <transmission name="front_right_wheel_trans" type="SimpleTransmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="front_right_wheel_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="front_right_wheel_hinge">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+
+  <joint type="continuous" name="rear_left_wheel_hinge">
+    <origin xyz="-0.055 0.11 0" rpy="0 0 0"/>
+    <child link="rear_left_wheel"/>
+    <parent link="base_link"/>
+    <axis xyz="0 1 0" rpy="0 0 0"/>
+    <limit effort="1" velocity="10"/>
+    <joint_properties damping="5.0" friction="1.0"/>
+  </joint>
+
+  <transmission name="rear_left_wheel_trans" type="SimpleTransmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="rear_left_wheel_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="rear_left_wheel_hinge">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+
+  <joint type="continuous" name="rear_right_wheel_hinge">
+    <origin xyz="-0.055 -0.11 0" rpy="0 0 0"/>
+    <child link="rear_right_wheel"/>
+    <parent link="base_link"/>
+    <axis xyz="0 1 0" rpy="0 0 0"/>
+    <limit effort="1" velocity="10"/>
+    <joint_properties damping="5.0" friction="1.0"/>
+  </joint>
+
+  <transmission name="rear_right_wheel_trans" type="SimpleTransmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="rear_right_wheel_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="rear_right_wheel_hinge">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+
+  
+
+</robot>

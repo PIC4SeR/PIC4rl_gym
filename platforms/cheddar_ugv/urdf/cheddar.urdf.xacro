@@ -1,0 +1,219 @@
+<?xml version="1.0"?>
+<robot name="cheddar_ugv" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:property name="PI" value="3.1415926535897931" />
+
+  <xacro:property name="wheelbase" value="0.300" />
+  <xacro:property name="shaft_track" value="0.216" />
+  <xacro:property name="shaft_wheel_distance" value="0.042" />
+
+  <xacro:property name="wheel_radius" value="0.050" />
+  <xacro:property name="wheel_width" value="0.0505" />
+  <xacro:property name="dummy_inertia" value="1e-09"/>
+
+  <material name="yellow"> <color rgba="0.8 0.8 0.0 1.0" /></material>
+  <material name="black"> <color rgba="0.15 0.15 0.15 1.0" /></material>
+  <material name="dark_grey"> <color rgba="0.2 0.2 0.2 1.0" /></material>
+  <material name="light_grey"> <color rgba="0.4 0.4 0.4 1.0" /></material>
+  
+  <xacro:arg name="laser_enabled" default="true"/>
+  <xacro:arg name="laser_xyz" default="$(optenv CHEDDAR_LIDAR_XYZ 0.0 0.0 0.06)" />
+  <xacro:arg name="laser_rpy" default="$(optenv CHEDDAR_LIDAR_RPY 0.0 0.0 0.0)" />
+  <xacro:arg name="laser_mount" default="$(optenv CHEDDAR_LIDAR_MOUNT base_link)" />
+
+  <xacro:arg name="imu_enabled" default="true"/>
+  <xacro:arg name="imu_xyz" default="$(optenv CHEDDAR_IMU_XYZ 0.0 0.0 0.0)" />
+  <xacro:arg name="imu_rpy" default="$(optenv CHEDDAR_IMU_RPY 0.0 0.0 0.0)" />
+  <xacro:arg name="imu_mount" default="$(optenv CHEDDAR_IMU_MOUNT base_link)" />
+
+  <xacro:arg name="camera_enabled" default="true"/>
+  <xacro:arg name="camera_xyz" default="$(optenv CHEDDAR_CAMERA_XYZ 0.17 0.0 0.0)" />
+  <xacro:arg name="camera_rpy" default="$(optenv CHEDDAR_CAMERA_RPY 0.0 0.0 0.0)" />
+  <xacro:arg name="camera_mount" default="$(optenv CHEDDAR_CAMERA_MOUNT front_mount)" />
+  
+  <xacro:arg name="stereo_camera_enabled" default="true"/>
+  <xacro:arg name="stereo_camera_xyz" default="$(optenv CHEDDAR_STEREO_CAMERA_XYZ 0.17 0.0 0.0)" />
+  <xacro:arg name="stereo_camera_rpy" default="$(optenv CHEDDAR_STEREO_CAMERA_RPY 0.0 0.0 0.0)" />
+  <xacro:arg name="stereo_camera_mount" default="$(optenv CHEDDAR_STEREO_CAMERA_MOUNT front_mount)" />
+  
+  <!--It includes the base gazebo plugins and materials-->
+  <xacro:include filename="$(find cheddar_ugv)/urdf/gazebo_plugins.urdf.xacro"/>
+
+  <!--It includes the sensors-->
+  <xacro:include filename="$(find cheddar_ugv)/urdf/sensors.urdf.xacro"/>
+
+  <link name="base_footprint" />
+
+  <joint name="base_link_joint" type="fixed">
+    <origin xyz="0 0 0.05" rpy="0 0 0"/>
+    <parent link="base_footprint"/>
+    <child link="base_link" />
+  </joint>
+
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file://$(find cheddar_ugv)/meshes/nexus_base_link.STL" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="yellow" />
+    </visual>
+    <collision>
+      <origin xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find cheddar_ugv)/meshes/nexus_base_link_collision.STL" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <!-- Inertia from CAD model, filled box assumption -->
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="2.844"/>
+      <inertia
+        ixx="0.018819942" ixy="0" ixz="-0.000101519"
+        iyy="0.057333716" iyz="0"
+        izz="0.074201740"/>
+    </inertial>
+  </link>
+
+  <gazebo reference="base_link">
+    <material>Gazebo/Yellow</material>
+    <selfCollide>false</selfCollide>
+    <mu1 value="0.5"/>
+    <mu2 value="0.5"/>
+    <kp value="10000000.0" />
+    <kd value="1" />
+    <fdir1 value="1 0 0"/>
+  </gazebo>
+
+<!-- ####################################### MOTOR SHAFT ################################################## -->
+  <xacro:macro name="wheel_shaft" params="prefix *joint_pose">
+    <link name="${prefix}_wheel_shaft_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find cheddar_ugv)/meshes/wheel_shaft.STL" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="black" />
+      </visual>
+      <collision>
+        <origin xyz="0 0 0"/>
+        <geometry>
+          <mesh filename="file://$(find cheddar_ugv)/meshes/wheel_shaft.STL" scale="0.001 0.001 0.001"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0 0.01221 0" rpy="0 0 0"/>
+        <mass value="0.055"/>
+        <inertia
+          ixx="0.000021370" ixy="0" ixz="0"
+          iyy="0.000009966" iyz="0"
+          izz="0.000021370"/>
+      </inertial>
+    </link>
+
+    <gazebo reference="${prefix}_wheel_shaft_link">
+      <material>Gazebo/Black</material>
+      <selfCollide>false</selfCollide>
+      <mu1 value="0.5"/>
+      <mu2 value="0.5"/>
+      <kp value="10000000.0" />
+      <kd value="1" />
+      <fdir1 value="1 0 0"/>
+    </gazebo>
+
+    <joint name="${prefix}_wheel_shaft_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="${prefix}_wheel_shaft_link" />
+      <xacro:insert_block name="joint_pose"/>
+      <axis xyz="0 1 0" />
+    </joint>
+
+  </xacro:macro>
+
+  <xacro:wheel_shaft prefix="front_left">
+    <origin xyz="${wheelbase/2} ${shaft_track/2} 0" rpy="0 0 0" />
+  </xacro:wheel_shaft>
+  <xacro:wheel_shaft prefix="front_right">
+    <origin xyz="${wheelbase/2} ${-shaft_track/2} 0" rpy="${PI} 0 0" />
+  </xacro:wheel_shaft>
+  <xacro:wheel_shaft prefix="rear_left">
+    <origin xyz="${-wheelbase/2} ${shaft_track/2} 0" rpy="0 0 0" />
+  </xacro:wheel_shaft>
+  <xacro:wheel_shaft prefix="rear_right">
+    <origin xyz="${-wheelbase/2} ${-shaft_track/2} 0" rpy="${PI} 0 0" />
+  </xacro:wheel_shaft>
+
+<!-- ####################################### WHEEL ################################################## -->
+  <xacro:macro name="wheel" params="prefix *joint_pose">
+    <link name="${prefix}_wheel_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find cheddar_ugv)/meshes/mecanum_wheel_${prefix}.STL" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="light_grey" />
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="${PI/2} 0 0"/>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+        <mass value="0.3844"/>
+        <!-- Inertia based on cylinder -->
+        <inertia
+          ixx="0.000324824" ixy="0" ixz="0"
+          iyy="0.000480000" iyz="0"
+          izz="0.000324824"/>
+      </inertial>
+    </link>
+
+    <gazebo reference="${prefix}_wheel_link">
+      <material>Gazebo/DarkGrey</material>
+      <selfCollide>false</selfCollide>
+      <mu1 value="0.0"/>
+      <mu2 value="0.0"/>
+      <kp value="10000000.0" />
+      <kd value="1" />
+      <fdir1 value="1 0 0"/>
+    </gazebo>
+
+    <joint name="${prefix}_wheel_joint" type="continuous">
+      <parent link="${prefix}_wheel_shaft_link"/>
+      <child link="${prefix}_wheel_link" />
+      <xacro:insert_block name="joint_pose" />
+      <axis xyz="0 1 0" />
+    </joint>
+    
+  </xacro:macro>
+
+  <xacro:wheel prefix="front_left">
+    <origin xyz="0 ${shaft_wheel_distance} 0" rpy="0 0 0" />
+  </xacro:wheel>
+  <xacro:wheel prefix="front_right">
+    <origin xyz="0 ${shaft_wheel_distance} 0" rpy="${PI} 0 0" />
+  </xacro:wheel>
+  <xacro:wheel prefix="rear_left">
+    <origin xyz="0 ${shaft_wheel_distance} 0" rpy="0 0 0" />
+  </xacro:wheel>
+  <xacro:wheel prefix="rear_right">
+    <origin xyz="0 ${shaft_wheel_distance} 0" rpy="${PI} 0 0" />
+  </xacro:wheel>
+
+  <link name="mid_mount"></link>
+  <joint name="mid_mount_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="mid_mount" />
+    <origin xyz="0 0 0.03" />
+  </joint>
+
+  <link name="front_mount"></link>
+  <joint name="front_mount_joint" type="fixed">
+    <parent link="mid_mount" />
+    <child link="front_mount" />
+    <origin xyz="$(arg camera_xyz)" rpy="$(arg camera_rpy)"/>
+  </joint>
+
+</robot>

@@ -1,0 +1,66 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <model name="vine_plant3">
+    <static>true</static>
+    <link name="link">
+    <collision name="collision">
+        <geometry>
+          <mesh>
+            <uri>model://vine_plant3/meshes/vineplant.dae</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name="bark">
+        <geometry>
+          <mesh>
+            <uri>model://vine_plant3/meshes/vineplant.dae</uri>
+            <submesh>
+              <name>stem</name>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://vine_plant3/materials/scripts/</uri>
+            <uri>model://vine_plant3/materials/textures/</uri>
+            <name>vine_plant/bark</name>
+          </script>
+        </material>
+      </visual>
+      <visual name="grape">
+        <geometry>
+          <mesh>
+            <uri>model://vine_plant3/meshes/vineplant.dae</uri>
+            <submesh>
+              <name>grape</name>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://vine_plant3/materials/scripts/</uri>
+            <uri>model://vine_plant3/materials/textures/</uri>
+            <name>vine_plant/grape</name>
+          </script>
+        </material>
+      </visual>
+      <visual name="leaf">
+        <geometry>
+          <mesh>
+            <uri>model://vine_plant3/meshes/vineplant.dae</uri>
+            <submesh>
+              <name>leaf</name>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://vine_plant3/materials/scripts/</uri>
+            <uri>model://vine_plant3/materials/textures/</uri>
+            <name>vine_plant/leaf</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <!-- Generate a single payload plate standoff. -->
+  
+  <xacro:property name="name1" value="standoff_link1" />
+  <xacro:property name="name2" value="standoff_link2" />
+  <xacro:property name="name3" value="standoff_link3" />
+  <xacro:property name="name4" value="standoff_link4" />
+  <xacro:property name="length" value="0.10" />
+  <xacro:property name="parent" value="mid_mount" />
+  
+    <link name="${name1}">
+      <visual>
+        <origin xyz="0 0 ${length/2}" rpy="0 0 0" />
+        <geometry>
+          <cylinder radius="0.004" length="${length}" />
+        </geometry>
+        <material name="light_grey" />
+      </visual>
+    </link>
+
+    <joint name="${name1}_joint" type="fixed">
+      <origin xyz="0.060 0.060 0" rpy="0 0 0"/>
+      <parent link="${parent}" />
+      <child link="${name1}" />
+    </joint>
+    
+    <link name="${name2}">
+      <visual>
+        <origin xyz="0 0 ${length/2}" rpy="0 0 0" />
+        <geometry>
+          <cylinder radius="0.004" length="${length}" />
+        </geometry>
+        <material name="light_grey" />
+      </visual>
+    </link>
+
+    <joint name="${name2}_joint" type="fixed">
+      <origin xyz="0.060 -0.060 0" rpy="0 0 0"/>
+      <parent link="${parent}" />
+      <child link="${name2}" />
+    </joint>
+    
+    <link name="${name3}">
+      <visual>
+        <origin xyz="0 0 ${length/2}" rpy="0 0 0" />
+        <geometry>
+          <cylinder radius="0.004" length="${length}" />
+        </geometry>
+        <material name="light_grey" />
+      </visual>
+    </link>
+
+    <joint name="${name3}_joint" type="fixed">
+      <origin xyz="-0.060 0.060 0" rpy="0 0 0"/>
+      <parent link="${parent}" />
+      <child link="${name3}" />
+    </joint>
+    
+    <link name="${name4}">
+      <visual>
+        <origin xyz="0 0 ${length/2}" rpy="0 0 0" />
+        <geometry>
+          <cylinder radius="0.004" length="${length}" />
+        </geometry>
+        <material name="light_grey" />
+      </visual>
+    </link>
+
+    <joint name="${name4}_joint" type="fixed">
+      <origin xyz="-0.060 -0.060 0" rpy="0 0 0"/>
+      <parent link="${parent}" />
+      <child link="${name4}" />
+    </joint>
+    
+</robot>

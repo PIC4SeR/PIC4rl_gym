@@ -1,0 +1,260 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <gazebo reference="base_footprint">
+    <turnGravityOff>false</turnGravityOff>
+  </gazebo>
+
+  <gazebo reference="base_link">
+    <turnGravityOff>false</turnGravityOff>
+  </gazebo>
+      
+  <gazebo>
+    <plugin name='skid_steer_drive' filename="libgazebo_ros_planar_move.so">
+      <commandTopic>cmd_vel</commandTopic>
+      <odometryTopic>odom</odometryTopic>
+      <odometryFrame>odom</odometryFrame>
+      <odometryRate>20.0</odometryRate>
+      <robotBaseFrame>base_link</robotBaseFrame>
+    </plugin>
+  </gazebo>
+
+  <!--It includes the simulated LiDAR-->
+  <xacro:if value="$(arg laser_enabled)">
+      <gazebo reference="laser_link"> 
+      <sensor name="RPLIDAR" type="gpu_ray">
+        <always_on>true</always_on>
+        <visualize>false</visualize>
+        <update_rate>30</update_rate>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>360</samples>
+              <resolution>1.000000</resolution>
+              <min_angle>0.0</min_angle>
+              <max_angle>6.28318530718</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.200000</min>
+            <max>12.0</max>
+            <resolution>0.015000</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </ray>
+        <plugin name="temminbot_laserscan" filename="libgazebo_ros_ray_sensor.so">
+          <ros>
+            <remapping>~/out:=scan</remapping>
+          </ros>
+          <output_type>sensor_msgs/LaserScan</output_type>
+          <frame_name>laser_link</frame_name>
+        </plugin>
+      </sensor>
+    </gazebo>
+  </xacro:if>
+
+  <!--It includes the simulated IMU-->
+  <xacro:if value="$(arg imu_enabled)">
+    <gazebo reference="imu_link">
+      <turnGravityOff>false</turnGravityOff>
+    </gazebo>
+
+    <gazebo reference="imu_link">
+      <sensor name="imu_sensor" type="imu">
+      <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+          <ros>
+            <namespace>/</namespace>
+            <remapping>~/out:=imu/data</remapping>
+          </ros>
+          <initial_orientation_as_reference>false</initial_orientation_as_reference>
+        </plugin>
+        <always_on>true</always_on>
+        <update_rate>100</update_rate>
+        <visualize>true</visualize>
+        <imu>
+          <angular_velocity>
+            <x>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>2e-4</stddev>
+                <bias_mean>0.0000075</bias_mean>
+                <bias_stddev>0.0000008</bias_stddev>
+              </noise>
+            </x>
+            <y>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>2e-4</stddev>
+                <bias_mean>0.0000075</bias_mean>
+                <bias_stddev>0.0000008</bias_stddev>
+              </noise>
+            </y>
+            <z>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>2e-4</stddev>
+                <bias_mean>0.0000075</bias_mean>
+                <bias_stddev>0.0000008</bias_stddev>
+              </noise>
+            </z>
+          </angular_velocity>
+          <linear_acceleration>
+            <x>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>1.7e-2</stddev>
+                <bias_mean>0.1</bias_mean>
+                <bias_stddev>0.001</bias_stddev>
+              </noise>
+            </x>
+            <y>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>1.7e-2</stddev>
+                <bias_mean>0.1</bias_mean>
+                <bias_stddev>0.001</bias_stddev>
+              </noise>
+            </y>
+            <z>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>1.7e-2</stddev>
+                <bias_mean>0.1</bias_mean>
+                <bias_stddev>0.001</bias_stddev>
+              </noise>
+            </z>
+          </linear_acceleration>
+        </imu>
+      </sensor>
+    </gazebo>
+  </xacro:if>
+
+  <!--It includes the simulated RGB-D camera-->
+  <xacro:if value="$(arg camera_enabled)">
+    <gazebo reference="camera_color_frame">
+          <sensor type="depth" name="sensor_d435">
+              <always_on>1</always_on>
+              <update_rate>30</update_rate>
+
+              <camera name="camera">
+                <horizontal_fov>${60*3.14/180.0}</horizontal_fov>
+                <image>
+                  <format>R8G8B8</format>
+                  <width>640</width>
+                  <height>480</height>
+                </image>
+                <clip>
+                  <near>0.15</near>
+                  <far>10.0</far>
+                </clip>
+              </camera>
+              <plugin name="camera_plugin" filename="libgazebo_ros_camera.so">
+
+                <ros>
+                </ros>
+
+                <!-- Set camera name. If empty, defaults to sensor name (i.e. "sensor_name") -->
+                <camera_name>camera</camera_name>
+
+                <!-- Set TF frame name. If empty, defaults to link name (i.e. "link_name") -->
+                <frame_name>camera_color_frame</frame_name>
+
+                <!--hack_baseline>0.07</hack_baseline-->
+              </plugin>
+            </sensor>
+    </gazebo>
+  </xacro:if>
+
+  <!--It includes the simulated stereo camera-->
+  <xacro:if value="$(arg stereo_camera_enabled)">
+      <!--Left camera-->
+    <gazebo reference="camera_infra1_frame">
+          <sensor type="camera" name="sensor_d435">
+              <always_on>1</always_on>
+              <update_rate>30</update_rate>
+
+              <camera name="camera_left">
+                <horizontal_fov>${90*3.14/180.0}</horizontal_fov>
+                <image>
+                  <format>R8G8B8</format>
+                  <width>1280</width>
+                  <height>480</height>
+                </image>
+                <clip>
+                  <near>0.15</near>
+                  <far>10.0</far>
+                </clip>
+              </camera>
+              <plugin name="camera_plugin" filename="libgazebo_ros_camera.so">
+                <ros>
+                  <namespace>left_camera</namespace>
+                  <argument>image_raw:=rgb</argument>
+                  <argument>camera_info:=info</argument>
+                </ros>
+                
+                <baseline>0.05</baseline>
+                <alwaysOn>true</alwaysOn>
+                <updateRate>0.0</updateRate>
+                <frame_name>camera_infra1_frame</frame_name>
+                <distortionK1>0</distortionK1>
+                <distortionK2>0</distortionK2>
+                <distortionK3>0</distortionK3>
+                <distortionT1>0</distortionT1>
+                <distortionT2>0</distortionT2>
+                <CxPrime>0</CxPrime>
+                <Cx>0</Cx>
+                <Cy>0</Cy>
+                <focalLength>0</focalLength>
+                <hackBaseline>0</hackBaseline>
+              </plugin>
+            </sensor>
+    </gazebo>
+
+    <!--Right camera-->
+    <gazebo reference="camera_infra2_frame">
+          <sensor type="camera" name="sensor_d435">
+              <always_on>1</always_on>
+              <update_rate>30</update_rate>
+
+              <camera name="camera_right">
+                <horizontal_fov>${90*3.14/180.0}</horizontal_fov>
+                <image>
+                  <format>R8G8B8</format>
+                  <width>1280</width>
+                  <height>480</height>
+                </image>
+                <clip>
+                  <near>0.15</near>
+                  <far>10.0</far>
+                </clip>
+              </camera>
+              <plugin name="camera_plugin" filename="libgazebo_ros_camera.so">
+                <ros>
+                  <namespace>right_camera</namespace>
+                  <argument>image_raw:=rgb</argument>
+                  <argument>camera_info:=info</argument>
+                </ros>
+                
+                <baseline>0.05</baseline>
+                <alwaysOn>true</alwaysOn>
+                <updateRate>0.0</updateRate>
+                <frame_name>camera_infra2_frame</frame_name>
+                <distortionK1>0</distortionK1>
+                <distortionK2>0</distortionK2>
+                <distortionK3>0</distortionK3>
+                <distortionT1>0</distortionT1>
+                <distortionT2>0</distortionT2>
+                <CxPrime>0</CxPrime>
+                <Cx>0</Cx>
+                <Cy>0</Cy>
+                <focalLength>0</focalLength>
+                <hackBaseline>0</hackBaseline>
+              </plugin>
+            </sensor>
+    </gazebo>
+  </xacro:if>
+</robot>

@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- Orbbec Astra RGBD Camera -->
+  <xacro:if value="$(arg camera_enabled)">
+    <joint name="astra_joint" type="fixed">
+      <axis xyz="0 0 0" />
+      <origin xyz="$(arg camera_xyz)" rpy="$(arg camera_rpy)" />
+      <parent link="$(arg camera_mount)"/>
+      <child link="camera_link"/>
+    </joint>
+
+    <link name="camera_link">
+      <collision>
+        <origin xyz="0.02 0 0" rpy="0 0 0"/>
+        <geometry>0
+          <box size="0.001 0.001 0.001"/>
+        </geometry>
+      </collision>
+
+      <visual>
+        <origin xyz="-0.01 0 -0.03" rpy="1.5707 0 1.5707"/>
+        <geometry>
+          <mesh filename="file://$(find rosbot_ugv)/meshes/astra.dae" scale="0.001 0.001 0.001" />
+        </geometry>
+      </visual>
+
+      <inertial>
+        <mass value="1e-5" />
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+      </inertial>
+    </link>
+
+    <joint name="camera_optical_joint" type="fixed">
+      <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>
+      <parent link="camera_link"/>
+      <child link="camera_rgb_frame"/>
+    </joint>
+
+    <link name="camera_rgb_frame">
+    </link>
+
+    <joint name="camera_depth_joint" type="fixed">
+      <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>
+      <parent link="camera_link"/>
+      <child link="camera_depth_frame"/>
+    </joint>
+
+    <link name="camera_depth_frame">
+    </link>
+   </xacro:if>
+
+  <xacro:if value="$(arg laser_enabled)">
+    <!-- rplidar Laser -->
+    <joint name="rplidar_joint" type="fixed">
+      <axis xyz="0 1 0" />
+      <origin xyz="$(arg laser_xyz)" rpy="$(arg laser_rpy)" />
+      <parent link="$(arg laser_mount)"/>
+      <child link="laser"/>
+    </joint>
+
+    <link name="laser">
+      <collision>
+        <origin xyz="0 0 0" rpy="1.5707 0 4.71"/>
+        <geometry>
+          <mesh filename="file://$(find rosbot_ugv)/meshes/rplidar.dae" scale="0.001 0.001 0.001" />
+        </geometry>
+      </collision>
+
+      <visual>
+        <origin xyz="0 0 0" rpy="1.5707 0 4.71"/>
+        <geometry>
+          <mesh filename="file://$(find rosbot_ugv)/meshes/rplidar.dae" scale="0.001 0.001 0.001" />
+        </geometry>
+      </visual>
+
+      <inertial>
+        <mass value="1e-5" />
+        <origin xyz="0 0 0" rpy="1.5707 0 4.71"/>
+        <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+      </inertial>
+    </link>
+  </xacro:if>
+
+  <joint name="range_fl_joint" type="fixed">
+    <axis xyz="0 1 0" />
+    <origin xyz="0.1 0.05 0.01" rpy="0 0 0.13 "/>
+    <parent link="base_link"/>
+    <child link="range_fl"/>
+  </joint>
+  <link name="range_fl"></link>
+
+  <joint name="range_fr_joint" type="fixed">
+    <axis xyz="0 1 0" />
+    <origin xyz="0.1 -0.05 0.01" rpy="0 0 -0.13 "/>
+    <parent link="base_link"/>
+    <child link="range_fr"/>
+  </joint>
+  <link name="range_fr"></link>
+
+  <joint name="range_rl_joint" type="fixed">
+    <axis xyz="0 1 0" />
+    <origin xyz="-0.1 0.05 0.01" rpy="0 0 3.01 "/>
+    <parent link="base_link"/>
+    <child link="range_rl"/>
+  </joint>
+  <link name="range_rl"></link>
+
+  <joint name="range_rr_joint" type="fixed">
+    <axis xyz="0 1 0" />
+    <origin xyz="-0.1 -0.05 0.01" rpy="0 0 3.27 "/>
+    <parent link="base_link"/>
+    <child link="range_rr"/>
+  </joint>
+  <link name="range_rr"></link>
+
+  <xacro:if value="$(arg imu_enabled)">
+    <link name="imu_link"/>
+    <joint name="imu_joint" type="fixed">
+      <origin xyz="$(arg imu_xyz)" rpy="$(arg imu_rpy)" />
+      <parent link="$(arg imu_mount)" />
+      <child link="imu_link" />
+    </joint>
+  </xacro:if>
+
+</robot>
