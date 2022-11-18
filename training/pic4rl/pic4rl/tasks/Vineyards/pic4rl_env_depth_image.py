@@ -238,16 +238,6 @@ class Pic4rlEnvironment(Node):
 		state = depth_image
 		return state
 
-		# WITH LIDAR
-		# state_list = []
-		# state_list.append(float(goal_distance))
-		# state_list.append(float(goal_angle))
-		# for point in lidar_measurements:
-		# 	state_list.append(float(point))
-		# state = np.array(state_list,dtype = np.float32)
-		# #state = np.array([goal_distance, goal_angle, lidar_measurements], dtype = np.float32)
-		# return state
-
 	def get_reward(self,twist,lidar_measurements, goal_distance, goal_angle, pos_x, pos_y, yaw, done, event):
 		yaw_reward = (0.5 - 2*math.sqrt(math.fabs(goal_angle / math.pi)))
 		y_reward = (-2**(math.fabs(4.5 - pos_y))+1)*10

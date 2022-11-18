@@ -3,9 +3,10 @@
 import yaml
 import rclpy
 import threading
-from pic4rl.pic4rl_training_lidar import Pic4rlTraining_Lidar
-from pic4rl.pic4rl_training_camera import Pic4rlTraining_Camera
-from pic4rl.tasks.following.pic4rl_training_lidar_pf import Pic4rlTraining_Lidar_PF
+from pic4rl.tasks.goToPose.pic4rl_training_lidar import Pic4rlTraining_Lidar
+from pic4rl.tasks.goToPose.pic4rl_training_camera import Pic4rlTraining_Camera
+#from pic4rl.tasks.Vineyards.pic4rl_training_depth import Pic4rlTraining_Vineyard
+from pic4rl.tasks.Following.pic4rl_training_lidar_pf import Pic4rlTraining_Lidar_PF
 from ament_index_python.packages import get_package_share_directory
 from pic4rl.tasks.following.pic4rl_environment_lidar_pf import GetEntityClient
 
@@ -39,23 +40,30 @@ def main(args=None):
 
     rclpy.init()
 
-    if configParams['following']:
+    if configParams['Task']=='goToPose':
+        if configParams['sensor'] == 'lidar':
+            pic4rl_training = Pic4rlTraining_Lidar()
+            pic4rl_training.get_logger().info(
+                "Initialized Training: sensor=LiDAR, task=goToPose\n\n")
+        if configParams['sensor'] == 'camera':
+            pic4rl_training = Pic4rlTraining_Camera()
+            pic4rl_training.get_logger().info(
+                "Initialized Training: sensor=Camera, task=goToPose\n\n")
+
+    elif configParams['Task']=='Following':
         get_entity_client = GetEntityClient()
         
         if configParams['sensor'] == 'lidar':
-            pic4rl_training= Pic4rlTraining_Lidar_PF (get_entity_client)
+            pic4rl_training = Pic4rlTraining_Lidar_PF (get_entity_client)
             pic4rl_training.get_logger().info(
                 "Initialized Training: sensor=LiDAR, task=Following\n\n")
 
-    else:
-        if configParams['sensor'] == 'lidar':
-            pic4rl_training= Pic4rlTraining_Lidar()
-            pic4rl_training.get_logger().info(
-                "Initialized Training: sensor=LiDAR, task=P2P\n\n")
-        if configParams['sensor'] == 'camera':
-            pic4rl_training= Pic4rlTraining_Camera()
-            pic4rl_training.get_logger().info(
-                "Initialized Training: sensor=Camera, task=P2P\n\n")
+    #elif configParams['Task']=='Vineyards':
+        ## TO DO 
+        # if configParams['sensor'] == 'camera':
+        #     pic4rl_training = Pic4rlTraining_Vineyards()
+        #     pic4rl_training.get_logger().info(
+        #         "Initialized Training: sensor=Camera, task=Vineyards\n\n")
     
     pic4rl_training.threadFunc()
 

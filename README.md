@@ -24,11 +24,12 @@ The repository is organized as follows:
 
 **Main scripts in pic4rl training package:**
 - **pic4rl_trainer.py** (instanciate the agent and start the main training loop)
-- **pic4rl_training_nav2.py** (select and define the agent, define action and state spaces)
-- **pic4rl_environment_nav2.py** (interact with the agent with the 'step()' and 'reset()' functions, compute observation and rewards, publish goal, check end of episode condition, call Gazebo services to respawn robot)
-- generic_sensor.py: start the necessary sensors topic subscription
-- sensors: contain all the necessary method to preprocess sensor data
-- metrics: contain all the metrics computed during testing
+- **pic4rl_training_.py** (inherits environment class: task specific, select and define the agent, define action and state spaces)
+- **pic4rl_environment_.py** (specific for the Task: interact with the agent with the 'step()' and 'reset()' functions, compute observation and rewards, publish goal, check end of episode condition, call Gazebo services to respawn robot)
+- sensors.py: start the necessary sensors topic subscription and contain all the necessary method to preprocess sensor data
+**Main scripts in pic4rl testing package:**
+- **pic4rl_tester.py** (load weights and instanciate policy agents and environment)
+- metrics.py: contain all the metrics computed during testing
 
 **ROS Nodes:**
 - pic4rl_training(pic4rl_environment(Node))
@@ -55,7 +56,6 @@ In the .bashrc export the gazebo models path:
 
 **Tested software versions**
 - ROS2 Foxy
-- Nav2 Foxy branch
 - TensorFlow 2.6.x
 - Keras 2.6.x
 

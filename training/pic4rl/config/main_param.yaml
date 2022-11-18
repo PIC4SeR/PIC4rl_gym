@@ -19,7 +19,7 @@ main_node:
     collision_check: 0.36
 
     # Task parameters
-    following: False
+    task: 'goToPose' # goToPose, Following, Vineyards
     
     # Sensors parameters
     sensor: 'lidar' # lidar or rgb_camera or depth_camera
