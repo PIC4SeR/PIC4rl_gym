@@ -7,7 +7,7 @@ training_params:
     --save-model-interval: 20000 # (int) Interval to save model. The default is ``int(1e4)``
     --save-summary-interval: 5000 # (int) Interval to save summary. The default is ``int(1e3)``
 #    --model-dir: '/root/gym_ws/src/PIC4rl_gym/training/pic4rl/models/agent_lidar/tunnel_SAC_lidar60/' # (str) Directory to restore model.
-#    --dir-suffix: "vinedepth_mobv3_jackal"  # (str) Suffix for directory that stores results.
+#    --dir-suffix: ""  # (str) Suffix for directory that stores results.
 #    --normalize-obs: # Whether normalize observation
     --logdir: '/root/gym_ws/src/Results/' # (str) Output directory name. The default is ``"results"``
 #    --evaluate: # Whether evaluate trained model
@@ -25,8 +25,6 @@ training_params:
     --policy_trainer: 'off-policy' # trainer off-policy / on-policy
     --change_goal_and_pose: 20
     --starting_episodes: 400
-    --tflite_flag: False
-    --tflite_model_path: '~/inference/actor_fp16.tflite'
     --batch-size: 128 # (int) Batch size for training. The default is ``32``.
     --gpu: 0 # (int) GPU id. ``-1`` disables GPU. The default is ``0``.
 

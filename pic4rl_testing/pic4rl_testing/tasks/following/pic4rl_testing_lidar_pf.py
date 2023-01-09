@@ -32,17 +32,16 @@ from tf2rl.algos.sac_ae import SACAE
 from tf2rl.algos.ppo import PPO
 from tf2rl.experiments.trainer import Trainer
 from tf2rl.experiments.on_policy_trainer import OnPolicyTrainer
-from testing.pic4rl_environment_lidar import Pic4rlEnvironmentLidar
-from testing.pic4rl_environment_camera_depth import Pic4rlEnvironmentCamera
+from pic4rl_testing.tasks.following.pic4rl_environment_lidar_pf import Pic4rlEnvironment_Lidar_PF
 from ament_index_python.packages import get_package_share_directory
 
 from rclpy.executors import SingleThreadedExecutor
 from rclpy.executors import ExternalShutdownException
 
 
-class Pic4rlTesting_Lidar(Pic4rlEnvironmentLidar):
-    def __init__(self):
-        super().__init__()
+class Pic4rlTesting_Lidar_PF(Pic4rlEnvironment_Lidar_PF):
+    def __init__(self, get_entity_client):
+        super().__init__(get_entity_client)
         self.log_check()
         train_params = self.parameters_declaration()
 
@@ -64,17 +63,10 @@ class Pic4rlTesting_Lidar(Pic4rlEnvironmentLidar):
         """
         ACTION AND OBSERVATION SPACES settings
         """
-        action =[
-        [self.min_lin_vel, self.max_lin_vel], # x_speed 
-        #[self.min_lin_vel, self.max_lin_vel], # y_speed
-        [self.min_ang_vel, self.max_ang_vel] # w_speed
-        ]
+        action =[self.min_ang_vel, self.max_ang_vel] # w_speed
 
-        low_action = []
-        high_action = []
-        for i in range(len(action)):
-            low_action.append(action[i][0])
-            high_action.append(action[i][1])
+        low_action = [action[0]]
+        high_action = [action[1]]
 
         low_action = np.array(low_action, dtype=np.float32)
         high_action = np.array(high_action, dtype=np.float32)
@@ -82,17 +74,15 @@ class Pic4rlTesting_Lidar(Pic4rlEnvironmentLidar):
         self.action_space = spaces.Box(
             low=low_action,
             high=high_action,
-            shape=(2,),
+            shape=(1,),
             dtype=np.float32
         )
 
         state =[
         [0., 15.], # goal_distance 
         [-math.pi, math.pi], # goal angle or yaw
+        [self.min_ang_vel, self.max_ang_vel]
         ]
-
-        for i in range(self.lidar_points):
-            state = state + [[0., 12.]]
 
         if len(state)>0:
             low_state = []
@@ -180,8 +170,8 @@ class Pic4rlTesting_Lidar(Pic4rlEnvironmentLidar):
                     min_action=self.action_space.low,
                     lr=2e-4,
                     lr_alpha=3e-4,
-                    actor_units=(256, 256),
-                    critic_units=(256, 256),
+                    actor_units=(512, 256, 256),
+                    critic_units=(512, 256, 256),
                     tau=5e-3,
                     alpha=.2,
                     auto_alpha=False, 
@@ -232,7 +222,7 @@ class Pic4rlTesting_Lidar(Pic4rlEnvironmentLidar):
             trainer = OnPolicyTrainer(policy, self, args, test_env=None)
             #self.get_logger().info('Starting process...')
             #trainer()
-
+            
         return trainer
 
     def set_parser_list(self, params):
@@ -301,9 +291,9 @@ class Pic4rlTesting_Lidar(Pic4rlEnvironmentLidar):
         """
         """
         main_param_path  = os.path.join(
-            get_package_share_directory('testing'), 'config', 'main_param.yaml')
+            get_package_share_directory('pic4rl_testing'), 'config', 'main_param.yaml')
         train_params_path= os.path.join(
-            get_package_share_directory('testing'), 'config', 'training_params.yaml')
+            get_package_share_directory('pic4rl_testing'), 'config', 'training_params.yaml')
         
         with open(main_param_path, 'r') as main_param_file:
             main_param = yaml.safe_load(main_param_file)['main_node']['ros__parameters']

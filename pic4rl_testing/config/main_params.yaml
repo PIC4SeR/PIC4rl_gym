@@ -9,13 +9,13 @@ main_node:
     robot_type: "rectangular" # rectangular or circular
     robot_radius: 0.2 # [m], If robot_type is cicrular
     robot_size: [0.508, 0.430] # [m, m], Lenght, Width if robot_type is rectangular
-    collision_tolerance: 0.05 # [m], tollerance of collision added to robot_radius or robot_size
+    collision_tolerance: 0.01 # [m], tollerance of collision added to robot_radius or robot_size
     warning_tolerance: 0.1 # [m], warning window added to robot_radius or robot_size
-    goal_tolerance: 0.40
+    goal_tolerance: 0.5
 
     # World parameters
-    world_name: "new_indoor.world" #Leave empty to obtain no world
-    data_path: "new_indoor.json"
+    world_name: "vineyard.world" #Leave empty to obtain no world
+    data_path: "vineyard_straight.json"
     collision_check: 0.36
 
     # Task parameters
@@ -23,6 +23,7 @@ main_node:
     
     # Sensors parameters
     sensor: 'lidar' # lidar or rgb_camera or depth_camera
+    update_frequency: 10.0
     visual_data: 'features'
     features: 12544
     channels: 1
@@ -51,11 +52,11 @@ main_node:
 
     # Metrics
     path_distance: False
-    distance_path_ratio: True
+    distance_path_ratio: False
     clearance_time: True
     mean_velocities: True
     max_min_accelerations: True
     cumulative_heading_average: True
-    obstacle_clereance: True
+    obstacle_clereance: False
     following_heading_metrics: False
-    wineyard_path_comparison: False
+    row_crop_path_comparison: True

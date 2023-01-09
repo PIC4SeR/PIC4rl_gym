@@ -46,19 +46,8 @@ class Pic4rlTraining_Lidar(Pic4rlEnvironmentLidar):
         self.log_check()
         train_params = self.parameters_declaration()
 
-        if self.tflite_flag:
-            self.actor_fp16 = tf.lite.Interpreter(model_path='~/inference/actor_fp16.tflite')
-            self.actor_fp16.allocate_tensors()
-            self.input_index_image = self.actor_fp16.get_input_details()[0]["index"]
-            self.input_index_state = self.actor_fp16.get_input_details()[1]["index"]
-            self.output_index = self.actor_fp16.get_output_details()[0]["index"]
-            self.commands = [0.0,0.0]
-            self.step_counter = 0
-            self.done = False
-
-        else:
-            self.set_parser_list(train_params)
-            self.trainer = self.instantiate_agent()
+        self.set_parser_list(train_params)
+        self.trainer = self.instantiate_agent()
 
     def instantiate_agent(self):
         """
@@ -255,26 +244,6 @@ class Pic4rlTraining_Lidar(Pic4rlEnvironmentLidar):
             self.get_logger().error(f"Error in starting trainer:\n {traceback.format_exc()}")
             return
 
-    def threadFunc_tflite(self):
-        while True:
-            if self.step_counter == 0:
-                observation = self.reset(self.step_counter)
-            else:
-                observation, reward, done, info = self.step(self.commands)
-                self.done = done
-            if self.done:
-                self.done = False
-                self.step_counter = 0
-                observation = self.reset(self.step_counter)
-
-            self.actor_fp16.set_tensor(self.input_index_state, observation[1])
-            self.actor_fp16.set_tensor(self.input_index_image, observation[0])
-
-            self.actor_fp16.invoke()
-            self.commands = self.actor_fp16.get_tensor(self.output_index)[0,:]
-
-            self.step_counter += 1
-
     def log_check(self):
         """
         Select the ROS2 log level.
@@ -318,8 +287,6 @@ class Pic4rlTraining_Lidar(Pic4rlEnvironmentLidar):
             ('min_lin_vel', main_param['min_lin_vel']),
             ('max_ang_vel', main_param['max_ang_vel']),
             ('min_ang_vel', main_param['min_ang_vel']),
-            ('tflite_flag', train_params['--tflite_flag']),
-            ('tflite_model_path', train_params['--tflite_model_path']),
             ('gpu', train_params['--gpu']),
             ('batch_size', train_params['--batch-size']),
             ('n_warmup', train_params['--n-warmup'])
@@ -331,8 +298,6 @@ class Pic4rlTraining_Lidar(Pic4rlEnvironmentLidar):
         self.min_lin_vel = self.get_parameter('min_lin_vel').get_parameter_value().double_value
         self.max_ang_vel = self.get_parameter('max_ang_vel').get_parameter_value().double_value
         self.max_lin_vel = self.get_parameter('max_lin_vel').get_parameter_value().double_value
-        self.tflite_flag = self.get_parameter('tflite_flag').get_parameter_value().bool_value
-        self.tflite_model_path = self.get_parameter('tflite_model_path').get_parameter_value().string_value
         self.gpu = self.get_parameter('gpu').get_parameter_value().integer_value
         self.batch_size = self.get_parameter('batch_size').get_parameter_value().integer_value
         self.n_warmup = self.get_parameter('n_warmup').get_parameter_value().integer_value

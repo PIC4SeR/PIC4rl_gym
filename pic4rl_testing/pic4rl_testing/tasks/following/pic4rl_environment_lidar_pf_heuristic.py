@@ -21,7 +21,7 @@ from std_srvs.srv import Empty
 from geometry_msgs.msg import Twist
 from ament_index_python.packages import get_package_share_directory
 from pic4rl.sensors import Sensors
-from testing.nav_metrics import Navigation_Metrics
+from pic4rl_testing.nav_metrics import Navigation_Metrics
 from geometry_msgs.msg import PoseStamped
 from gazebo_msgs.srv import GetEntityState
 
@@ -32,11 +32,11 @@ class Pic4rlEnvironment_Lidar_PF(Node):
         """
         super().__init__('pic4rl_testing_lidar')
         goals_path      = os.path.join(
-            get_package_share_directory('testing'), 'goals_and_poses')
+            get_package_share_directory('pic4rl_testing'), 'goals_and_poses')
         main_param_path  = os.path.join(
-            get_package_share_directory('testing'), 'config', 'main_param.yaml')
+            get_package_share_directory('pic4rl_testing'), 'config', 'main_param.yaml')
         train_params_path= os.path.join(
-            get_package_share_directory('testing'), 'config', 'training_params.yaml')
+            get_package_share_directory('pic4rl_testing'), 'config', 'training_params.yaml')
         self.entity_path = os.path.join(
             get_package_share_directory("gazebo_sim"), 
             'models/goal_box/model.sdf'

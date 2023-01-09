@@ -16,7 +16,6 @@ main_node:
     # World parameters
     world_name: "new_indoor.world" #Leave empty to obtain no world
     data_path: "new_indoor.json"
-    collision_check: 0.36
 
     # Task parameters
     task: 'goToPose' # goToPose, Following, Vineyards

@@ -99,6 +99,7 @@ class Pic4rlEnvironmentLidar(Node):
         self.collision_count    = 0
         self.t0                 = 0.0
         self.evaluate           = False
+        self.index = 0
 
         self.initial_pose, self.goals, self.poses = self.get_goals_and_poses()
         self.goal_pose = self.goals[0]
@@ -239,7 +240,7 @@ class Pic4rlEnvironmentLidar(Node):
             logging.info(f"Ep {'evaluate' if self.evaluate else self.episode+1}: Goal")
             return True, "goal"
 
-        if self.episode_step+1 >= self.timeout_steps:
+        if self.episode_step+1 == self.timeout_steps:
             self.get_logger().info(f"Ep {'evaluate' if self.evaluate else self.episode+1}: Timeout")
             logging.info(f"Ep {'evaluate' if self.evaluate else self.episode+1}: Timeout")
             return True, "timeout"

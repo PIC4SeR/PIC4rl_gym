@@ -7,37 +7,26 @@ from launch_ros.actions import Node
 from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, TimerAction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 
-def test_check():
-    """
-    Select the ROS2 log level.
-    """
-    try:
-        _testing = int(os.environ['TESTING'])
-    except:
-        _testing = 0
-        print("TESTING not defined, setting default: 0")
+simulation_configFilepath = os.path.join(
+    get_package_share_directory("gazebo_sim"), 'config',
+    'sim_params.yaml'
+    )
+    
+with open(simulation_configFilepath, 'r') as file:
+    sim_configParams = yaml.safe_load(file)['sim_parameters']
 
-    return _testing
-
-# Fetching Parameters
-_testing = test_check()
-if _testing:
-    param_pack = 'testing'
-else:
-    param_pack = 'pic4rl'
+mode_package = sim_configParams["package_name"]
 
 configFilepath = os.path.join(
-    get_package_share_directory(param_pack), 
-    'config',
-    'main_param.yaml'
+    get_package_share_directory(mode_package), 'config',
+    'main_params.yaml'
     )
-
 with open(configFilepath, 'r') as file:
     configParams = yaml.safe_load(file)['main_node']['ros__parameters']
 
 # Fetching Goals and Poses
 goals_path = os.path.join(
-    get_package_share_directory(param_pack), 
+    get_package_share_directory(mode_package), 
     'goals_and_poses', 
     configParams['data_path']
     )
@@ -46,7 +35,8 @@ robot_pose, goal_pose = goal_and_poses["initial_pose"], goal_and_poses["goals"][
 
 x_rob = '-x '+str(robot_pose[0])
 y_rob = '-y '+str(robot_pose[1])
-z_rob = '-z '+str(0.07)
+z_rob = '-z '+str(0.3)
+yaw_rob = '-Y ' +str(robot_pose[2])
 
 x_goal = '-x '+str(goal_pose[0])
 y_goal = '-y '+str(goal_pose[1])
@@ -81,7 +71,7 @@ def generate_launch_description():
         package='gazebo_ros',
         executable='spawn_entity.py',
         output='screen',
-        arguments=['-entity',configParams["robot_name"], x_rob, y_rob, z_rob, '-topic','/robot_description'],
+        arguments=['-entity',configParams["robot_name"], x_rob, y_rob, z_rob, yaw_rob, '-topic','/robot_description'],
     )
 
     spawn_goal = Node(

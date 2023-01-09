@@ -3,12 +3,12 @@ import os
 from glob import *
 
 package_name = 'pic4rl'
-submodules = package_name+"/networks"
+#submodules = package_name+'/tasks'
 
 setup(
     name=package_name,
     version='0.0.0',
-    packages=[package_name, submodules],
+    packages=[package_name],
     data_files=[
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
@@ -26,7 +26,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-        'pic4rl_trainer = pic4rl.pic4rl_trainer:main'
+        'pic4rl_trainer = pic4rl.pic4rl_trainer:main',
+        'plot_reward = pic4rl.plot_reward:main'
         ],
     },
 )

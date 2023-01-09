@@ -55,7 +55,6 @@ class Navigation_Metrics(Node):
 
         self.params = params
         self.previous_time      = time.time()
-        self.n_episode          = -2
         self.metrics_results    = []
         self.path               = []
 
@@ -187,24 +186,23 @@ class Navigation_Metrics(Node):
             self.following_heading_metrics()
         if self.params['obstacle_clereance']:
             self.obstacle_clereance()
-        if self.params['wineyard_path_comparison']:
-            self.wineyard_path_comparison(true_path)
+        if self.params['row_crop_path_comparison']:
+            self.row_crop_path_comparison(true_path)
 
-    def log_metrics_results(self):
+    def log_metrics_results(self, episode):
         """
         """
-        self.n_episode += 1
-        self.get_logger().info(f"Episode {self.n_episode} metrics results: ")
-        logging.info(f"Episode {self.n_episode} metrics results: ")
+        self.get_logger().info(f"Episode {episode+1} metrics results: ")
+        logging.info(f"Episode {episode+1} metrics results: ")
         for metric in self.metrics_results:
             self.get_logger().info(f"{metric['name']}: {metric['value']}")
             logging.info(f"{metric['name']}: {metric['value']}")
 
-    def save_metrics_resutls(self):
+    def save_metrics_results(self, episode):
         """
         """
         episode_results = {
-            f"episode{self.n_episode}":
+            f"episode{episode+1}":
             dict(
                 (
                     metric['name'],
@@ -233,7 +231,7 @@ class Navigation_Metrics(Node):
         self.metrics_results.append(
             self.create_metric(
                 'Path_distance', 
-                float(distance)
+                float(path_distance)
                 )
             )
 
@@ -337,7 +335,32 @@ class Navigation_Metrics(Node):
                 float(np.mean(delta_thetas))
                 )
             )
+    
+    def obstacle_clereance(self, event='Goal'):
+        """
+        """
+        min_distances   = np.min(self.lidar_measurements, axis=1)
+        mean_distances  = np.mean(self.lidar_measurements, axis=1)
 
+        self.metrics_results.append(
+            self.create_metric(
+                'Obstacles_mean_distance', 
+                float(np.mean(mean_distances))
+                )
+            )
+        self.metrics_results.append(
+            self.create_metric(
+                'Obstacles_min_distance', 
+                float(np.min(min_distances))
+                )
+            )
+        self.metrics_results.append(
+            self.create_metric(
+                'Obstacles_min_mean_distance', 
+                float(np.min(mean_distances))
+                )
+            )
+        
     def following_heading_metrics(self, event='Goal'):
         """
         """
@@ -364,36 +387,12 @@ class Navigation_Metrics(Node):
                 )
             )
 
-    def obstacle_clereance(self, event='Goal'):
+    def row_crop_path_comparison(self, true_path):
         """
         """
-        min_distances   = np.min(self.lidar_measurements, axis=1)
-        mean_distances  = np.mean(self.lidar_measurements, axis=1)
-
-        self.metrics_results.append(
-            self.create_metric(
-                'Obstacles_mean_distance', 
-                float(np.mean(mean_distances))
-                )
-            )
-        self.metrics_results.append(
-            self.create_metric(
-                'Obstacles_min_distance', 
-                float(np.min(min_distances))
-                )
-            )
-        self.metrics_results.append(
-            self.create_metric(
-                'Obstacles_min_mean_distance', 
-                float(np.min(mean_distances))
-                )
-            )
-
-    def wineyard_path_comparison(self, true_path):
-        """
-        """
-        true_path = np.array(true_path)
-        path = np.array(path)
+        #true_path = np.array(true_path)
+        true_path = true_path*np.ones(len(self.path))
+        path = np.array(self.path)
 
         if len(true_path) != len(path):
             self.get_logger().warn(
@@ -401,15 +400,21 @@ class Navigation_Metrics(Node):
                 )
             return
 
-        deviation = true_path - path
+        deviation = true_path - path[:,1]
 
         mae = float(np.mean(np.absolute(deviation)))
         mse = np.mean(deviation**2)
 
         self.metrics_results.append(
             self.create_metric(
-                'Wineyard_path_comparison', 
-                [mae, mse]
+                'row_crop_path_MAE', 
+                float(mae)
+                )
+            )
+        self.metrics_results.append(
+            self.create_metric(
+                'row_crop_path_MSE', 
+                float(mse)
                 )
             )
 

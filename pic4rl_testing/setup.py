@@ -2,13 +2,13 @@ from setuptools import setup
 import os 
 from glob import glob
 
-package_name = 'testing'
-submodules = package_name+"/networks"
+package_name = 'pic4rl_testing'
+#submodules = package_name+'/tasks'
 
 setup(
     name=package_name,
     version='0.0.0',
-    packages=[package_name, submodules],
+    packages=[package_name],
     data_files=[
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
@@ -26,8 +26,9 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-        'pic4rl_tester = testing.pic4rl_tester:main',
-        'plot_training_rewards = testing.plot_training_rewards:main',
+        'pic4rl_tester = pic4rl_testing.pic4rl_tester:main',
+        'evaluate_navigation = pic4rl_testing.evaluate_navigation:main',
+        'evaluate_segmentation = pic4rl_testing.evaluate_segmentation:main'
         ],
     },
 )

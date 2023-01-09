@@ -21,20 +21,22 @@ from std_srvs.srv import Empty
 from geometry_msgs.msg import Twist
 from ament_index_python.packages import get_package_share_directory
 from pic4rl.sensors import Sensors
-from testing.nav_metrics import Navigation_Metrics
+from pic4rl_testing.nav_metrics import Navigation_Metrics
+from geometry_msgs.msg import PoseStamped
+from gazebo_msgs.srv import GetEntityState
 
 
-class Pic4rlEnvironmentLidar(Node):
-    def __init__(self):
+class Pic4rlEnvironment_Lidar_PF(Node):
+    def __init__(self, get_entity_client):
         """
         """
         super().__init__('pic4rl_testing_lidar')
         goals_path      = os.path.join(
-            get_package_share_directory('testing'), 'goals_and_poses')
+            get_package_share_directory('pic4rl_testing'), 'goals_and_poses')
         main_param_path  = os.path.join(
-            get_package_share_directory('testing'), 'config', 'main_param.yaml')
+            get_package_share_directory('pic4rl_testing'), 'config', 'main_param.yaml')
         train_params_path= os.path.join(
-            get_package_share_directory('testing'), 'config', 'training_params.yaml')
+            get_package_share_directory('pic4rl_testing'), 'config', 'training_params.yaml')
         self.entity_path = os.path.join(
             get_package_share_directory("gazebo_sim"), 
             'models/goal_box/model.sdf'
@@ -78,13 +80,18 @@ class Pic4rlEnvironmentLidar(Node):
             'lidar_points').get_parameter_value().integer_value
 
         qos = QoSProfile(depth=10)
-        self.sensors = Sensors(self)
+        self.sensors = Sensors(self, testing=True)
         self.create_logdir(train_params['--policy'], main_param['sensor'], train_params['--logdir'])
         self.spin_sensors_callbacks()
 
         self.cmd_vel_pub = self.create_publisher(
             Twist,
-            'cmd_vel',
+            'follow_vel',
+            qos)
+
+        self.goal_pub = self.create_publisher(
+            PoseStamped,
+            'goal_pose',
             qos)
 
         self.reset_world_client     = self.create_client(
@@ -105,6 +112,8 @@ class Pic4rlEnvironmentLidar(Node):
         self.initial_pose, self.goals, self.poses = self.get_goals_and_poses()
         self.goal_pose = self.goals[0]
 
+        self.get_entity_client = get_entity_client
+
         self.nav_metrics = Navigation_Metrics(main_param, self.logdir)
 
         self.get_logger().debug("PIC4RL_Environment: Starting process")
@@ -113,8 +122,7 @@ class Pic4rlEnvironmentLidar(Node):
         """
         """
         twist = Twist()
-        twist.linear.x = float(action[0])
-        twist.angular.z = float(action[1])
+        twist.angular.z = float(action)
         self.episode_step = episode_step
 
         observation, reward, done = self._step(twist)
@@ -132,6 +140,7 @@ class Pic4rlEnvironmentLidar(Node):
         self.spin_sensors_callbacks()
         lidar_measurements, goal_info, robot_pose, collision = self.get_sensor_data()
         self.nav_metrics.get_metrics_data(lidar_measurements, self.episode_step)
+        self.nav_metrics.get_following_metrics_data(self.goal_pose)
 
         self.get_logger().debug("checking events...")
         done, event = self.check_events(lidar_measurements, goal_info, robot_pose, collision)
@@ -206,6 +215,7 @@ class Pic4rlEnvironmentLidar(Node):
     def process_odom(self, odom):
         """
         """
+        self.goal_pose = self.get_goal_pose()
         goal_dx = self.goal_pose[0]-odom[0]
         goal_dy = self.goal_pose[1]-odom[1]
 
@@ -254,10 +264,10 @@ class Pic4rlEnvironmentLidar(Node):
     def get_reward(self,twist,lidar_measurements, goal_info, robot_pose, done, event):
         """
         """
-        reward = (self.previous_goal_info[0] - goal_info[0])*30 
-        yaw_reward = (1-2*math.sqrt(math.fabs(goal_info[1]/math.pi)))*0.6
+        yaw_reward = (1-2*math.sqrt(math.fabs(goal_info[1]/math.pi)))
+        smooth_reward = -math.fabs(self.previous_twist.angular.z-twist.angular.z)
 
-        reward += yaw_reward
+        reward = yaw_reward + smooth_reward
 
         if event == "goal":
             reward += 1000
@@ -271,9 +281,7 @@ class Pic4rlEnvironmentLidar(Node):
         """
         """
         state_list = goal_info
-        
-        for point in lidar_measurements:
-            state_list.append(float(point))
+        state_list.append(twist.angular.z)
 
         state = np.array(state_list,dtype = np.float32)
 
@@ -298,8 +306,8 @@ class Pic4rlEnvironmentLidar(Node):
         self.evaluate = evaluate
         logging.info(f"Total_episodes: {'evaluate' if evaluate else n_episode}, Total_steps: {tot_steps}, episode_steps: {self.episode_step+1}\n")
         print()
-        self.get_logger().info(f"Initializing new episode: scenario {self.index}")
-        logging.info(f"Initializing new episode: scenario {self.index}")
+        self.get_logger().info("Initializing new episode ...")
+        logging.info("Initializing new episode ...")
         self.new_episode()
         self.get_logger().debug("Performing null step to reset variables")
         self.episode_step = 0
@@ -318,14 +326,15 @@ class Pic4rlEnvironmentLidar(Node):
         while not self.reset_world_client.wait_for_service(timeout_sec=1.0):
             self.get_logger().warn('service not available, waiting again...')
         self.reset_world_client.call_async(req)
+        
+        if self.episode % self.change_episode == 0. and not self.evaluate:
+            self.index = int(np.random.uniform()*len(self.poses)) -1 
 
         self.get_logger().debug("Respawing robot ...")
         self.respawn_robot(self.index)
     
-        self.get_logger().debug("Respawing goal ...")
-        self.respawn_goal(self.index)
-
-        self.index = self.index+1 if self.index<len(self.poses)-1 else 0 
+        # self.get_logger().debug("Respawing goal ...")
+        # self.respawn_goal(self.index)
 
         self.get_logger().debug("Environment reset performed ...")
 
@@ -421,3 +430,49 @@ class Pic4rlEnvironmentLidar(Node):
         logging.basicConfig(
             filename=os.path.join(self.logdir, 'screen_logger.log'), 
             level=logging.INFO)
+
+    def get_goal_pose(self):
+        """
+        """
+        future = self.get_entity_client.send_request()
+
+        x = future.state.pose.position.x
+        y = future.state.pose.position.y
+
+        # qz = future.state.pose.orientation.z
+        # qw = future.state.pose.orientation.w
+        # t1 = 2*(qw*qz)
+        # t2 = 1 - 2*(qz*qz)
+        # yaw = math.atan2(t1,t2)
+
+        ############################################
+        goal = PoseStamped()
+        goal.pose.position.x = x
+        goal.pose.position.y = y
+        self.goal_pub.publish(goal)
+        ############################################
+
+        return [x, y]
+
+
+class GetEntityClient(Node):
+
+    def __init__(self):
+        super().__init__('get_entity_client')
+
+        self.robot_pose_client = self.create_client(GetEntityState, '/test/get_entity_state')
+        
+        while not self.robot_pose_client.wait_for_service(timeout_sec=1):
+            self.get_logger().info('service not available, waiting again...')
+        self.req = GetEntityState.Request()
+        self.req.name = "goal_box"
+
+        self.get_logger().info("Goal Client online!")
+
+    def send_request(self):
+        """
+        """
+        future = self.robot_pose_client.call_async(self.req)
+        rclpy.spin_until_future_complete(self, future)
+
+        return future.result()

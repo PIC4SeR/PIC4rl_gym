@@ -3,11 +3,11 @@
 import yaml
 import rclpy
 import threading
-from testing.pic4rl_testing_lidar import Pic4rlTesting_Lidar
-from testing.pic4rl_testing_camera import Pic4rlTesting_Camera
-from testing.tasks.following.pic4rl_testing_lidar_pf import Pic4rlTesting_Lidar_PF
+from pic4rl_testing.pic4rl_testing_lidar import Pic4rlTesting_Lidar
+from pic4rl_testing.pic4rl_testing_camera import Pic4rlTesting_Camera
+from pic4rl_testing.tasks.following.pic4rl_testing_lidar_pf import Pic4rlTesting_Lidar_PF
 from ament_index_python.packages import get_package_share_directory
-from testing.tasks.following.pic4rl_environment_lidar_pf import GetEntityClient
+from pic4rl_testing.tasks.following.pic4rl_environment_lidar_pf import GetEntityClient
 
 import os
 #os.environ["CUDA_VISIBLE_DEVICES"]="-1" 
