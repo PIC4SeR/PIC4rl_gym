@@ -8,7 +8,7 @@ from pic4rl.tasks.goToPose.pic4rl_training_camera import Pic4rlTraining_Camera
 #from pic4rl.tasks.Vineyards.pic4rl_training_depth import Pic4rlTraining_Vineyard
 from pic4rl.tasks.Following.pic4rl_training_lidar_pf import Pic4rlTraining_Lidar_PF
 from ament_index_python.packages import get_package_share_directory
-from pic4rl.tasks.following.pic4rl_environment_lidar_pf import GetEntityClient
+from pic4rl.tasks.Following.pic4rl_environment_lidar_pf import GetEntityClient
 
 import os
 #os.environ["CUDA_VISIBLE_DEVICES"]="-1" 
@@ -32,7 +32,7 @@ def main(args=None):
     """
     configFilepath = os.path.join(
         get_package_share_directory("pic4rl"), 'config',
-        'main_param.yaml'
+        'main_params.yaml'
     )
 
     with open(configFilepath, 'r') as file:
@@ -40,7 +40,7 @@ def main(args=None):
 
     rclpy.init()
 
-    if configParams['Task']=='goToPose':
+    if configParams['task']=='goToPose':
         if configParams['sensor'] == 'lidar':
             pic4rl_training = Pic4rlTraining_Lidar()
             pic4rl_training.get_logger().info(
@@ -50,7 +50,7 @@ def main(args=None):
             pic4rl_training.get_logger().info(
                 "Initialized Training: sensor=Camera, task=goToPose\n\n")
 
-    elif configParams['Task']=='Following':
+    elif configParams['task']=='Following':
         get_entity_client = GetEntityClient()
         
         if configParams['sensor'] == 'lidar':
@@ -58,7 +58,7 @@ def main(args=None):
             pic4rl_training.get_logger().info(
                 "Initialized Training: sensor=LiDAR, task=Following\n\n")
 
-    #elif configParams['Task']=='Vineyards':
+    #elif configParams['task']=='Vineyards':
         ## TO DO 
         # if configParams['sensor'] == 'camera':
         #     pic4rl_training = Pic4rlTraining_Vineyards()

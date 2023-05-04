@@ -1,3 +1,3 @@
 sim_parameters:
   # Select pic4rl or pic4rl_testing package
-  package_name: "pic4rl_testing
+  package_name: "pic4rl"

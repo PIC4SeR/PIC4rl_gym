@@ -2,7 +2,7 @@ training_params:
 # Trainer parameters
     --max-steps: 1200000 # (int) The maximum steps for training. The default is ``int(1e6)``
     --episode-max-steps: 1000 # (int) The maximum steps for an episode. The default is ``int(1e3)``
-    --n-experiments: 1 # (int) Number of experiments. The default is ``1``
+    --n-experiments: 3 # (int) Number of experiments. The default is ``1``
 # --show-progress: # Call ``render`` function during training
     --save-model-interval: 20000 # (int) Interval to save model. The default is ``int(1e4)``
     --save-summary-interval: 5000 # (int) Interval to save summary. The default is ``int(1e3)``
@@ -23,7 +23,7 @@ training_params:
     --logging-level: INFO # (DEBUG, INFO, WARNING) Choose logging level. The default is ``INFO``
     --policy: 'TD3' # training policy
     --policy_trainer: 'off-policy' # trainer off-policy / on-policy
-    --change_goal_and_pose: 20
+    --change_goal_and_pose: 1
     --starting_episodes: 0
     --tflite_flag: False
     --tflite_model_path: '~/inference/actor_fp16.tflite'

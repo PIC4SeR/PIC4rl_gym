@@ -29,7 +29,7 @@ def generate_launch_description():
     configFilepath = os.path.join(
         get_package_share_directory(param_pack), 
         'config',
-        'main_param.yaml'
+        'main_params.yaml'
     )                       
     # Load the parameters specific to your ComposableNode
     with open(configFilepath, 'r') as file:

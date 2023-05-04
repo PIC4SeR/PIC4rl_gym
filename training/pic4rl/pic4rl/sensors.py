@@ -251,11 +251,11 @@ class Sensors():
         if testing:
             configFilepath = os.path.join(
                 get_package_share_directory("testing"), 'config',
-                'main_param.yaml')
+                'main_params.yaml')
         else:
             configFilepath = os.path.join(
                 get_package_share_directory("pic4rl"), 'config',
-                'main_param.yaml')
+                'main_params.yaml')
                             
         # Load the topic parameters
         with open(configFilepath, 'r') as file:

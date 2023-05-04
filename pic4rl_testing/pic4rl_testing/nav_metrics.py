@@ -57,6 +57,7 @@ class Navigation_Metrics(Node):
         self.previous_time      = time.time()
         self.metrics_results    = []
         self.path               = []
+        self.save_path          = logdir
 
         self.open_logdir(logdir)
         self.init_get_entity_client()
@@ -163,13 +164,19 @@ class Navigation_Metrics(Node):
             episode=0, 
             start_pose=[0., 0., 0.], 
             goal_pose=[0., 0.],
-            true_path=[0., 0.], 
+            true_path=None, 
+            path_coordinate = 0,
+            plants_row1=None, plants_row2=None,
             event='Goal'):
         """
         """
         if not self.path:
             return
-            
+        
+        if self.params['robot_poses']:
+            self.robot_poses(episode)
+        if self.params['robot_velocities']:
+            self.robot_velocities(episode)
         if self.params['path_distance']:
             self.path_distance()
         if self.params['distance_path_ratio']:
@@ -187,7 +194,7 @@ class Navigation_Metrics(Node):
         if self.params['obstacle_clereance']:
             self.obstacle_clereance()
         if self.params['row_crop_path_comparison']:
-            self.row_crop_path_comparison(true_path)
+            self.row_crop_path_comparison(path_coordinate, true_path, plants_row1, plants_row2)
 
     def log_metrics_results(self, episode):
         """
@@ -216,6 +223,38 @@ class Navigation_Metrics(Node):
    
 
     # Metrics
+    def robot_poses(self, episode=1, event='Goal'):
+        """
+        """
+        poses = np.array(self.path)
+        npy_path = str(self.save_path)+'/robot_poses_ep'+str(episode)+'.npy'
+        txt_path = str(self.save_path)+'/robot_poses_ep'+str(episode)+'.txt'
+        np.save(npy_path, poses)
+        np.savetxt(txt_path, poses)
+
+        # self.metrics_results.append(
+        #     self.create_metric(
+        #         'robot_poses_xy_yaw', 
+        #         self.path
+        #         )
+        #     )
+
+    def robot_velocities(self, episode=1, event='Goal'):
+        """
+        """
+        velocities = np.array(self.velocities)
+        npy_path = str(self.save_path)+'/robot_velocities_ep'+str(episode)+'.npy'
+        txt_path = str(self.save_path)+'/robot_velocities_ep'+str(episode)+'.txt'
+        np.save(npy_path, velocities)
+        np.savetxt(txt_path, velocities)
+
+        # self.metrics_results.append(
+        #     self.create_metric(
+        #         'robot_velocities_v_w', 
+        #         self.velocities
+        #         )
+        #     )
+
     def path_distance(self, event='Goal'):
         """
         """
@@ -387,22 +426,38 @@ class Navigation_Metrics(Node):
                 )
             )
 
-    def row_crop_path_comparison(self, true_path):
+    def compute_gt_rowcrop_path(self, coordinate, path, plants_row1, plants_row2):
         """
         """
-        #true_path = np.array(true_path)
-        true_path = true_path*np.ones(len(self.path))
+        c = 1 - coordinate
+        x_path = path[:,c]
+
+        row1 = np.interp(x_path, plants_row1[:,0], plants_row1[:,1])
+        row2 = np.interp(x_path, plants_row2[:,0], plants_row2[:,1])
+
+        gt_path = (row1 + row2) / 2
+
+        return gt_path
+
+    def row_crop_path_comparison(self, coordinate, true_path=None, plants_row1=None, plants_row2=None):
+        """
+        """
         path = np.array(self.path)
 
-        if len(true_path) != len(path):
+        if true_path is None:
+            true_path = self.compute_gt_rowcrop_path(coordinate, path, plants_row1, plants_row2)
+        else:
+            true_path = true_path*np.ones(len(self.path))
+
+        if true_path.shape != path[:,coordinate].shape:
             self.get_logger().warn(
-                f"Robot tracked path and ground truth path have different dimensions ({len(path)} and {len(true_path)})"
+                f"Robot tracked path and ground truth path have different dimensions ({path[:,coordinate].shape} and {len(true_path.shape)})"
                 )
             return
 
-        deviation = true_path - path[:,1]
+        deviation = true_path - path[:,coordinate]
 
-        mae = float(np.mean(np.absolute(deviation)))
+        mae = np.mean(np.absolute(deviation))
         mse = np.mean(deviation**2)
 
         self.metrics_results.append(

@@ -11,7 +11,7 @@ class ConvGaussianActor(tf.keras.Model):
     LOG_STD_CAP_MIN = -20  # np.e**-10 = 4.540e-05
     EPS = 1e-6
 
-    def __init__(self, state_shape, action_dim, max_action, min_action, num_conv_layers=4, conv_filters=(32,64), filt_size = (3,3),
+    def __init__(self, state_shape, state_2d_shape, action_dim, max_action, min_action, num_conv_layers=4, conv_filters=(32,64), filt_size = (3,3),
                  units = (256,256), hidden_activation="relu",
                  state_independent_std=False,
                  squash=False, name='gaussian_policy'):
@@ -21,9 +21,9 @@ class ConvGaussianActor(tf.keras.Model):
         self.action_dim = action_dim
         self._state_independent_std = state_independent_std
         self._squash = squash
-        self.image_shape = (112,112,1,)
-        self.state_info_shape=2
-        self.state_shape=state_shape
+        self.state_2d_shape = state_2d_shape
+        self.state_1d_shape = state_shape[-1]-(self.state_2d_shape[0]*self.state_2d_shape[1])
+        self.state_shape = state_shape
  
         self.state_input = Input(shape=self.state_shape)
 
@@ -79,9 +79,9 @@ class ConvGaussianActor(tf.keras.Model):
                 standard deviation is output of a neural network
         """
         b = tf.shape(states)[0]
-        state_info = states[:,:self.state_info_shape]
-        img_array = states[:,self.state_info_shape:]
-        features = tf.reshape(img_array, (b,self.image_shape[0],self.image_shape[1],self.image_shape[2]))
+        state_info = states[:,:self.state_1d_shape]
+        img_array = states[:,self.state_1d_shape:]
+        features = tf.reshape(img_array, (b,self.state_2d_shape[0],self.state_2d_shape[1],self.state_2d_shape[2]))
 
         for conv_layer in self.conv_layers:
             features = conv_layer(features)

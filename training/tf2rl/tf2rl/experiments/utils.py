@@ -5,7 +5,23 @@ import joblib
 import matplotlib.pyplot as plt
 from matplotlib import animation
 
+def save_replay_buffer(replay_buffer, filename):
+    # Open a file and use dump()
+    #with open('/root/applr_ws/src/APPLR_social_nav/training/pic4rl/results/rb_TD3_100k_pr_ns4.npz', 'wb') as file:
+    file = "/root/gym_ws/src/PIC4rl_gym/training/pic4rl/results/rb_TD3_100k_pr_ns4.npz"
+    # A new file will be created
+    #pickle.dump(replay_buffer, file)
+    replay_buffer.save_transitions(file, safe=True)
 
+def load_replay_buffer(rb_path):
+    # Open the file in binary mode
+    with open(rb_path, 'rb') as file:
+      
+        # Call load method to deserialze
+        replay_buffer = pickle.load(file)
+      
+        return replay_buffer
+        
 def save_path(samples, filename):
     joblib.dump(samples, filename, compress=3)
 

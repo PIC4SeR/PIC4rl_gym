@@ -32,8 +32,7 @@ from tf2rl.algos.sac_ae import SACAE
 from tf2rl.algos.ppo import PPO
 from tf2rl.experiments.trainer import Trainer
 from tf2rl.experiments.on_policy_trainer import OnPolicyTrainer
-from pic4rl.pic4rl_environment_lidar import Pic4rlEnvironmentLidar
-from pic4rl.pic4rl_environment_camera_depth import Pic4rlEnvironmentCamera
+from pic4rl.tasks.goToPose.pic4rl_environment_camera_depth import Pic4rlEnvironmentCamera
 from ament_index_python.packages import get_package_share_directory
 
 from rclpy.executors import SingleThreadedExecutor
@@ -172,7 +171,7 @@ class Pic4rlTraining_Camera(Pic4rlEnvironmentCamera):
                     noise_clip = 0.5,
                     actor_units = (256, 256),
                     critic_units = (256, 256),
-                    network='conv',
+                    #network='conv',
                     log_level = self.log_level)
                 self.get_logger().info('Instantiate TD3 agent...')
             
@@ -189,7 +188,7 @@ class Pic4rlTraining_Camera(Pic4rlEnvironmentCamera):
                     lr_alpha=3e-4,
                     actor_units=(256, 256),
                     critic_units=(256, 256),
-                    network='conv',
+                    #network='conv',
                     tau=5e-3,
                     alpha=.2,
                     auto_alpha=False, 
@@ -350,13 +349,13 @@ class Pic4rlTraining_Camera(Pic4rlEnvironmentCamera):
     def parameters_declaration(self):
         """
         """
-        main_param_path  = os.path.join(
-            get_package_share_directory('pic4rl'), 'config', 'main_param.yaml')
+        main_params_path  = os.path.join(
+            get_package_share_directory('pic4rl'), 'config', 'main_params.yaml')
         train_params_path= os.path.join(
             get_package_share_directory('pic4rl'), 'config', 'training_params.yaml')
         
-        with open(main_param_path, 'r') as main_param_file:
-            main_param = yaml.safe_load(main_param_file)['main_node']['ros__parameters']
+        with open(main_params_path, 'r') as main_params_file:
+            main_params = yaml.safe_load(main_params_file)['main_node']['ros__parameters']
         with open(train_params_path, 'r') as train_param_file:
             train_params = yaml.safe_load(train_param_file)['training_params']
 
@@ -364,10 +363,10 @@ class Pic4rlTraining_Camera(Pic4rlEnvironmentCamera):
         parameters=[
             ('policy', train_params['--policy']),
             ('policy_trainer', train_params['--policy_trainer']),
-            ('max_lin_vel', main_param['max_lin_vel']),
-            ('min_lin_vel', main_param['min_lin_vel']),
-            ('max_ang_vel', main_param['max_ang_vel']),
-            ('min_ang_vel', main_param['min_ang_vel']),
+            ('max_lin_vel', main_params['max_lin_vel']),
+            ('min_lin_vel', main_params['min_lin_vel']),
+            ('max_ang_vel', main_params['max_ang_vel']),
+            ('min_ang_vel', main_params['min_ang_vel']),
             ('tflite_flag', train_params['--tflite_flag']),
             ('tflite_model_path', train_params['--tflite_model_path']),
             ('gpu', train_params['--gpu']),
@@ -411,9 +410,9 @@ class Pic4rlTraining_Camera(Pic4rlEnvironmentCamera):
             'policy': train_params['--policy'],
             'max_steps': train_params['--max-steps'],
             'max_episode_steps': train_params['--episode-max-steps'],
-            'sensor': main_param['sensor'],
-            'visual_data': main_param['visual_data'],
-            'features': main_param['features'],
+            'sensor': main_params['sensor'],
+            'visual_data': main_params['visual_data'],
+            'features': main_params['features'],
             'gpu': train_params['--gpu']
             }
 

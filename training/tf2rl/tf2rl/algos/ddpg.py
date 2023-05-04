@@ -22,6 +22,7 @@ class DDPG(OffPolicyAgent):
             self,
             state_shape,
             action_dim,
+            state_2d_shape=(112,112,1,),
             name="DDPG",
             max_action=(0.5,1.),
             min_action=(0.,-1.),
@@ -69,8 +70,8 @@ class DDPG(OffPolicyAgent):
                 self.actor = Actor(state_shape, action_dim, max_action, min_action, actor_units)
                 self.actor_target = Actor(state_shape, action_dim, max_action, min_action, actor_units)
             elif network=='conv':
-                self.actor = ConvActor(state_shape, action_dim, max_action, min_action, actor_units)
-                self.actor_target = ConvActor(state_shape, action_dim, max_action, min_action, actor_units)
+                self.actor = ConvActor(state_shape, state_2d_shape, action_dim, max_action, min_action, actor_units)
+                self.actor_target = ConvActor(state_shape, state_2d_shape, action_dim, max_action, min_action, actor_units)
             self.actor_optimizer = tf.keras.optimizers.Adam(learning_rate=lr_actor)
             update_target_variables(self.actor_target.weights,
                                     self.actor.weights, tau=1.)
@@ -82,8 +83,8 @@ class DDPG(OffPolicyAgent):
                 self.critic = CriticQ(state_shape, action_dim, critic_units)
                 self.critic_target = CriticQ(state_shape, action_dim, critic_units)
             elif network=='conv':
-                self.critic = ConvMixCriticQ(state_shape, action_dim, critic_units, name="qf")
-                self.critic_target = ConvMixCriticQ(state_shape, action_dim, critic_units, name="target_qf")  
+                self.critic = ConvMixCriticQ(state_shape, state_2d_shape, action_dim, critic_units, name="qf")
+                self.critic_target = ConvMixCriticQ(state_shape, state_2d_shape, action_dim, critic_units, name="target_qf")  
             self.critic_optimizer = tf.keras.optimizers.Adam(
                 learning_rate=lr_critic)
             update_target_variables(

@@ -341,7 +341,7 @@ class ConvCriticQ(tf.keras.Model):
         return tf.keras.Model(inputs = [self.state_input, self.action_input], outputs = self.call(self.state_input, self.action_input), name = self.model_name)
 
 class ConvMixCriticQ(tf.keras.Model):
-    def __init__(self, state_shape, action_dim, critic_units=(256, 256), 
+    def __init__(self, state_shape, state_1d_shape, state_2d_shape, action_dim, critic_units=(256, 256), 
                  num_conv_layers=4, conv_filters=(32,64), filt_size = (3,3), name='qf'):
         super().__init__(name=name)
 

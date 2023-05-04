@@ -95,8 +95,10 @@ class EvaluateNav(Node):
 
         # create Sensor class to get and process sensor data
         self.sensors = Sensors(self)
-        self.crop_name = 'vineyard_straight'
-        self.true_path = 6.4
+        self.seg_algo = 'segmentation'
+        self.crop_name = 'pergola_vineyard'
+        self.true_path = -3.42
+        self.path_coordinate = 1
         self.create_logdir(train_params['--logdir'])
         self.spin_sensors_callbacks()
 
@@ -122,8 +124,16 @@ class EvaluateNav(Node):
         self.t0 = 0.0
         self.start_pose = [0., 0., 0.]
         self.index = 0
-    
-        self.initial_pose, self.goals, self.poses = self.get_goals_and_poses()
+        
+        if self.true_path is not None:
+            self.initial_pose, self.goals, self.poses = self.get_goals_and_poses()
+            self.plants_row1 = None 
+            self.plants_row2 = None
+        else:
+            self.initial_pose, self.goals, self.poses, plants_row1, plants_row2 = self.get_goals_and_poses()
+            self.plants_row1 = np.array(plants_row1)
+            self.plants_row2 = np.array(plants_row2)
+
         self.goal_pose = self.goals[0]
 
         self.nav_metrics = Navigation_Metrics(main_params, self.logdir)
@@ -254,8 +264,10 @@ class EvaluateNav(Node):
         """
         """
         data = json.load(open(self.data_path,'r'))
-
-        return data["initial_pose"], data["goals"], data["poses"]
+        if self.true_path is not None:
+            return data["initial_pose"], data["goals"], data["poses"]
+        else:
+            return data["initial_pose"], data["goals"], data["poses"], data["plants_row1"], data["plants_row2"]  
 
     def update_state(self,lidar_measurements, goal_info, robot_pose, done, event):
         """
@@ -269,9 +281,16 @@ class EvaluateNav(Node):
         """
         self.episode = episode
 
-        self.get_logger().info(f"Initializing new episode: scenario {self.index}")
-        logging.info(f"Initializing new episode: scenario {self.index}")
+        self.get_logger().debug("pausing...")
+        self.pause()
+
+        self.get_logger().info(f"Initializing new episode: scenario {self.index+1}")
+        logging.info(f"Initializing new episode: scenario {self.index+1}")
         self.new_episode()
+
+        self.get_logger().debug("unpausing...")
+        self.unpause()
+
         self.get_logger().debug("Performing null step to reset variables")
 
         _ = self._step(reset_step = True)
@@ -282,9 +301,9 @@ class EvaluateNav(Node):
         self.get_logger().debug("Resetting simulation ...")
         req = Empty.Request()
 
-        while not self.reset_world_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info('service not available, waiting again...')
-        self.reset_world_client.call_async(req)
+        #while not self.reset_world_client.wait_for_service(timeout_sec=1.0):
+        #    self.get_logger().info('service not available, waiting again...')
+        #self.reset_world_client.call_async(req)
         
         self.get_logger().debug("Respawning robot ...")
         self.respawn_robot(self.index)
@@ -380,9 +399,8 @@ class EvaluateNav(Node):
             self.get_logger().info('service not available, waiting again...')
         self.unpause_physics_client.call_async(req)
 
-
     def create_logdir(self, logdir):
-            self.log_folder_name = f"Segmentation_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S.%f')}_{self.robot_name}_{self.crop_name}/"
+            self.log_folder_name = f"Segmentation__{datetime.datetime.now().strftime('%Y%m%d_%H%M%S.%f')}_{self.robot_name}_{self.crop_name}/"
             self.logdir = os.path.join(logdir, self.log_folder_name)
             Path(self.logdir).mkdir(parents=True, exist_ok=True)
             logging.basicConfig(
@@ -390,6 +408,29 @@ class EvaluateNav(Node):
                 level=logging.INFO)
 
     def evaluate(self,):
+        ""
+        self.unpause()
+        if self.seg_algo == 'segmentation_min':
+            self.get_logger().info("Launching segmentation min algo")
+            subprocess.run("ros2 launch row_crop_follow segmentation_min.launch.py &",
+                shell=True,
+                stdout=subprocess.DEVNULL
+                )
+
+        elif self.seg_algo == 'segmentation_tree':
+            self.get_logger().info("Launching segmentation tree depth algo")
+            subprocess.run("ros2 launch row_crop_follow segmentation_tree.launch.py &",
+                shell=True,
+                stdout=subprocess.DEVNULL
+                )
+
+        else:
+            self.get_logger().info("Launching segmentation std algo")
+            subprocess.run("ros2 launch row_crop_follow segmentation.launch.py &",
+                shell=True,
+                stdout=subprocess.DEVNULL
+                )
+
         for n in range(self.n_experiments):
             for episode in range(len(self.goals)):
                 episode_steps = 0
@@ -398,10 +439,19 @@ class EvaluateNav(Node):
                 while not done:
                     done = self.step(episode_steps)
                     episode_steps += 1
-                self.nav_metrics.calc_metrics(self.episode, self.start_pose, self.goal_pose, self.true_path)
+                # compute metrics at the end of the episode
+                self.get_logger().info(f"Total number of steps: {self.episode_step+1}")
+                logging.info(f"Total number of steps: {self.episode_step+1}")
+                self.get_logger().debug("Computing episode metrics...")
+                self.nav_metrics.calc_metrics(self.episode, self.start_pose, self.goal_pose, self.true_path, self.path_coordinate, self.plants_row1, self.plants_row2)
                 self.nav_metrics.log_metrics_results(self.episode)
                 self.nav_metrics.save_metrics_results(self.episode)
-                return
+        self.pause()
+        
+        subprocess.run("killall -9 "+self.seg_algo,
+            shell=True,
+            stdout=subprocess.DEVNULL
+            )
 
 
 def main(args=None):

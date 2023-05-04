@@ -30,8 +30,8 @@ class Pic4rlEnvironmentCamera(Node):
         super().__init__('pic4rl_training_camera')
         goals_path      = os.path.join(
             get_package_share_directory('pic4rl'), 'goals_and_poses')
-        main_param_path  = os.path.join(
-            get_package_share_directory('pic4rl'), 'config', 'main_param.yaml')
+        main_params_path  = os.path.join(
+            get_package_share_directory('pic4rl'), 'config', 'main_params.yaml')
         train_params_path= os.path.join(
             get_package_share_directory('pic4rl'), 'config', 'training_params.yaml')
         self.entity_path = os.path.join(
@@ -39,27 +39,27 @@ class Pic4rlEnvironmentCamera(Node):
             'models/goal_box/model.sdf'
             )
         
-        with open(main_param_path, 'r') as main_param_file:
-            main_param = yaml.safe_load(main_param_file)['main_node']['ros__parameters']
+        with open(main_params_path, 'r') as main_params_file:
+            main_params = yaml.safe_load(main_params_file)['main_node']['ros__parameters']
         with open(train_params_path, 'r') as train_param_file:
             train_params = yaml.safe_load(train_param_file)['training_params']
 
         self.declare_parameters(
             namespace   = '',
             parameters  = [
-                ('data_path', main_param['data_path']),
+                ('data_path', main_params['data_path']),
                 ('change_goal_and_pose', train_params['--change_goal_and_pose']),
                 ('starting_episodes', train_params['--starting_episodes']),
                 ('timeout_steps', train_params['--episode-max-steps']),
-                ('robot_name', main_param['robot_name']),
-                ('goal_tolerance', main_param['goal_tolerance']),
-                ('visual_data', main_param['visual_data']),
-                ('features', main_param['features']),
-                ('channels', main_param['channels']),
-                ('image_width', main_param['depth_param']['width']),
-                ('image_height', main_param['depth_param']['height']),
-                ('lidar_dist', main_param['laser_param']['max_distance']),
-                ('lidar_points', main_param['laser_param']['num_points'])
+                ('robot_name', main_params['robot_name']),
+                ('goal_tolerance', main_params['goal_tolerance']),
+                ('visual_data', main_params['visual_data']),
+                ('features', main_params['features']),
+                ('channels', main_params['channels']),
+                ('image_width', main_params['depth_param']['width']),
+                ('image_height', main_params['depth_param']['height']),
+                ('lidar_dist', main_params['laser_param']['max_distance']),
+                ('lidar_points', main_params['laser_param']['num_points'])
                 ])
 
         self.data_path = self.get_parameter('data_path').get_parameter_value().string_value
@@ -79,7 +79,7 @@ class Pic4rlEnvironmentCamera(Node):
 
         qos = QoSProfile(depth=10)
         self.sensors = Sensors(self)
-        self.create_logdir(train_params['--policy'], main_param['sensor'], train_params['--logdir'])
+        self.create_logdir(train_params['--policy'], main_params['sensor'], train_params['--logdir'])
         self.spin_sensors_callbacks()
 
         self.cmd_vel_pub = self.create_publisher(

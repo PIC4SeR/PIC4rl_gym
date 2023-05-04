@@ -143,7 +143,7 @@
                 </image>
                 <clip>
                   <near>0.15</near>
-                  <far>10.0</far>
+                  <far>20.0</far>
                 </clip>
               </camera>
               <plugin name="camera_plugin" filename="libgazebo_ros_camera.so">
@@ -226,7 +226,7 @@
                 </image>
                 <clip>
                   <near>0.15</near>
-                  <far>10.0</far>
+                  <far>20.0</far>
                 </clip>
               </camera>
               <plugin name="camera_plugin" filename="libgazebo_ros_camera.so">
@@ -269,7 +269,7 @@
                 </image>
                 <clip>
                   <near>0.15</near>
-                  <far>10.0</far>
+                  <far>20.0</far>
                 </clip>
               </camera>
               <plugin name="camera_plugin" filename="libgazebo_ros_camera.so">

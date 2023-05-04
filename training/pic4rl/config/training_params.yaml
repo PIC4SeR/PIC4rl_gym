@@ -1,10 +1,10 @@
 training_params:
 # Trainer parameters
-    --max-steps: 1200000 # (int) The maximum steps for training. The default is ``int(1e6)``
-    --episode-max-steps: 600 # (int) The maximum steps for an episode. The default is ``int(1e3)``
+    --max-steps: 1000000 # (int) The maximum steps for training. The default is ``int(1e6)``
+    --episode-max-steps: 500 # (int) The maximum steps for an episode. The default is ``int(1e3)``
     --n-experiments: 1 # (int) Number of experiments. The default is ``1``
 # --show-progress: # Call ``render`` function during training
-    --save-model-interval: 20000 # (int) Interval to save model. The default is ``int(1e4)``
+    --save-model-interval: 5000 # (int) Interval to save model. The default is ``int(1e4)``
     --save-summary-interval: 5000 # (int) Interval to save summary. The default is ``int(1e3)``
 #    --model-dir: '/root/gym_ws/src/PIC4rl_gym/training/pic4rl/models/agent_lidar/tunnel_SAC_lidar60/' # (str) Directory to restore model.
 #    --dir-suffix: ""  # (str) Suffix for directory that stores results.
@@ -20,17 +20,19 @@ training_params:
     --use-prioritized-rb: # Use prioritized experience replay
     --use-nstep-rb: # Use Nstep experience replay
     --n-step: 4 # (int) Number of steps for nstep experience reward. The default is ``4``
+    #--restore-rb: # Load experience replay buffer
+    --rb-path: '/root/gym_ws/src/Results/rb_SAC_100k_pr_ns4.npz'
     --logging-level: INFO # (DEBUG, INFO, WARNING) Choose logging level. The default is ``INFO``
     --policy: 'SAC' # training policy
     --policy_trainer: 'off-policy' # trainer off-policy / on-policy
-    --change_goal_and_pose: 20
-    --starting_episodes: 400
-    --batch-size: 128 # (int) Batch size for training. The default is ``32``.
+    --change_goal_and_pose: 5
+    --starting_episodes: 0
+    --batch-size: 64 # (int) Batch size for training. The default is ``32``.
     --gpu: 0 # (int) GPU id. ``-1`` disables GPU. The default is ``0``.
 
 # For all off-policy algos (DDPG, TD3, SAC)
     --n-warmup: 12000 # (int) Number of warmup steps before training. The default is ``1e4``.
-    --memory-capacity: 2000  # (int) Replay Buffer size. The default is ``1e6``.
+    --memory-capacity: 1000000  # (int) Replay Buffer size. The default is ``1e6``.
 
 # For only SAC
     --alpha: 0.2 # (float) Temperature parameter. The default is ``0.2``.

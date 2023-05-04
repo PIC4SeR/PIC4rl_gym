@@ -13,7 +13,7 @@
 
   <xacro:arg name="camera_enabled" default="true"/>
   <xacro:arg name="camera_xyz" default="$(optenv JACKAL_CAMERA_XYZ 0.20 0.0 0.0)" />
-  <xacro:arg name="camera_rpy" default="$(optenv JACKAL_CAMERA_RPY 0.0 0.0 0.0)" />
+  <xacro:arg name="camera_rpy" default="$(optenv JACKAL_CAMERA_RPY 0.0 -0.261799 0.0)" />
   <xacro:arg name="camera_mount" default="$(optenv JACKAL_CAMERA_MOUNT front_mount)" />
   
   <xacro:arg name="stereo_camera_enabled" default="true"/>

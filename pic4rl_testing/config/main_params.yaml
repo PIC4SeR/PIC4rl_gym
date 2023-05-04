@@ -2,7 +2,7 @@ main_node:
   ros__parameters:
     # Robot parameters
     robot_name: "jackal_ugv"
-    max_lin_vel: 0.4
+    max_lin_vel: 0.5
     min_lin_vel: 0.0
     max_ang_vel: 1.5
     min_ang_vel: -1.5
@@ -14,8 +14,8 @@ main_node:
     goal_tolerance: 0.5
 
     # World parameters
-    world_name: "vineyard.world" #Leave empty to obtain no world
-    data_path: "vineyard_straight.json"
+    world_name: "pergola.world" #Leave empty to obtain no world
+    data_path: "pergola.json"
     collision_check: 0.36
 
     # Task parameters
@@ -41,7 +41,7 @@ main_node:
       max_distance: 12.0 # Meters
       num_points: 36 # int divider of 360
     depth_param:
-      dist_cutoff: 5 # Meters
+      dist_cutoff: 10 # Meters
       width: 112
       height: 112
       show_image: False
@@ -51,6 +51,8 @@ main_node:
       show_image: False 
 
     # Metrics
+    robot_poses: True
+    robot_velocities: False
     path_distance: False
     distance_path_ratio: False
     clearance_time: True
@@ -59,4 +61,4 @@ main_node:
     cumulative_heading_average: True
     obstacle_clereance: False
     following_heading_metrics: False
-    row_crop_path_comparison: True
+    row_crop_path_comparison: False
