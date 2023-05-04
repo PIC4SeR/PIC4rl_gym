@@ -1,0 +1,742 @@
+<?xml version="1.0" ?>
+<sdf version="1.6"> 
+  <world name='default'>
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <model  name="lavanda_models">
+      <pose>0 0 0 0 0 0</pose>
+
+      <include merge="true">
+    <pose>0 0 0 0 0 0</pose>
+    <uri>model://terrain3</uri>
+    <name>terrain3</name>
+</include>
+
+<include merge="true">
+    <pose>-1.439185225949537 -4.813858212034378 0.05531831130488234 0 0 2.6438366310081634</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda1</name>
+</include>
+
+<include merge="true">
+    <pose>-1.5012629511697764 -4.471709011100857 0.05542525832861803 0 0 3.0692224671590838</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda2</name>
+</include>
+
+<include merge="true">
+    <pose>-1.4896349012743908 -4.144886783659068 0.05563092025890737 0 0 1.6807087092018005</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda3</name>
+</include>
+
+<include merge="true">
+    <pose>-1.5062303898544847 -3.8190405269448866 0.05462814258829763 0 0 -0.9469349119706232</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda4</name>
+</include>
+
+<include merge="true">
+    <pose>-1.4792476978981903 -3.4542904707482647 0.05636722677079837 0 0 -1.0787804706247464</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda5</name>
+</include>
+
+<include merge="true">
+    <pose>-1.5267927248725337 -3.1917297837414216 0.05231163053117428 0 0 -0.376712657774799</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda6</name>
+</include>
+
+<include merge="true">
+    <pose>-1.4172960463476776 -2.8324757666607114 0.06327679663900904 0 0 -2.973363378242583</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda7</name>
+</include>
+
+<include merge="true">
+    <pose>-1.5018769684682267 -2.4422944702442 0.05376751529341149 0 0 1.7392482574722354</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda8</name>
+</include>
+
+<include merge="true">
+    <pose>-1.5252750320762167 -2.0639735267576675 0.05060250369509513 0 0 -1.0301963605184423</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda9</name>
+</include>
+
+<include merge="true">
+    <pose>-1.4586552172497709 -1.7729609306814254 0.05839175219479795 0 0 3.106873978599589</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda10</name>
+</include>
+
+<include merge="true">
+    <pose>-1.49042477091679 -1.5303355491708537 0.05297709268862187 0 0 -3.135077307987538</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda11</name>
+</include>
+
+<include merge="true">
+    <pose>-1.5168405319357594 -1.2255137997252503 0.047490307692769636 0 0 0.33037666211712</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda12</name>
+</include>
+
+<include merge="true">
+    <pose>-1.5432103219011613 -0.8691824483536178 0.04324887639442899 0 0 -2.601634067651423</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda13</name>
+</include>
+
+<include merge="true">
+    <pose>-1.5242809131010782 -0.5327707858996775 0.04450226437514764 0 0 0.8710174947509479</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda14</name>
+</include>
+
+<include merge="true">
+    <pose>-1.5429218395389723 -0.16555579408117105 0.04171019997141073 0 0 2.5280707091609385</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda15</name>
+</include>
+
+<include merge="true">
+    <pose>-1.4707466685959953 0.1391566638631131 0.04864244315185493 0 0 1.0170292369753904</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda16</name>
+</include>
+
+<include merge="true">
+    <pose>-1.4887569660054543 0.5205042036577601 0.04543057667854746 0 0 -2.6623694189609246</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda17</name>
+</include>
+
+<include merge="true">
+    <pose>-1.4760963080438134 0.8562109535875295 0.04532555657898347 0 0 -1.3445226821660754</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda18</name>
+</include>
+
+<include merge="true">
+    <pose>-1.5439858176002121 1.1844963633798482 0.036506561542368435 0 0 -0.3996899074179927</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda19</name>
+</include>
+
+<include merge="true">
+    <pose>-1.5275992029736107 1.534824454878298 0.03872893756927926 0 0 -1.0546393430752778</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda20</name>
+</include>
+
+<include merge="true">
+    <pose>-1.4351598570878021 1.835205403035139 0.0501540605500524 0 0 0.12028541787325331</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda21</name>
+</include>
+
+<include merge="true">
+    <pose>-1.5540608370918219 2.1512161465146877 0.03546001363684917 0 0 2.8165650366292603</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda22</name>
+</include>
+
+<include merge="true">
+    <pose>-1.4804284250792001 2.4727441518240068 0.04225666088694934 0 0 1.328624172906725</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda23</name>
+</include>
+
+<include merge="true">
+    <pose>-1.5055096345241483 2.8489375893952067 0.03524499291680809 0 0 0.4580392438337526</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda24</name>
+</include>
+
+<include merge="true">
+    <pose>-1.427418614048616 3.075202925269613 0.04127158757489439 0 0 -2.249723823730283</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda25</name>
+</include>
+
+<include merge="true">
+    <pose>-1.4935302492496576 3.467736935793646 0.024354376410148947 0 0 3.054090259230894</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda26</name>
+</include>
+
+<include merge="true">
+    <pose>-1.534045320053284 3.7568005182259827 0.012187021356344382 0 0 -1.6482967666625234</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda27</name>
+</include>
+
+<include merge="true">
+    <pose>-1.507286163930485 4.16967178446498 0.0018103237657276679 0 0 -1.4386651986029708</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda28</name>
+</include>
+
+<include merge="true">
+    <pose>-1.4165354468602818 4.461753379177051 0.0016028450183099554 0 0 -2.4356530776329333</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda29</name>
+</include>
+
+<include merge="true">
+    <pose>-1.522640298595836 4.8174947714834175 -0.015690878170938245 0 0 2.7043921883409894</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda30</name>
+</include>
+
+<include merge="true">
+    <pose>-0.49497189987472884 -4.809263418454442 0.05412942282310032 0 0 -1.070096691967803</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda31</name>
+</include>
+
+<include merge="true">
+    <pose>-0.4815944101461495 -4.462745679459103 0.06732671684415974 0 0 1.0920236982999736</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda32</name>
+</include>
+
+<include merge="true">
+    <pose>-0.49103502372918795 -4.162926476974174 0.07963466006342415 0 0 -2.3579343898548446</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda33</name>
+</include>
+
+<include merge="true">
+    <pose>-0.5056356968089408 -3.80338752578675 0.09831259107733803 0 0 0.7856411818022817</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda34</name>
+</include>
+
+<include merge="true">
+    <pose>-0.4789371514150982 -3.4521687412877644 0.11783955839792432 0 0 2.2180715127316253</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda35</name>
+</include>
+
+<include merge="true">
+    <pose>-0.4798691187481079 -3.1279775456096206 0.13585029669012405 0 0 2.6808590294260197</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda36</name>
+</include>
+
+<include merge="true">
+    <pose>-0.47913915901669735 -2.8901040389819106 0.14491689336141142 0 0 0.943474163239034</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda37</name>
+</include>
+
+<include merge="true">
+    <pose>-0.49262949232302444 -2.4533011951215182 0.15206896982583273 0 0 0.9942248612140725</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda38</name>
+</include>
+
+<include merge="true">
+    <pose>-0.4968073445778622 -2.1046793347117414 0.14657130825695472 0 0 -2.5312720407379743</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda39</name>
+</include>
+
+<include merge="true">
+    <pose>-0.5097178074936087 -1.7355922339612042 0.13866340441881658 0 0 -2.7192399414724555</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda40</name>
+</include>
+
+<include merge="true">
+    <pose>-0.45291994505234 -1.4820982330758874 0.11818403680334298 0 0 1.394370155494613</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda41</name>
+</include>
+
+<include merge="true">
+    <pose>-0.4484787151834942 -1.1838805975757614 0.10989103133092483 0 0 2.021539979245567</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda42</name>
+</include>
+
+<include merge="true">
+    <pose>-0.47608991220187835 -0.877248289709495 0.1085887714568376 0 0 1.8018860366267262</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda43</name>
+</include>
+
+<include merge="true">
+    <pose>-0.49396606332592763 -0.49027123730248123 0.0999112333747392 0 0 -1.6940363515655446</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda44</name>
+</include>
+
+<include merge="true">
+    <pose>-0.4818790583972618 -0.14052151251583472 0.08837393136360315 0 0 0.9756921717612306</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda45</name>
+</include>
+
+<include merge="true">
+    <pose>-0.5044628630438162 0.166653591146944 0.09038352587290963 0 0 2.4185654066716964</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda46</name>
+</include>
+
+<include merge="true">
+    <pose>-0.5056190502004254 0.5488816462387682 0.08268054197121041 0 0 0.022019638915176998</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda47</name>
+</include>
+
+<include merge="true">
+    <pose>-0.4598086834951202 0.8395573904356534 0.061655054639340026 0 0 1.9623481684634596</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda48</name>
+</include>
+
+<include merge="true">
+    <pose>-0.550661770067847 1.21120222823232 0.07229983840510315 0 0 2.3110371474162497</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda49</name>
+</include>
+
+<include merge="true">
+    <pose>-0.5390856040173583 1.4762947885224242 0.06355803816363319 0 0 -2.4678660110124295</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda50</name>
+</include>
+
+<include merge="true">
+    <pose>-0.4328269781201426 1.8548270012595767 0.02182168003824017 0 0 2.570994834230918</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda51</name>
+</include>
+
+<include merge="true">
+    <pose>-0.5766402551819967 2.1600770740291617 0.05510953949922973 0 0 -1.1927385521977223</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda52</name>
+</include>
+
+<include merge="true">
+    <pose>-0.4581947767816631 2.422591051492782 0.013248245259019803 0 0 -2.228158141258204</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda53</name>
+</include>
+
+<include merge="true">
+    <pose>-0.4819990463964766 2.8058083052081337 0.010346747210974004 0 0 -2.6821457918093725</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda54</name>
+</include>
+
+<include merge="true">
+    <pose>-0.5114440981152582 3.06646730945636 0.01304547051740077 0 0 2.975690991894049</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda55</name>
+</include>
+
+<include merge="true">
+    <pose>-0.42442867389487343 3.456151864314011 -0.008574043794209847 0 0 -2.803655131156093</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda56</name>
+</include>
+
+<include merge="true">
+    <pose>-0.5594655117009616 3.7507106021646193 0.017308785523912493 0 0 2.7718303362915035</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda57</name>
+</include>
+
+<include merge="true">
+    <pose>-0.4582858021340825 4.170500735561579 -0.001591913066917391 0 0 -3.0235404510581367</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda58</name>
+</include>
+
+<include merge="true">
+    <pose>-0.5149393277432567 4.432744933058924 0.0047815354544103825 0 0 -0.6684163617080001</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda59</name>
+</include>
+
+<include merge="true">
+    <pose>-0.5298226638591005 4.765743640040384 0.003248340155344064 0 0 1.6639155006808872</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda60</name>
+</include>
+
+<include merge="true">
+    <pose>0.5037426389390545 -4.721773561837387 -0.00845348255958767 0 0 0.6985157801334583</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda61</name>
+</include>
+
+<include merge="true">
+    <pose>0.46985354737764234 -4.383710278879069 -0.016105301940066145 0 0 -1.1362570715290259</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda62</name>
+</include>
+
+<include merge="true">
+    <pose>0.4268527820814392 -4.122888678538888 -0.018508134709327304 0 0 1.7753645144590076</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda63</name>
+</include>
+
+<include merge="true">
+    <pose>0.49064513667250864 -3.7814748230099977 -0.03341095890285969 0 0 -1.7557968544978793</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda64</name>
+</include>
+
+<include merge="true">
+    <pose>0.4927356784250746 -3.50565566775929 -0.03982648253761794 0 0 -0.7099440870367393</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda65</name>
+</include>
+
+<include merge="true">
+    <pose>0.47442367784968903 -3.168989870206642 -0.04432373247690715 0 0 -2.951241615081213</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda66</name>
+</include>
+
+<include merge="true">
+    <pose>0.5474885477249134 -2.838611192113918 -0.06446605906770629 0 0 -2.015854945896633</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda67</name>
+</include>
+
+<include merge="true">
+    <pose>0.5287379185908795 -2.444326130059391 -0.07132389421225274 0 0 2.533367727693393</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda68</name>
+</include>
+
+<include merge="true">
+    <pose>0.5494247906146414 -2.1612851293258446 -0.08259856556248901 0 0 1.24833680245189</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda69</name>
+</include>
+
+<include merge="true">
+    <pose>0.4837718533628364 -1.8081575348826584 -0.0758837993017799 0 0 1.3073936335588199</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda70</name>
+</include>
+
+<include merge="true">
+    <pose>0.5249718690781864 -1.5345201988633257 -0.09219987331545956 0 0 0.004460169673008885</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda71</name>
+</include>
+
+<include merge="true">
+    <pose>0.4770805377983716 -1.1852123301045387 -0.0925695201107936 0 0 0.11611994386816438</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda72</name>
+</include>
+
+<include merge="true">
+    <pose>0.49189346578347254 -0.8194525207910117 -0.10590879000459255 0 0 2.7517024520302433</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda73</name>
+</include>
+
+<include merge="true">
+    <pose>0.42470682304565266 -0.5283033474758385 -0.09831942505688779 0 0 1.596472488093533</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda74</name>
+</include>
+
+<include merge="true">
+    <pose>0.5287416509633738 -0.22737994706536738 -0.12946581682437153 0 0 -3.0528122599593575</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda75</name>
+</include>
+
+<include merge="true">
+    <pose>0.4432615422426438 0.13344486958314608 -0.11834513336107737 0 0 0.7723240877175144</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda76</name>
+</include>
+
+<include merge="true">
+    <pose>0.4699163814819167 0.5182116463643153 -0.132464656871349 0 0 -0.967082056231547</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda77</name>
+</include>
+
+<include merge="true">
+    <pose>0.4836560409604789 0.8315032780287489 -0.1434436229093847 0 0 1.0406374720092808</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda78</name>
+</include>
+
+<include merge="true">
+    <pose>0.5267704535699909 1.1829030383908117 -0.16658626640928925 0 0 2.941824093230693</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda79</name>
+</include>
+
+<include merge="true">
+    <pose>0.4931665431212108 1.432486307320622 -0.16746810412575083 0 0 1.9221210816231116</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda80</name>
+</include>
+
+<include merge="true">
+    <pose>0.5610378277135422 1.8132267501975734 -0.2064950785535013 0 0 -0.3722866395230584</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda81</name>
+</include>
+
+<include merge="true">
+    <pose>0.5428477332954732 2.1280906231681933 -0.21343760524379768 0 0 -1.2379298847129312</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda82</name>
+</include>
+
+<include merge="true">
+    <pose>0.4991725693512481 2.485793684735321 -0.20890549290861657 0 0 -1.7834933857777773</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda83</name>
+</include>
+
+<include merge="true">
+    <pose>0.5718135949771697 2.844883111023318 -0.2321869150912806 0 0 -1.5275568513314686</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda84</name>
+</include>
+
+<include merge="true">
+    <pose>0.5036439716739907 3.1835764342552415 -0.19436161912473499 0 0 -1.5779624754180854</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda85</name>
+</include>
+
+<include merge="true">
+    <pose>0.4626616385357576 3.48727826735055 -0.16383309843463412 0 0 -3.0120581201507015</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda86</name>
+</include>
+
+<include merge="true">
+    <pose>0.5397880493543544 3.7919638874787394 -0.15873174416984143 0 0 -1.7478931558868631</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda87</name>
+</include>
+
+<include merge="true">
+    <pose>0.5664807652617687 4.172715608963276 -0.12988235327761932 0 0 1.8119810616192646</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda88</name>
+</include>
+
+<include merge="true">
+    <pose>0.48603659309000363 4.484372736162844 -0.0922667606297894 0 0 0.4813430886082193</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda89</name>
+</include>
+
+<include merge="true">
+    <pose>0.46503745338105423 4.729354102395872 -0.07363411188570072 0 0 -0.7238268130872032</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda90</name>
+</include>
+
+<include merge="true">
+    <pose>1.5217209730723176 -4.74950173841804 -0.044028541462747095 0 0 -0.060770058573524466</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda91</name>
+</include>
+
+<include merge="true">
+    <pose>1.4948048901895392 -4.456307379865003 -0.061497604542131816 0 0 -1.3640439223847622</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda92</name>
+</include>
+
+<include merge="true">
+    <pose>1.576044050763883 -4.054740466295557 -0.08395709654714406 0 0 1.3224432527920564</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda93</name>
+</include>
+
+<include merge="true">
+    <pose>1.4725525338171002 -3.7068204466826753 -0.11750785740315763 0 0 -2.1052515370924763</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda94</name>
+</include>
+
+<include merge="true">
+    <pose>1.5165946931171341 -3.410107290862161 -0.13499642212204144 0 0 -1.1919781440670558</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda95</name>
+</include>
+
+<include merge="true">
+    <pose>1.4912386851857178 -3.1674821005399996 -0.15459415687154068 0 0 -1.6386159327893794</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda96</name>
+</include>
+
+<include merge="true">
+    <pose>1.4334299584912709 -2.774685149195247 -0.18452949963330517 0 0 1.561169137681274</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda97</name>
+</include>
+
+<include merge="true">
+    <pose>1.538388181914267 -2.4483434981205923 -0.17126464405774247 0 0 1.306699099778112</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda98</name>
+</include>
+
+<include merge="true">
+    <pose>1.4994386399956359 -2.1163029866409446 -0.1763178547240411 0 0 -2.611846110014738</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda99</name>
+</include>
+
+<include merge="true">
+    <pose>1.5164573315523093 -1.8045538558780538 -0.16777507373706121 0 0 0.1041765385540443</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda100</name>
+</include>
+
+<include merge="true">
+    <pose>1.5537029871372827 -1.5717016286620518 -0.15529054732761977 0 0 -2.095428982310395</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda101</name>
+</include>
+
+<include merge="true">
+    <pose>1.560796487721143 -1.2054926207933834 -0.14510603209551096 0 0 -3.1344247356464714</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda102</name>
+</include>
+
+<include merge="true">
+    <pose>1.5116081250786633 -0.8936897703562048 -0.150645939314461 0 0 -0.8861371856469513</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda103</name>
+</include>
+
+<include merge="true">
+    <pose>1.5314366103757813 -0.47320864850509997 -0.13892110917657252 0 0 0.5952555556776691</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda104</name>
+</include>
+
+<include merge="true">
+    <pose>1.463501340163238 -0.1557409555703414 -0.1521365151748891 0 0 -0.2798296881208704</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda105</name>
+</include>
+
+<include merge="true">
+    <pose>1.5086185981524727 0.1764899280463485 -0.1341315449350192 0 0 -2.0938474480988676</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda106</name>
+</include>
+
+<include merge="true">
+    <pose>1.5064608555444519 0.47322607858579013 -0.1295892196797727 0 0 -0.69259919281403</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda107</name>
+</include>
+
+<include merge="true">
+    <pose>1.5141181835157556 0.8391400465742078 -0.11940977584541464 0 0 0.024907227449532776</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda108</name>
+</include>
+
+<include merge="true">
+    <pose>1.487027106781555 1.1936901712383006 -0.1184271278812601 0 0 -2.433411087023573</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda109</name>
+</include>
+
+<include merge="true">
+    <pose>1.5233358987234762 1.4937898780148962 -0.09813418659655254 0 0 1.0080686688583542</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda110</name>
+</include>
+
+<include merge="true">
+    <pose>1.5771509242802846 1.775085496719983 -0.0722392924952552 0 0 -2.73411814410708</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda111</name>
+</include>
+
+<include merge="true">
+    <pose>1.545207309234867 2.1496546803140473 -0.07165863874502315 0 0 2.5648207463497803</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda112</name>
+</include>
+
+<include merge="true">
+    <pose>1.4664731886948934 2.4828637658772004 -0.09117480361370346 0 0 2.414494230410196</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda113</name>
+</include>
+
+<include merge="true">
+    <pose>1.5709317719663765 2.8343469501676006 -0.04380751043301651 0 0 -0.0622442956716891</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda114</name>
+</include>
+
+<include merge="true">
+    <pose>1.4662143683011484 3.1050324250782757 -0.07164815902017056 0 0 0.3294790922081834</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda115</name>
+</include>
+
+<include merge="true">
+    <pose>1.5500688056638632 3.450934108329573 -0.033655447293777986 0 0 -2.7380702605886857</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda116</name>
+</include>
+
+<include merge="true">
+    <pose>1.4875017807082067 3.774706509751397 -0.042138837694697354 0 0 -2.8042942040635497</pose>
+    <uri>model://lavanda1</uri>
+    <name>lavanda117</name>
+</include>
+
+<include merge="true">
+    <pose>1.5282219267141248 4.060381901103303 -0.019436439718894975 0 0 -1.9967234271028873</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda118</name>
+</include>
+
+<include merge="true">
+    <pose>1.4950632852550543 4.445586176914637 -0.010151889488204053 0 0 0.23446557136730206</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda119</name>
+</include>
+
+<include merge="true">
+    <pose>1.5883722148986898 4.789025139416348 0.01896945262999967 0 0 1.0574646335361573</pose>
+    <uri>model://lavanda2</uri>
+    <name>lavanda120</name>
+</include>
+
+
+
+    </model>
+
+  </world>
+</sdf>

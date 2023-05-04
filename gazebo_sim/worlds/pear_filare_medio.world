@@ -1,0 +1,357 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+    <world name='default'>
+        <plugin name="gazebo_ros_state" filename="libgazebo_ros_state.so">
+           <ros>
+            <namespace>/test</namespace>
+            <argument>model_states:=model_states_demo</argument>
+           </ros>
+           <update_rate>1.0</update_rate>
+        </plugin>
+        <scene>
+            <shadows>1</shadows>
+            <sky>
+                <time>8.50</time>
+            </sky>
+        </scene>
+
+        <include>
+            <uri>model://sun</uri>
+        </include>
+
+        <model name="pear_models">
+            <pose>0 0 0 0 0 0</pose>
+
+            <include merge="true">
+                <pose>0 0 0 0 0 1.57</pose>
+                <uri>model://terrain2</uri>
+                <name>terrain2</name>
+            </include>
+
+            <include merge="true">
+                <pose>-1.1369385234313862 -11.080319365420111 0.06261072427950724 0 0
+                    -2.435189824078101</pose>
+                <uri>model://pear2</uri>
+                <name>pear1</name>
+            </include>
+
+            <include merge="true">
+                <pose>-0.8644572925408824 -9.93029210103936 0.06096004784498833 0 0
+                    0.04941178662025969</pose>
+                <uri>model://pear1</uri>
+                <name>pear2</name>
+            </include>
+
+            <include merge="true">
+                <pose>-1.115042126006718 -8.856068931498909 0.060252328873308156 0 0
+                    3.0378577427593223</pose>
+                <uri>model://pear2</uri>
+                <name>pear3</name>
+            </include>
+
+            <include merge="true">
+                <pose>-0.8541056318171747 -7.995266571479213 0.05652886086530006 0 0
+                    -2.8412979339449325</pose>
+                <uri>model://pear1</uri>
+                <name>pear4</name>
+            </include>
+
+            <include merge="true">
+                <pose>-1.0050905847501796 -6.985578568759601 0.048088747262920964 0 0
+                    1.0536754259333634</pose>
+                <uri>model://pear2</uri>
+                <name>pear5</name>
+            </include>
+
+            <include merge="true">
+                <pose>-0.9517193566263398 -5.816365453554966 0.03815142084829747 0 0
+                    -2.9526430806077943</pose>
+                <uri>model://pear2</uri>
+                <name>pear6</name>
+            </include>
+
+            <include merge="true">
+                <pose>-1.1097147019836553 -4.95022545397924 0.022375921914322736 0 0
+                    -2.5036349011739567</pose>
+                <uri>model://pear2</uri>
+                <name>pear7</name>
+            </include>
+
+            <include merge="true">
+                <pose>-1.0301929645006078 -4.021959288023347 0.005814254550605534 0 0
+                    0.281569882474197</pose>
+                <uri>model://pear2</uri>
+                <name>pear8</name>
+            </include>
+
+            <include merge="true">
+                <pose>-1.0026040062374681 -2.9619777434427816 -0.0013327895683666298 0 0
+                    -1.6106929166104471</pose>
+                <uri>model://pear1</uri>
+                <name>pear9</name>
+            </include>
+
+            <include merge="true">
+                <pose>-1.1939808761895692 -1.992474133626474 -0.0018385128483295954 0 0
+                    -2.888983757207464</pose>
+                <uri>model://pear1</uri>
+                <name>pear10</name>
+            </include>
+
+            <include merge="true">
+                <pose>-1.1179000804935264 -0.9878934820602444 -0.0037996960535791133 0 0
+                    2.1587827262379626</pose>
+                <uri>model://pear1</uri>
+                <name>pear11</name>
+            </include>
+
+            <include merge="true">
+                <pose>-0.9689487845746906 0.18013546688203375 -0.014831252719284399 0 0
+                    -3.027742842083176</pose>
+                <uri>model://pear1</uri>
+                <name>pear12</name>
+            </include>
+
+            <include merge="true">
+                <pose>-0.8880424155010905 0.9101693516476658 -0.021653226871175428 0 0
+                    0.63786802946241</pose>
+                <uri>model://pear1</uri>
+                <name>pear13</name>
+            </include>
+
+            <include merge="true">
+                <pose>-0.9383755524190621 1.9804813983698373 -0.01934805703677883 0 0
+                    2.4388829584917477</pose>
+                <uri>model://pear2</uri>
+                <name>pear14</name>
+            </include>
+
+            <include merge="true">
+                <pose>-0.9279089562758237 2.922914199147719 -0.014141391656000726 0 0
+                    -2.255608673377121</pose>
+                <uri>model://pear2</uri>
+                <name>pear15</name>
+            </include>
+
+            <include merge="true">
+                <pose>-1.0273598002283364 4.114887269898162 -0.013271520960841058 0 0
+                    -0.8238451782440626</pose>
+                <uri>model://pear1</uri>
+                <name>pear16</name>
+            </include>
+
+            <include merge="true">
+                <pose>-0.8726015179635107 4.968895928048274 -0.018137979204512628 0 0
+                    1.6248571773877165</pose>
+                <uri>model://pear2</uri>
+                <name>pear17</name>
+            </include>
+
+            <include merge="true">
+                <pose>-0.9312645101308538 6.006191349544762 -0.025024495232446053 0 0
+                    -0.07864294961171137</pose>
+                <uri>model://pear2</uri>
+                <name>pear18</name>
+            </include>
+
+            <include merge="true">
+                <pose>-1.1150262077222564 6.809408907940206 -0.02837961384460388 0 0
+                    -0.3195463348882499</pose>
+                <uri>model://pear2</uri>
+                <name>pear19</name>
+            </include>
+
+            <include merge="true">
+                <pose>-1.0868961665653663 8.019563718021963 -0.030546987438514965 0 0
+                    0.7961888179903389</pose>
+                <uri>model://pear1</uri>
+                <name>pear20</name>
+            </include>
+
+            <include merge="true">
+                <pose>-1.1525941378139073 8.854444643569254 -0.020738685129569803 0 0
+                    -0.12272461985362959</pose>
+                <uri>model://pear2</uri>
+                <name>pear21</name>
+            </include>
+
+            <include merge="true">
+                <pose>-1.0050119723936184 9.82052461780538 -0.00042918994782038653 0 0
+                    2.116299071667668</pose>
+                <uri>model://pear2</uri>
+                <name>pear22</name>
+            </include>
+
+            <include merge="true">
+                <pose>-0.9193581951774455 10.713516973361767 0.0167613907471984 0 0
+                    -1.0652571871881422</pose>
+                <uri>model://pear1</uri>
+                <name>pear23</name>
+            </include>
+
+            <include merge="true">
+                <pose>0.8898385077401845 -10.880108181536874 0.05584010201663605 0 0
+                    2.912780920813657</pose>
+                <uri>model://pear2</uri>
+                <name>pear24</name>
+            </include>
+
+            <include merge="true">
+                <pose>0.8051781468075642 -9.978387317231299 0.057783449421896185 0 0
+                    2.8367829281396224</pose>
+                <uri>model://pear2</uri>
+                <name>pear25</name>
+            </include>
+
+            <include merge="true">
+                <pose>0.8362026970230134 -8.883237629483745 0.06066053875397687 0 0
+                    -0.8684680125817881</pose>
+                <uri>model://pear1</uri>
+                <name>pear26</name>
+            </include>
+
+            <include merge="true">
+                <pose>1.052483808356639 -7.772988545243403 0.056463329693738226 0 0
+                    1.2692739210982351</pose>
+                <uri>model://pear2</uri>
+                <name>pear27</name>
+            </include>
+
+            <include merge="true">
+                <pose>1.0663040050392862 -6.912328556803076 0.04817896747148586 0 0
+                    2.8667800722484227</pose>
+                <uri>model://pear2</uri>
+                <name>pear28</name>
+            </include>
+
+            <include merge="true">
+                <pose>1.1156369249407279 -5.927663065138604 0.03865298529023066 0 0
+                    -0.6696329589112646</pose>
+                <uri>model://pear1</uri>
+                <name>pear29</name>
+            </include>
+
+            <include merge="true">
+                <pose>1.0198643716781413 -4.961877738998215 0.028637288857995102 0 0
+                    -0.25412343844431007</pose>
+                <uri>model://pear1</uri>
+                <name>pear30</name>
+            </include>
+
+            <include merge="true">
+                <pose>1.0573128097704185 -4.0548486085401505 0.01985091801286079 0 0
+                    2.5520460892166428</pose>
+                <uri>model://pear1</uri>
+                <name>pear31</name>
+            </include>
+
+            <include merge="true">
+                <pose>0.9608336540622129 -3.160833554045873 0.010402401235178708 0 0
+                    1.6403676774727982</pose>
+                <uri>model://pear2</uri>
+                <name>pear32</name>
+            </include>
+
+            <include merge="true">
+                <pose>0.9818901095940279 -2.0679992514319028 -0.0009764000004422379 0 0
+                    1.0994178030672206</pose>
+                <uri>model://pear2</uri>
+                <name>pear33</name>
+            </include>
+
+            <include merge="true">
+                <pose>0.9908683595314239 -0.8792209918206714 -0.01138565663178127 0 0
+                    1.0821315225130883</pose>
+                <uri>model://pear2</uri>
+                <name>pear34</name>
+            </include>
+
+            <include merge="true">
+                <pose>0.9218887656484381 -0.012591967067298038 -0.011187724357412459 0 0
+                    -1.920410024407576</pose>
+                <uri>model://pear2</uri>
+                <name>pear35</name>
+            </include>
+
+            <include merge="true">
+                <pose>1.0253414462460926 0.9172598488056841 -0.012325494824771709 0 0
+                    1.8462675638355357</pose>
+                <uri>model://pear1</uri>
+                <name>pear36</name>
+            </include>
+
+            <include merge="true">
+                <pose>0.9928705155979819 2.0377174571602925 -0.011211604713769096 0 0
+                    -0.3491158363520337</pose>
+                <uri>model://pear2</uri>
+                <name>pear37</name>
+            </include>
+
+            <include merge="true">
+                <pose>1.0388094788407976 3.054002653494076 -0.0109044197281417 0 0
+                    -0.9447327080391625</pose>
+                <uri>model://pear1</uri>
+                <name>pear38</name>
+            </include>
+
+            <include merge="true">
+                <pose>0.8318970277378263 3.955449659544903 -0.007165880756114877 0 0
+                    -0.24208965584730313</pose>
+                <uri>model://pear2</uri>
+                <name>pear39</name>
+            </include>
+
+            <include merge="true">
+                <pose>1.006569449646887 4.97908940714222 0.002159676447575461 0 0
+                    0.45866468028078655</pose>
+                <uri>model://pear1</uri>
+                <name>pear40</name>
+            </include>
+
+            <include merge="true">
+                <pose>0.9759078907175327 5.943769283130855 0.00982274061441818 0 0
+                    0.18531872943392358</pose>
+                <uri>model://pear2</uri>
+                <name>pear41</name>
+            </include>
+
+            <include merge="true">
+                <pose>1.0776208679019765 6.9331776659802715 0.010341233875349149 0 0
+                    -0.9813294982677601</pose>
+                <uri>model://pear1</uri>
+                <name>pear42</name>
+            </include>
+
+            <include merge="true">
+                <pose>0.9547369797991625 8.069952314158575 0.00827901436338965 0 0
+                    -0.34246614264154873</pose>
+                <uri>model://pear2</uri>
+                <name>pear43</name>
+            </include>
+
+            <include merge="true">
+                <pose>1.0118104119116034 8.988873814171795 0.0008085828362772683 0 0
+                    -1.457890255628666</pose>
+                <uri>model://pear1</uri>
+                <name>pear44</name>
+            </include>
+
+            <include merge="true">
+                <pose>0.9774703384044351 9.927794898818464 -0.012874577555695087 0 0
+                    1.2874435450361013</pose>
+                <uri>model://pear1</uri>
+                <name>pear45</name>
+            </include>
+
+            <include merge="true">
+                <pose>0.9993405548423028 10.732136763245665 -0.02346357738133472 0 0
+                    -1.945815777484186</pose>
+                <uri>model://pear1</uri>
+                <name>pear46</name>
+            </include>
+
+
+        </model>
+
+    </world>
+</sdf>
