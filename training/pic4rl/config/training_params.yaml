@@ -26,7 +26,7 @@ training_params:
     --policy: 'SAC' # training policy
     --policy_trainer: 'off-policy' # trainer off-policy / on-policy
     --change_goal_and_pose: 5
-    --starting_episodes: 0
+    --starting_episodes: 5000
     --batch-size: 64 # (int) Batch size for training. The default is ``32``.
     --gpu: 0 # (int) GPU id. ``-1`` disables GPU. The default is ``0``.
 

@@ -22,6 +22,31 @@ from geometry_msgs.msg import Twist
 from ament_index_python.packages import get_package_share_directory
 from pic4rl.sensors import Sensors
 
+from pic4dwa.pic4dwa import Pic4DWA
+
+def tf_decompose(robot_pose, goal_pose):
+    """
+    This method decomposes two consecutive reference frames.
+
+    For example, it can return the pose of the goal, converted from 
+    robot reference frame to fixed reference frame, with robot_pose given in 
+    fixed reference frame and goal_pose given in robot reference frame.
+    """ 
+    xr, yr, zr = tuple(robot_pose)
+
+    A = np.zeros([4,4], dtype=float)
+    A[0,0] = math.cos(zr)
+    A[1,0] = math.sin(zr)
+    A[0,1] = -A[1,0]
+    A[1,1] = A[0,0]
+    A[0,3] = xr
+    A[1,3] = yr
+    A[2,3] = 0
+    A[3,3] = 1
+    A[2,2] = 1
+    
+    return np.matmul(A, goal_pose).tolist()
+
 
 class Pic4rlEnvironmentLidar(Node):
     def __init__(self):
@@ -80,6 +105,8 @@ class Pic4rlEnvironmentLidar(Node):
         self.sensors = Sensors(self)
         self.create_logdir(train_params['--policy'], main_params['sensor'], train_params['--logdir'])
         self.spin_sensors_callbacks()
+        self.controller = Pic4DWA()
+        self.controller.collision_vector = self.sensors.laser_process.collision_vector
 
         self.cmd_vel_pub = self.create_publisher(
             Twist,
@@ -127,7 +154,7 @@ class Pic4rlEnvironmentLidar(Node):
 
         self.get_logger().debug("getting sensor data...")
         self.spin_sensors_callbacks()
-        lidar_measurements, goal_info, robot_pose, collision = self.get_sensor_data()
+        lidar_measurements, goal_info, robot_pose, collision, _ = self.get_sensor_data()
 
         self.get_logger().debug("checking events...")
         done, event = self.check_events(lidar_measurements, goal_info, robot_pose, collision)
@@ -186,8 +213,8 @@ class Pic4rlEnvironmentLidar(Node):
         """
         """
         sensor_data = {}
-        sensor_data["scan"], collision = self.sensors.get_laser()
-        sensor_data["odom"] = self.sensors.get_odom()
+        sensor_data["scan"], collision, self.laser_data, self.laser_info = self.sensors.get_laser()
+        sensor_data["odom"], velocities = self.sensors.get_odom(vel=True)
         
         if sensor_data["scan"] is None:
             sensor_data["scan"] = (np.ones(self.lidar_points)*self.lidar_distance).tolist()
@@ -197,7 +224,7 @@ class Pic4rlEnvironmentLidar(Node):
         goal_info, robot_pose = self.process_odom(sensor_data["odom"])
         lidar_measurements = sensor_data["scan"]
 
-        return lidar_measurements, goal_info, robot_pose, collision
+        return lidar_measurements, goal_info, robot_pose, collision, velocities
 
     def process_odom(self, odom):
         """
@@ -268,8 +295,8 @@ class Pic4rlEnvironmentLidar(Node):
         """
         state_list = goal_info
         
-        #for point in lidar_measurements:
-        #    state_list.append(float(point))
+        for point in lidar_measurements:
+            state_list.append(float(point))
 
         state = np.array(state_list,dtype = np.float32)
 
@@ -413,3 +440,36 @@ class Pic4rlEnvironmentLidar(Node):
         logging.basicConfig(
             filename=os.path.join(logdir, self.logdir, 'screen_logger.log'), 
             level=logging.INFO)
+
+    def call_DWA(self):
+        """
+        """
+        self.spin_sensors_callbacks()
+        lidar_measurements, goal_info, robot_pose, collision, velocities = self.get_sensor_data()
+
+        obs = self.process_lidar(self.laser_data, robot_pose)
+
+        x, ob, goal = self.controller.get_env_data(robot_pose, velocities, obs, self.goal_pose)
+        dw = self.controller.calc_dynamic_window(x)
+        u, trajectory = self.controller.calc_control_and_trajectory(x, dw, goal, ob)
+
+        return u
+
+    def process_lidar(self, lidar_measurements, robot_pose):
+        """
+        """
+        actual_angle = self.laser_info[0]
+        increment = self.laser_info[1]
+        ob = []
+        ob_points = []
+        for point in lidar_measurements:
+            # if point == float('inf'):
+            #   point = self.max_lidar_range
+            p = [point*math.cos(actual_angle), point*math.sin(actual_angle)]
+            p = tf_decompose(robot_pose ,[p[0], p[1], 0.0, 1.0])
+            if math.isnan(p[0]) or math.isnan(p[1]):
+                p = [float('inf'), float('inf'), 0., 1.]
+            ob.append([p[0], p[1]])
+            actual_angle += increment
+
+        return ob

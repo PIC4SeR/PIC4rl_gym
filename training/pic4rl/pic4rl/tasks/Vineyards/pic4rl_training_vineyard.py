@@ -32,21 +32,32 @@ from tf2rl.algos.sac_ae import SACAE
 from tf2rl.algos.ppo import PPO
 from tf2rl.experiments.trainer import Trainer
 from tf2rl.experiments.on_policy_trainer import OnPolicyTrainer
-from pic4rl.tasks.goToPose.pic4rl_environment_lidar import Pic4rlEnvironmentLidar
+from pic4rl.tasks.Vineyards.pic4rl_environment_camera_depth import Pic4rlEnvironmentCamera
 from ament_index_python.packages import get_package_share_directory
 
 from rclpy.executors import SingleThreadedExecutor
 from rclpy.executors import ExternalShutdownException
 
 
-class Pic4rlTraining_Lidar(Pic4rlEnvironmentLidar):
+class Pic4rlTraining_Camera(Pic4rlEnvironmentCamera):
     def __init__(self):
         super().__init__()
         self.log_check()
         train_params = self.parameters_declaration()
 
-        self.set_parser_list(train_params)
-        self.trainer = self.instantiate_agent()
+        if self.tflite_flag:
+            self.actor_fp16 = tf.lite.Interpreter(model_path='~/inference/actor_fp16.tflite')
+            self.actor_fp16.allocate_tensors()
+            self.input_index_image = self.actor_fp16.get_input_details()[0]["index"]
+            self.input_index_state = self.actor_fp16.get_input_details()[1]["index"]
+            self.output_index = self.actor_fp16.get_output_details()[0]["index"]
+            self.commands = [0.0,0.0]
+            self.step_counter = 0
+            self.done = False
+
+        else:
+            self.set_parser_list(train_params)
+            self.trainer = self.instantiate_agent()
 
     def instantiate_agent(self):
         """
@@ -75,12 +86,16 @@ class Pic4rlTraining_Lidar(Pic4rlEnvironmentLidar):
         )
 
         state =[
-        [0., 15.], # goal_distance 
-        [-math.pi, math.pi], # goal angle or yaw
+        #[0., 15.], # goal_distance 
+        #[-math.pi, math.pi], # goal angle or yaw
         ]
 
-        #for i in range(self.lidar_points):
-        #    state = state + [[0., 12.]]
+        if self.visual_data == 'features':
+            for i in range(self.features):
+                state = state + [[0., self.max_depth]]
+        elif self.visual_data == 'image':
+            self.low_state = np.zeros((self.image_height, self.image_width, self.channels),dtype=np.float32)
+            self.high_state = self.max_depth.*np.ones((self.image_height, self.image_width, self.channels),dtype=np.float32)
 
         if len(state)>0:
             low_state = []
@@ -103,6 +118,7 @@ class Pic4rlTraining_Lidar(Pic4rlEnvironmentLidar):
         # OFF-POLICY ALGORITHM TRAINER
         if self.policy_trainer == 'off-policy':
             parser = Trainer.get_argument()
+            
             if self.train_policy == 'DDPG':
                 self.get_logger().debug('Parsing DDPG parameters...')
                 parser = DDPG.get_argument(parser)
@@ -112,10 +128,11 @@ class Pic4rlTraining_Lidar(Pic4rlEnvironmentLidar):
                     action_dim = self.action_space.high.size,
                     max_action=self.action_space.high,
                     min_action=self.action_space.low,
-                    lr_actor = 2e-4,
+                    lr_actor = 1e-4,
                     lr_critic = 2e-4,
-                    actor_units = (256, 256),
-                    critic_units = (256, 256),
+                    actor_units = (256, 128, 128),
+                    critic_units = (256, 128, 128),
+                    network='conv',
                     subclassing=False,
                     sigma = 0.2,
                     tau = 0.01,
@@ -127,7 +144,7 @@ class Pic4rlTraining_Lidar(Pic4rlEnvironmentLidar):
                     epsilon_decay = 0.998, 
                     epsilon_min = 0.05,
                     log_level = self.log_level)
-                self.get_logger().info('Instanciate DDPG agent...')
+                self.get_logger().info('Instantiate DDPG agent...')
 
             if self.train_policy == 'TD3':
                 self.get_logger().debug('Parsing TD3 parameters...')
@@ -152,10 +169,11 @@ class Pic4rlTraining_Lidar(Pic4rlEnvironmentLidar):
                     actor_update_freq = 2,
                     policy_noise = 0.2,
                     noise_clip = 0.5,
-                    actor_units = (256, 128, 128),
-                    critic_units = (256, 128, 128),
+                    actor_units = (256, 256),
+                    critic_units = (256, 256),
+                    #network='conv',
                     log_level = self.log_level)
-                self.get_logger().info('Instanciate TD3 agent...')
+                self.get_logger().info('Instantiate TD3 agent...')
             
             if self.train_policy == 'SAC':
                 self.get_logger().debug('Parsing SAC parameters...')
@@ -170,6 +188,7 @@ class Pic4rlTraining_Lidar(Pic4rlEnvironmentLidar):
                     lr_alpha=3e-4,
                     actor_units=(256, 256),
                     critic_units=(256, 256),
+                    #network='conv',
                     tau=5e-3,
                     alpha=.2,
                     auto_alpha=False, 
@@ -182,7 +201,47 @@ class Pic4rlTraining_Lidar(Pic4rlEnvironmentLidar):
                     epsilon_decay = 0.996, 
                     epsilon_min = 0.05,
                     log_level = self.log_level)
-                self.get_logger().info('Instanciate SAC agent...')
+                self.get_logger().info('Instantiate SAC agent...')
+
+            if self.train_policy == 'SACAE':
+                self.get_logger().debug('Parsing SAC-AE parameters...')
+                parser = SACAE.get_argument(parser)
+                args = parser.parse_args(self.parser_list)
+                policy = SACAE(
+                    obs_shape = self.observation_space.shape,
+                    action_dim = self.action_space.high.size,
+                    max_action = self.action_space.high,
+                    min_action=self.action_space.low,
+                    n_conv_layers=4,
+                    n_conv_filters=32,
+                    feature_dim=50,
+                    tau_encoder=0.05,
+                    tau_critic=0.01,
+                    auto_alpha=False,
+                    alpha=.2,
+                    lr_sac=1e-3,
+                    lr_encoder=1e-3,
+                    lr_decoder=1e-3,
+                    # num_layers_sac=3,
+                    actor_units=(256, 128, 128),
+                    critic_units=(256, 128, 128),
+                    update_critic_target_freq=2,
+                    update_actor_freq=2,
+                    lr_alpha=1e-4,
+                    init_temperature=0.1,
+                    stop_q_grad=False,
+                    lambda_latent_val=1e-06,
+                    decoder_weight_lambda=1e-07,
+                    skip_making_decoder=False,
+                    gpu = self.gpu,
+                    batch_size= self.batch_size,
+                    n_warmup=self.n_warmup,
+                    memory_capacity=self.memory_capacity,
+                    epsilon = 1.0, 
+                    epsilon_decay = 0.998, 
+                    epsilon_min = 0.05,
+                    log_level = self.log_level)
+                self.get_logger().info('Instantiate SAC-AE agent...')
 
             trainer = Trainer(policy, self, args, test_env=None)
             #self.get_logger().info('Starting process...')
@@ -215,7 +274,7 @@ class Pic4rlTraining_Lidar(Pic4rlEnvironmentLidar):
                     gpu = self.gpu,
                     batch_size= self.batch_size,
                     log_level = self.log_level)
-                self.get_logger().info('Instanciate PPO agent...')
+                self.get_logger().info('Instantiate PPO agent...')
 
             trainer = OnPolicyTrainer(policy, self, args, test_env=None)
             #self.get_logger().info('Starting process...')
@@ -243,6 +302,29 @@ class Pic4rlTraining_Lidar(Pic4rlEnvironmentLidar):
             self.get_logger().error(f"Error in starting trainer:\n {traceback.format_exc()}")
             return
 
+    def threadFunc_tflite(self):
+        while True:
+            if self.step_counter == 0:
+                observation = self.reset(self.step_counter)
+            else:
+                observation, reward, done, info = self.step(self.commands)
+                self.done = done
+            if self.done:
+                self.done = False
+                self.step_counter = 0
+                observation = self.reset(self.step_counter)
+
+            #print(observation[1].shape)
+            #print(observation[0].shape)
+            self.actor_fp16.set_tensor(self.input_index_state, observation[1])
+            self.actor_fp16.set_tensor(self.input_index_image, observation[0])
+
+            self.actor_fp16.invoke()
+            self.commands = self.actor_fp16.get_tensor(self.output_index)[0,:]
+            #print(self.commands.shape)
+
+            self.step_counter += 1
+
     def log_check(self):
         """
         Select the ROS2 log level.
@@ -254,7 +336,6 @@ class Pic4rlTraining_Lidar(Pic4rlEnvironmentLidar):
             self.get_logger().info("LOG_LEVEL not defined, setting default: INFO")
 
         self.get_logger().set_level(self.log_level)
-
 
     def print_log(self):
         """
@@ -286,6 +367,8 @@ class Pic4rlTraining_Lidar(Pic4rlEnvironmentLidar):
             ('min_lin_vel', main_params['min_lin_vel']),
             ('max_ang_vel', main_params['max_ang_vel']),
             ('min_ang_vel', main_params['min_ang_vel']),
+            ('tflite_flag', train_params['--tflite_flag']),
+            ('tflite_model_path', train_params['--tflite_model_path']),
             ('gpu', train_params['--gpu']),
             ('batch_size', train_params['--batch-size']),
             ('n_warmup', train_params['--n-warmup'])
@@ -297,6 +380,8 @@ class Pic4rlTraining_Lidar(Pic4rlEnvironmentLidar):
         self.min_lin_vel = self.get_parameter('min_lin_vel').get_parameter_value().double_value
         self.max_ang_vel = self.get_parameter('max_ang_vel').get_parameter_value().double_value
         self.max_lin_vel = self.get_parameter('max_lin_vel').get_parameter_value().double_value
+        self.tflite_flag = self.get_parameter('tflite_flag').get_parameter_value().bool_value
+        self.tflite_model_path = self.get_parameter('tflite_model_path').get_parameter_value().string_value
         self.gpu = self.get_parameter('gpu').get_parameter_value().integer_value
         self.batch_size = self.get_parameter('batch_size').get_parameter_value().integer_value
         self.n_warmup = self.get_parameter('n_warmup').get_parameter_value().integer_value
@@ -326,8 +411,9 @@ class Pic4rlTraining_Lidar(Pic4rlEnvironmentLidar):
             'max_steps': train_params['--max-steps'],
             'max_episode_steps': train_params['--episode-max-steps'],
             'sensor': main_params['sensor'],
+            'visual_data': main_params['visual_data'],
+            'features': main_params['features'],
             'gpu': train_params['--gpu']
-        }
+            }
 
         return train_params
-
