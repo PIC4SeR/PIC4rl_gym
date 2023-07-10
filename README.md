@@ -65,3 +65,12 @@ In the .bashrc export the gazebo models path:
 
 or install manually the packages in setup.py at ~/PIC4rl\_gym/training/tf2rl/setup.py
 
+## References
+	@article{martini2022pic4rl,
+	  title={PIC4rl-gym: a ROS2 modular framework for Robots Autonomous Navigation with Deep Reinforcement Learning},
+	  author={Martini, Mauro and Eirale, Andrea and Cerrato, Simone and Chiaberge, Marcello},
+	  journal={arXiv preprint arXiv:2211.10714},
+	  year={2022}
+	}
+
+
