@@ -177,7 +177,6 @@ class Pic4rlEnvironmentCamera(Node):
         #self.get_logger().debug("publishing twist...")
         self.cmd_vel_pub.publish(twist)
         self.compute_frequency()
-        time.sleep(0.025)
 
         #self.get_logger().debug("pausing...")
         #self.pause()

@@ -1,15 +1,8 @@
 <sdf version='1.7'>
   <world name='default'>
-    <plugin name="gazebo_ros_state" filename="libgazebo_ros_state.so">
-      <ros>
-        <namespace>/test</namespace>
-        <argument>model_states:=model_states_demo</argument>
-      </ros>
-      <update_rate>1.0</update_rate>
-    </plugin>
     <light name='sun' type='directional'>
       <cast_shadows>1</cast_shadows>
-      <pose frame=''>0 0 10 0 -0 0</pose>
+      <pose>0 0 10 0 -0 0</pose>
       <diffuse>0.8 0.8 0.8 1</diffuse>
       <specular>0.2 0.2 0.2 1</specular>
       <attenuation>
@@ -19,11 +12,16 @@
         <quadratic>0.001</quadratic>
       </attenuation>
       <direction>-0.5 0.1 -0.9</direction>
+      <spot>
+        <inner_angle>0</inner_angle>
+        <outer_angle>0</outer_angle>
+        <falloff>0</falloff>
+      </spot>
     </light>
     <gravity>0 0 -9.8</gravity>
     <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
     <atmosphere type='adiabatic'/>
-    <physics name='default_physics' default='0' type='ode'>
+    <physics type='ode'>
       <max_step_size>0.001</max_step_size>
       <real_time_factor>1</real_time_factor>
       <real_time_update_rate>1000</real_time_update_rate>
@@ -37,18 +35,10 @@
           <humidity> 0.6 </humidity>
         </clouds>
       </sky>
-      <fog>
-        <color> 1 1 1 1 </color>
-        <start> 1 </start>
-        <end> 50 </end>
-      </fog>
       <ambient>0.4 0.4 0.4 1</ambient>
       <background>0.7 0.7 0.7 1</background>
       <shadows>1</shadows>
     </scene>
-    <audio>
-      <device>default</device>
-    </audio>
     <wind/>
     <spherical_coordinates>
       <surface_model>EARTH_WGS84</surface_model>
@@ -135,7 +125,7 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>2 9 0 0 -0 1.58147</pose>
+      <pose>0.105853 -1.02883 0 0 -0 0</pose>
     </model>
     <model name='vine_plant3_clone'>
       <static>1</static>
@@ -215,7 +205,7 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>2 7.2 0 0 -0 1.58147</pose>
+      <pose>0.125542 1.99794 0 0 0 -1.59583</pose>
     </model>
     <model name='vine_plant3_clone_0'>
       <static>1</static>
@@ -295,7 +285,167 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>3.04702 9.09802 0 0 -0 1.58147</pose>
+      <pose>0.962096 -2.02501 0 0 0 -1.59583</pose>
+    </model>
+    <model name='vine_plant3_clone_clone'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <mesh>
+              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='bark'>
+          <geometry>
+            <mesh>
+              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
+              <submesh>
+                <name>stem</name>
+              </submesh>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://vine_plant3/materials/scripts/</uri>
+              <uri>model://vine_plant3/materials/textures/</uri>
+              <name>vine_plant/bark</name>
+            </script>
+          </material>
+        </visual>
+        <visual name='grape'>
+          <geometry>
+            <mesh>
+              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
+              <submesh>
+                <name>grape</name>
+              </submesh>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://vine_plant3/materials/scripts/</uri>
+              <uri>model://vine_plant3/materials/textures/</uri>
+              <name>vine_plant/grape</name>
+            </script>
+          </material>
+        </visual>
+        <visual name='leaf'>
+          <geometry>
+            <mesh>
+              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
+              <submesh>
+                <name>leaf</name>
+              </submesh>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://vine_plant3/materials/scripts/</uri>
+              <uri>model://vine_plant3/materials/textures/</uri>
+              <name>vine_plant/leaf</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <pose>0.866669 1.9861 0 0 0 -1.59583</pose>
+    </model>
+    <model name='vine_plant3_clone_clone_clone'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <mesh>
+              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='bark'>
+          <geometry>
+            <mesh>
+              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
+              <submesh>
+                <name>stem</name>
+              </submesh>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://vine_plant3/materials/scripts/</uri>
+              <uri>model://vine_plant3/materials/textures/</uri>
+              <name>vine_plant/bark</name>
+            </script>
+          </material>
+        </visual>
+        <visual name='grape'>
+          <geometry>
+            <mesh>
+              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
+              <submesh>
+                <name>grape</name>
+              </submesh>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://vine_plant3/materials/scripts/</uri>
+              <uri>model://vine_plant3/materials/textures/</uri>
+              <name>vine_plant/grape</name>
+            </script>
+          </material>
+        </visual>
+        <visual name='leaf'>
+          <geometry>
+            <mesh>
+              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
+              <submesh>
+                <name>leaf</name>
+              </submesh>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://vine_plant3/materials/scripts/</uri>
+              <uri>model://vine_plant3/materials/textures/</uri>
+              <name>vine_plant/leaf</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <pose>1.68807 1.95949 0 0 0 -1.68654</pose>
     </model>
     <model name='vine_plant3_clone_1'>
       <static>1</static>
@@ -375,34 +525,88 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>3 7.25 0 0 -0 1.51624</pose>
+      <pose>2.50955 1.9213 0 0 0 -1.59583</pose>
     </model>
-    <state world_name='default'>
-      <sim_time>1595 656000000</sim_time>
-      <real_time>113 182467122</real_time>
-      <wall_time>1613474619 292560258</wall_time>
-      <iterations>112947</iterations>
-      <model name='real_terrain'>
-        <pose frame=''>3.46298 1.4104 0 0 -0 0</pose>
-        <scale>1 1 1</scale>
-        <link name='terrain'>
-          <pose frame=''>3.46298 1.4104 0 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
-      <light name='sun'>
-        <pose frame=''>0 0 10 0 -0 0</pose>
-      </light>
-    </state>
-    <gui fullscreen='0'>
-      <camera name='user_camera'>
-        <pose frame=''>45.8407 5.39785 5.09953 0 -0 3.14159</pose>
-        <view_controller>orbit</view_controller>
-        <projection_type>perspective</projection_type>
-      </camera>
-    </gui>
+    <model name='vine_plant3_clone_clone_0'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <mesh>
+              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='bark'>
+          <geometry>
+            <mesh>
+              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
+              <submesh>
+                <name>stem</name>
+              </submesh>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://vine_plant3/materials/scripts/</uri>
+              <uri>model://vine_plant3/materials/textures/</uri>
+              <name>vine_plant/bark</name>
+            </script>
+          </material>
+        </visual>
+        <visual name='grape'>
+          <geometry>
+            <mesh>
+              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
+              <submesh>
+                <name>grape</name>
+              </submesh>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://vine_plant3/materials/scripts/</uri>
+              <uri>model://vine_plant3/materials/textures/</uri>
+              <name>vine_plant/grape</name>
+            </script>
+          </material>
+        </visual>
+        <visual name='leaf'>
+          <geometry>
+            <mesh>
+              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
+              <submesh>
+                <name>leaf</name>
+              </submesh>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://vine_plant3/materials/scripts/</uri>
+              <uri>model://vine_plant3/materials/textures/</uri>
+              <name>vine_plant/leaf</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <pose>3.25446 1.88308 0 0 0 -1.59583</pose>
+    </model>
     <model name='vine_plant3_clone_0_clone'>
       <static>1</static>
       <link name='link'>
@@ -481,9 +685,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>4.35232 9.05725 0 0 -0 1.58147</pose>
+      <pose>4.07569 1.9213 0 0 0 -1.48882</pose>
     </model>
-    <model name='vine_plant3_clone_1_clone'>
+    <model name='vine_plant3_clone_0_clone_0'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -561,9 +765,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>4.15729 7.33438 0 0 -0 1.58147</pose>
+      <pose>4.74428 1.9213 0 0 0 -1.48882</pose>
     </model>
-    <model name='vine_plant3_clone_1_clone_0'>
+    <model name='vine_plant3_clone_0_clone_1'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -641,9 +845,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>5.24809 7.38919 0 0 -0 1.51624</pose>
+      <pose>5.47009 1.9213 0 0 0 -1.48882</pose>
     </model>
-    <model name='vine_plant3_clone_0_clone_clone'>
+    <model name='vine_plant3_clone_0_clone_2'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -721,9 +925,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>6.18414 7.37113 0 0 -0 1.48532</pose>
+      <pose>6.15767 1.94038 0 0 0 -1.48882</pose>
     </model>
-    <model name='vine_plant3_clone_2'>
+    <model name='vine_plant3_clone_0_clone_3'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -801,9 +1005,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>5.44804 9.11572 0 0 -0 1.58147</pose>
+      <pose>6.82614 1.94038 0 0 0 -1.48882</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone'>
+    <model name='vine_plant3_clone_clone_clone_clone'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -881,9 +1085,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>6.37517 9.05364 0 0 -0 1.58147</pose>
+      <pose>7.3802 1.94038 0 0 0 -1.68654</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_0'>
+    <model name='vine_plant3_clone_clone_clone_clone_0'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -961,9 +1165,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>7.8707 9.07532 0 0 -0 1.58147</pose>
+      <pose>1.57354 -2.03256 0 0 0 -1.68654</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_1'>
+    <model name='vine_plant3_clone_clone_1'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -1041,9 +1245,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>9.36566 8.98846 0 0 -0 1.58147</pose>
+      <pose>8.27799 1.95949 0 0 0 -1.59583</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_2'>
+    <model name='vine_plant3_clone_0_clone_3_clone'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -1121,9 +1325,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>10.7308 8.98846 0 0 -0 1.58147</pose>
+      <pose>8.95933 1.92296 0 0 0 -1.48882</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_3'>
+    <model name='vine_plant3_clone_0_clone_3_clone_0'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -1201,9 +1405,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>12.2263 8.98846 0 0 -0 1.58147</pose>
+      <pose>9.63087 1.91054 0 0 0 -1.48882</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_4'>
+    <model name='vine_plant3_clone_clone_clone_clone_1'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -1281,9 +1485,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>13.5694 8.96706 0 0 -0 1.58147</pose>
+      <pose>10.2583 1.89957 0 0 0 -1.68654</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_5'>
+    <model name='vine_plant3_clone_clone_clone_clone_2'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -1361,9 +1565,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>14.9779 8.8802 0 0 -0 1.58147</pose>
+      <pose>11.1005 1.68804 0 0 0 -1.68654</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_6'>
+    <model name='vine_plant3_clone_clone_1_clone'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -1441,9 +1645,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>16.2567 8.98846 0 0 -0 1.58147</pose>
+      <pose>11.8351 1.42199 0 0 0 -1.59583</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_7'>
+    <model name='vine_plant3_clone_clone_1_clone_0'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -1521,9 +1725,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>17.297 8.98846 0 0 -0 1.58147</pose>
+      <pose>12.3801 1.18125 0 0 0 -1.59583</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_7_clone'>
+    <model name='vine_plant3_clone_clone_clone_clone_3'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -1601,9 +1805,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>15.5485 8.9362 0 0 -0 1.58147</pose>
+      <pose>2.37942 -2.03147 0 0 0 -1.68654</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_7_clone_0'>
+    <model name='vine_plant3_clone_clone_0_clone'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -1681,9 +1885,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>6.70 7.40 0 0 -0 1.48676</pose>
+      <pose>3.26709 -2.07119 0 0 0 -1.59583</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_7_clone_1'>
+    <model name='vine_plant3_clone_0_clone_0_clone'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -1761,9 +1965,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>18.7216 9.06885 0 0 -0 1.58147</pose>
+      <pose>4.10158 -2.03147 0 0 0 -1.48882</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_7_clone_2'>
+    <model name='vine_plant3_clone_0_clone_2_clone'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -1841,9 +2045,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>21.60 5.45 0 0 -0 1.58147</pose>
+      <pose>4.77728 -2.01824 0 0 0 -1.48882</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_7_clone_3'>
+    <model name='vine_plant3_clone_clone_1_clone_1'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -1921,9 +2125,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>15.6 7.40 0 0 0 -1.62054</pose>
+      <pose>5.55184 -2.0557 0 0 0 -1.59583</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_7_clone_4'>
+    <model name='vine_plant3_clone_0_clone_0_clone_0'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -2001,9 +2205,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>19.5 9 0 0 -0 1.74045</pose>
+      <pose>6.35991 -2.01595 0 0 0 -1.48882</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_7_clone_5'>
+    <model name='vine_plant3_clone_0_clone_3_clone_0_clone'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -2081,9 +2285,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>21.40 3.82 0 0 -0 1.58147</pose>
+      <pose>7.02226 -2.03005 0 0 0 -1.48882</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_1_clone'>
+    <model name='vine_plant3_clone_0_clone_0_clone_1'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -2161,9 +2365,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>7.71162 7.38661 0 0 -0 1.58147</pose>
+      <pose>7.69796 -2.03005 0 0 0 -1.48882</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_1_clone_0'>
+    <model name='vine_plant3_clone_clone_1_clone_2'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -2241,9 +2445,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>9.13248 7.37027 0 0 -0 1.58147</pose>
+      <pose>8.40008 -2.00357 0 0 0 -1.59583</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_1_clone_1'>
+    <model name='vine_plant3_clone_clone_1_clone_3'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -2321,9 +2525,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>10.6845 7.32125 0 0 -0 1.58147</pose>
+      <pose>9.02268 -2.01682 0 0 0 -1.59583</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_1_clone_2'>
+    <model name='vine_plant3_clone_clone_1_clone_4'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -2401,9 +2605,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>12.0235 7.37027 0 0 -0 1.58147</pose>
+      <pose>9.68512 -2.01682 0 0 0 -1.59583</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_1_clone_3'>
+    <model name='vine_plant3_clone_0_clone_2_clone_0'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -2481,9 +2685,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>13.4117 7.30491 0 0 -0 1.58147</pose>
+      <pose>10.4137 -2.01682 0 0 0 -1.48882</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_1_clone_4'>
+    <model name='vine_plant3_clone_clone_1_clone_5'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -2561,9 +2765,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>14.5 7.37027 0 0 -0 1.58147</pose>
+      <pose>11.116 -1.87109 0 0 0 -1.59583</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_1_clone_5'>
+    <model name='vine_plant3_clone_clone_1_clone_6'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -2641,9 +2845,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>16.8665 7.30309 0 0 -0 1.58147</pose>
+      <pose>11.6987 -1.56638 0 0 0 -1.59583</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_1_clone_6'>
+    <model name='vine_plant3_clone_0_clone_0_clone_0_clone'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -2721,9 +2925,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>13 7.2 0 0 -0 1.36616</pose>
+      <pose>12.3266 -1.32489 0 0 0 -1.48882</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_1_clone_7'>
+    <model name='vine_plant3_clone_0_clone_3_clone_0_clone_0'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -2801,9 +3005,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>20.0532 7.30309 0 0 -0 1.58147</pose>
+      <pose>12.9228 -1.23215 0 0 0 -1.48882</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_1_clone_8'>
+    <model name='vine_plant3_clone_0_clone_3_clone_0_clone_1'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -2881,9 +3085,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>21.2768 7.35426 0 0 -0 1.58147</pose>
+      <pose>13.5188 -1.24541 0 0 0 -1.48882</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_1_clone_9'>
+    <model name='vine_plant3_clone_clone_clone_clone_clone'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -2961,9 +3165,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>22.4498 7.40511 0 0 -0 1.58147</pose>
+      <pose>13.2322 1.07365 0 0 0 -1.68654</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_1_clone_9_clone'>
+    <model name='vine_plant3_clone_0_clone_0_clone_1_clone'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -3041,9 +3245,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>17.4006 7.12525 0 0 -0 1.58147</pose>
+      <pose>13.7888 0.861695 0 0 0 -1.48882</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_1_clone_9_clone_0'>
+    <model name='vine_plant3_clone_0_clone_0_clone_1_clone_0'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -3121,9 +3325,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>18.7265 7.12525 0 0 -0 1.58147</pose>
+      <pose>14.2523 -1.24471 0 0 0 -1.48882</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_1_clone_9_clone_1'>
+    <model name='vine_plant3_clone_0_clone_0_clone_1_clone_1'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -3201,9 +3405,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>19 7.3 0 0 -0 1.58147</pose>
+      <pose>14.5305 0.874927 0 0 0 -1.48882</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_1_clone_9_clone_2'>
+    <model name='vine_plant3_clone_clone_1_clone_1_clone'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -3281,9 +3485,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>20 7.2 0 0 -0 1.80136</pose>
+      <pose>15.0581 -1.22649 0 0 0 -1.59583</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_1_clone_9_clone_3'>
+    <model name='vine_plant3_clone_0_clone_0_clone_0_clone_clone'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -3361,9 +3565,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>21 7.2 0 0 -0 1.58147</pose>
+      <pose>15.5054 -1.16555 0 0 0 -1.48882</pose>
     </model>
-    <model name='vine_plant3_clone_1_clone_clone'>
+    <model name='vine_plant3_clone_0_clone_0_clone_0_clone_clone_0'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -3441,9 +3645,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>2 5.4 0 0 -0 1.6582</pose>
+      <pose>15.2005 0.807227 0 0 0 -1.48882</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_1_clone_clone'>
+    <model name='vine_plant3_clone_0_clone_0_clone_0_clone_clone_1'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -3521,9 +3725,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>3.29601 5.41418 0 0 -0 1.58147</pose>
+      <pose>15.9019 0.746209 0 0 0 -1.48882</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_3_clone'>
+    <model name='vine_plant3_clone_0_clone_0_clone_0_clone_clone_2'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -3601,9 +3805,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>4.56631 5.47049 0 0 -0 1.74426</pose>
+      <pose>16.1297 -1.25926 0 0 0 -1.48882</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_1_clone_3_clone'>
+    <model name='vine_plant3_clone_0_clone_0_clone_0_clone_clone_3'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -3681,9 +3885,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>5.80855 5.47049 0 0 -0 1.58147</pose>
+      <pose>16.7867 -1.24558 0 0 0 -1.48882</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_1_clone_3_clone_0'>
+    <model name='vine_plant3_clone_0_clone_0_clone_0_clone_clone_4'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -3761,9 +3965,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>7.13497 5.44032 0 0 -0 1.58147</pose>
+      <pose>16.6634 0.779564 0 0 0 -1.48882</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_0_clone'>
+    <model name='vine_plant3_clone_0_clone_0_clone_0_clone_clone_5'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -3841,9 +4045,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>8.23583 5.41209 0 0 -0 1.76169</pose>
+      <pose>17.3202 0.738505 0 0 0 -1.48882</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_1_clone_7_clone'>
+    <model name='vine_plant3_clone_0_clone_0_clone_0_clone_clone_6'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -3921,9 +4125,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>9.44965 5.24282 0 0 -0 -1.61396</pose>
+      <pose>17.4023 -1.28663 0 0 0 -1.48882</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_7_clone_clone'>
+    <model name='vine_plant3_clone_0_clone_2_clone_0_clone'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -4001,9 +4205,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>10.7764 5.38301 0 0 -0 1.58147</pose>
+      <pose>18.1138 -1.25926 0 0 0 -1.48882</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_7_clone_clone_0'>
+    <model name='vine_plant3_clone_0_clone_2_clone_0_clone_0'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -4081,9 +4285,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>11.9618 5.43967 0 0 -0 1.58147</pose>
+      <pose>18.1961 0.806922 0 0 0 -1.48882</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_4_clone'>
+    <model name='vine_plant3_clone_0_clone_2_clone_0_clone_1'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -4161,9 +4365,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>13.0062 5.52403 0 0 -0 1.58147</pose>
+      <pose>18.8803 0.820611 0 0 0 -1.48882</pose>
     </model>
-    <model name='vine_plant3_clone_2_clone_1_clone_9_clone_4'>
+    <model name='vine_plant3_clone_0_clone_2_clone_0_clone_2'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -4241,1927 +4445,7 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>14.192 5.55245 0 0 -0 1.47728</pose>
-    </model>
-    <model name='vine_plant3_clone_2_clone_1_clone_1_clone'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='bark'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>stem</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/bark</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='grape'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>grape</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/grape</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='leaf'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>leaf</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/leaf</name>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose frame=''>15.3209 5.49579 0 0 -0 1.39501</pose>
-    </model>
-    <model name='vine_plant3_clone_2_clone_1_clone_9_clone_1_clone'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='bark'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>stem</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/bark</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='grape'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>grape</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/grape</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='leaf'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>leaf</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/leaf</name>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose frame=''>16.3656 5.46755 0 0 -0 1.58147</pose>
-    </model>
-    <model name='vine_plant3_clone_2_clone_7_clone_0_clone'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='bark'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>stem</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/bark</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='grape'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>grape</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/grape</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='leaf'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>leaf</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/leaf</name>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose frame=''>17.4665 5.46755 0 0 -0 1.48676</pose>
-    </model>
-    <model name='vine_plant3_clone_2_clone_1_clone_9_clone_2_clone'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='bark'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>stem</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/bark</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='grape'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>grape</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/grape</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='leaf'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>leaf</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/leaf</name>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose frame=''>18.5389 5.55245 0 0 -0 1.80136</pose>
-    </model>
-    <model name='vine_plant3_clone_2_clone_6_clone'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='bark'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>stem</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/bark</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='grape'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>grape</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/grape</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='leaf'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>leaf</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/leaf</name>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose frame=''>19.4423 5.60893 0 0 -0 1.58147</pose>
-    </model>
-    <model name='vine_plant3_clone_2_clone_7_clone_3_clone'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='bark'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>stem</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/bark</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='grape'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>grape</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/grape</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='leaf'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>leaf</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/leaf</name>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose frame=''>20.4305 5.43967 0 0 0 -1.62054</pose>
-    </model>
-    <model name='vine_plant3_clone_0_clone_clone_0'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='bark'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>stem</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/bark</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='grape'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>grape</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/grape</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='leaf'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>leaf</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/leaf</name>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose frame=''>1.75941 3.47963 0 0 -0 1.48532</pose>
-    </model>
-    <model name='vine_plant3_clone_2_clone_5_clone'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='bark'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>stem</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/bark</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='grape'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>grape</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/grape</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='leaf'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>leaf</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/leaf</name>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose frame=''>3.01318 3.5581 0 0 -0 1.40935</pose>
-    </model>
-    <model name='vine_plant3_clone_1_clone_clone_0'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='bark'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>stem</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/bark</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='grape'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>grape</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/grape</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='leaf'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>leaf</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/leaf</name>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose frame=''>4.08389 3.58414 0 0 -0 1.6582</pose>
-    </model>
-    <model name='vine_plant3_clone_2_clone_1_clone_7_clone_clone'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='bark'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>stem</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/bark</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='grape'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>grape</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/grape</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='leaf'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>leaf</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/leaf</name>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose frame=''>5.05009 3.37529 0 0 0 -1.61396</pose>
-    </model>
-    <model name='vine_plant3_clone_2_clone_1_clone_5_clone'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='bark'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>stem</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/bark</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='grape'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>grape</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/grape</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='leaf'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>leaf</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/leaf</name>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose frame=''>6.32982 3.58414 0 0 -0 1.84861</pose>
-    </model>
-    <model name='vine_plant3_clone_2_clone_1_clone_9_clone_4_clone'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='bark'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>stem</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/bark</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='grape'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>grape</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/grape</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='leaf'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>leaf</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/leaf</name>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose frame=''>7.45278 3.5581 0 0 -0 1.47728</pose>
-    </model>
-    <model name='vine_plant3_clone_2_clone_0_clone_0'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='bark'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>stem</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/bark</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='grape'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>grape</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/grape</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='leaf'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>leaf</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/leaf</name>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose frame=''>8.5235 3.6101 0 0 -0 1.76169</pose>
-    </model>
-    <model name='vine_plant3_clone_2_clone_6_clone_0'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='bark'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>stem</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/bark</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='grape'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>grape</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/grape</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='leaf'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>leaf</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/leaf</name>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose frame=''>9.77726 3.6101 0 0 -0 1.58147</pose>
-    </model>
-    <model name='vine_plant3_clone_2_clone_1_clone_6_clone'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='bark'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>stem</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/bark</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='grape'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>grape</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/grape</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='leaf'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>leaf</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/leaf</name>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose frame=''>10.8476 3.58414 0 0 -0 1.36616</pose>
-    </model>
-    <model name='vine_plant3_clone_2_clone_4_clone_clone'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='bark'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>stem</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/bark</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='grape'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>grape</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/grape</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='leaf'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>leaf</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/leaf</name>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose frame=''>11.8401 3.6101 0 0 -0 1.58147</pose>
-    </model>
-    <model name='vine_plant3_clone_2_clone_1_clone_1_clone_clone'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='bark'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>stem</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/bark</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='grape'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>grape</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/grape</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='leaf'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>leaf</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/leaf</name>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose frame=''>13.015 3.63631 0 0 -0 1.39501</pose>
-    </model>
-    <model name='vine_plant3_clone_2_clone_1_clone_7_clone_0'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='bark'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>stem</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/bark</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='grape'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>grape</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/grape</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='leaf'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>leaf</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/leaf</name>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose frame=''>13.9293 3.50576 0 0 -0 -1.61396</pose>
-    </model>
-    <model name='vine_plant3_clone_2_clone_1_clone_9_clone_1_clone_clone'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='bark'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>stem</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/bark</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='grape'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>grape</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/grape</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='leaf'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>leaf</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/leaf</name>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose frame=''>15.2872 3.76686 0 0 -0 1.58147</pose>
-    </model>
-    <model name='vine_plant3_clone_2_clone_1_clone_0_clone'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='bark'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>stem</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/bark</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='grape'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>grape</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/grape</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='leaf'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>leaf</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/leaf</name>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose frame=''>16.2531 3.8192 0 0 -0 1.65108</pose>
-    </model>
-    <model name='vine_plant3_clone_2_clone_1_clone_9_clone_0_clone'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='bark'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>stem</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/bark</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='grape'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>grape</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/grape</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='leaf'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>leaf</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/leaf</name>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose frame=''>17.5069 3.76686 0 0 -0 1.38138</pose>
-    </model>
-    <model name='vine_plant3_clone_2_clone_1_clone_9_clone_2_clone_clone'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='bark'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>stem</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/bark</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='grape'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>grape</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/grape</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='leaf'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>leaf</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/leaf</name>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose frame=''>18.525 3.8192 0 0 -0 1.80136</pose>
-    </model>
-    <model name='vine_plant3_clone_2_clone_4_clone_0'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='bark'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>stem</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/bark</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='grape'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>grape</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/grape</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='leaf'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>leaf</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/leaf</name>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose frame=''>19.5438 3.8192 0 0 -0 1.58147</pose>
-    </model>
-    <model name='vine_plant3_clone_2_clone_7_clone_clone_1'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='bark'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>stem</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/bark</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='grape'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>grape</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/grape</name>
-            </script>
-          </material>
-        </visual>
-        <visual name='leaf'>
-          <geometry>
-            <mesh>
-              <uri>model://vine_plant3/meshes/vineplant.dae</uri>
-              <submesh>
-                <name>leaf</name>
-              </submesh>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://vine_plant3/materials/scripts/</uri>
-              <uri>model://vine_plant3/materials/textures/</uri>
-              <name>vine_plant/leaf</name>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose frame=''>20.6405 3.8192 0 0 -0 1.58147</pose>
+      <pose>18.8117 -1.24558 0 0 0 -1.48882</pose>
     </model>
     <model name='real_terrain'>
       <static>1</static>
@@ -6233,7 +4517,583 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>3.46298 1.4104 0 0 -0 0</pose>
+      <pose>6.87172 0.094575 0 0 -0 0</pose>
     </model>
+    <state world_name='default'>
+      <sim_time>542 986000000</sim_time>
+      <real_time>556 273717971</real_time>
+      <wall_time>1637593808 899395448</wall_time>
+      <iterations>542986</iterations>
+      <model name='real_terrain'>
+        <pose>6.87172 0.094575 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='terrain'>
+          <pose>6.87172 0.094575 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3'>
+        <pose>0.105853 -2 0 0 0 -1.59583</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>0.105853 -2 0 0 0 -1.59583</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone'>
+        <pose>0.125542 1.99794 0 0 0 -1.59583</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>0.125542 1.99794 0 0 0 -1.59583</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_0'>
+        <pose>0.962096 -2.02501 0 0 0 -1.48882</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>0.962096 -2.02501 0 0 0 -1.48882</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_0_clone'>
+        <pose>4.07569 1.9213 0 0 0 -1.48882</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>4.07569 1.9213 0 0 0 -1.48882</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_0_clone_0'>
+        <pose>4.74428 1.9213 0 0 0 -1.48882</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>4.74428 1.9213 0 0 0 -1.48882</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_0_clone_0_clone'>
+        <pose>4.10158 -2.03147 0 0 0 -1.48882</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>4.10158 -2.03147 0 0 0 -1.48882</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_0_clone_0_clone_0'>
+        <pose>6.35991 -2.01595 0 0 0 -1.48882</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>6.35991 -2.01595 0 0 0 -1.48882</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_0_clone_0_clone_0_clone'>
+        <pose>12.3266 -1.32489 0 0 0 -1.48882</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>12.3266 -1.32489 0 0 0 -1.48882</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_0_clone_0_clone_0_clone_clone'>
+        <pose>15.5054 -1.16555 0 0 0 -1.48882</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>15.5054 -1.16555 0 0 0 -1.48882</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_0_clone_0_clone_0_clone_clone_0'>
+        <pose>15.2005 0.807227 0 0 0 -1.48882</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>15.2005 0.807227 0 0 0 -1.48882</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_0_clone_0_clone_0_clone_clone_1'>
+        <pose>15.9019 0.746209 0 0 0 -1.48882</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>15.9019 0.746209 0 0 0 -1.48882</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_0_clone_0_clone_0_clone_clone_2'>
+        <pose>16.1297 -1.25926 0 0 0 -1.48882</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>16.1297 -1.25926 0 0 0 -1.48882</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_0_clone_0_clone_0_clone_clone_3'>
+        <pose>16.7867 -1.24558 0 0 0 -1.48882</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>16.7867 -1.24558 0 0 0 -1.48882</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_0_clone_0_clone_0_clone_clone_4'>
+        <pose>16.6634 0.779564 0 0 0 -1.48882</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>16.6634 0.779564 0 0 0 -1.48882</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_0_clone_0_clone_0_clone_clone_5'>
+        <pose>17.3202 0.738505 0 0 0 -1.48882</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>17.3202 0.738505 0 0 0 -1.48882</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_0_clone_0_clone_0_clone_clone_6'>
+        <pose>17.4023 -1.28663 0 0 0 -1.48882</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>17.4023 -1.28663 0 0 0 -1.48882</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_0_clone_0_clone_1'>
+        <pose>7.69796 -2.03005 0 0 0 -1.48882</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>7.69796 -2.03005 0 0 0 -1.48882</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_0_clone_0_clone_1_clone'>
+        <pose>13.7888 0.861695 0 0 0 -1.48882</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>13.7888 0.861695 0 0 0 -1.48882</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_0_clone_0_clone_1_clone_0'>
+        <pose>14.2523 -1.24471 0 0 0 -1.48882</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>14.2523 -1.24471 0 0 0 -1.48882</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_0_clone_0_clone_1_clone_1'>
+        <pose>14.5305 0.874927 0 0 0 -1.48882</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>14.5305 0.874927 0 0 0 -1.48882</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_0_clone_1'>
+        <pose>5.47009 1.9213 0 0 0 -1.48882</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>5.47009 1.9213 0 0 0 -1.48882</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_0_clone_2'>
+        <pose>6.15767 1.94038 0 0 0 -1.48882</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>6.15767 1.94038 0 0 0 -1.48882</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_0_clone_2_clone'>
+        <pose>4.77728 -2.01824 0 0 0 -1.48882</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>4.77728 -2.01824 0 0 0 -1.48882</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_0_clone_2_clone_0'>
+        <pose>10.4137 -2.01682 0 0 0 -1.48882</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>10.4137 -2.01682 0 0 0 -1.48882</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_0_clone_2_clone_0_clone'>
+        <pose>18.1138 -1.25926 0 0 0 -1.48882</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>18.1138 -1.25926 0 0 0 -1.48882</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_0_clone_2_clone_0_clone_0'>
+        <pose>18.1961 0.806922 0 0 0 -1.48882</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>18.1961 0.806922 0 0 0 -1.48882</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_0_clone_2_clone_0_clone_1'>
+        <pose>18.8803 0.820611 0 0 0 -1.48882</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>18.8803 0.820611 0 0 0 -1.48882</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_0_clone_2_clone_0_clone_2'>
+        <pose>18.8117 -1.24558 0 0 0 -1.48882</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>18.8117 -1.24558 0 0 0 -1.48882</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_0_clone_3'>
+        <pose>6.82614 1.94038 0 0 0 -1.48882</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>6.82614 1.94038 0 0 0 -1.48882</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_0_clone_3_clone'>
+        <pose>8.95933 1.92296 0 0 0 -1.48882</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>8.95933 1.92296 0 0 0 -1.48882</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_0_clone_3_clone_0'>
+        <pose>9.63087 1.91054 0 0 0 -1.48882</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>9.63087 1.91054 0 0 0 -1.48882</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_0_clone_3_clone_0_clone'>
+        <pose>7.02226 -2.03005 0 0 0 -1.48882</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>7.02226 -2.03005 0 0 0 -1.48882</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_0_clone_3_clone_0_clone_0'>
+        <pose>12.9228 -1.23215 0 0 0 -1.48882</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>12.9228 -1.23215 0 0 0 -1.48882</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_0_clone_3_clone_0_clone_1'>
+        <pose>13.5188 -1.24541 0 0 0 -1.48882</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>13.5188 -1.24541 0 0 0 -1.48882</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_1'>
+        <pose>2.50955 1.9213 0 0 0 -1.59583</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>2.50955 1.9213 0 0 0 -1.59583</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_clone'>
+        <pose>0.866669 1.9861 0 0 0 -1.68654</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>0.866669 1.9861 0 0 0 -1.68654</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_clone_0'>
+        <pose>3.25446 1.88308 0 0 0 -1.59583</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>3.25446 1.88308 0 0 0 -1.59583</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_clone_0_clone'>
+        <pose>3.26709 -2.07119 0 0 0 -1.59583</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>3.26709 -2.07119 0 0 0 -1.59583</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_clone_1'>
+        <pose>8.27799 1.95949 0 0 0 -1.59583</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>8.27799 1.95949 0 0 0 -1.59583</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_clone_1_clone'>
+        <pose>11.8351 1.42199 0 0 0 -1.59583</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>11.8351 1.42199 0 0 0 -1.59583</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_clone_1_clone_0'>
+        <pose>12.3801 1.18125 0 0 0 -1.59583</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>12.3801 1.18125 0 0 0 -1.59583</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_clone_1_clone_1'>
+        <pose>5.55184 -2.0557 0 0 0 -1.59583</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>5.55184 -2.0557 0 0 0 -1.59583</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_clone_1_clone_1_clone'>
+        <pose>15.0581 -1.22649 0 0 0 -1.59583</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>15.0581 -1.22649 0 0 0 -1.59583</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_clone_1_clone_2'>
+        <pose>8.40008 -2.00357 0 0 0 -1.59583</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>8.40008 -2.00357 0 0 0 -1.59583</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_clone_1_clone_3'>
+        <pose>9.02268 -2.01682 0 0 0 -1.59583</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>9.02268 -2.01682 0 0 0 -1.59583</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_clone_1_clone_4'>
+        <pose>9.68512 -2.01682 0 0 0 -1.59583</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>9.68512 -2.01682 0 0 0 -1.59583</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_clone_1_clone_5'>
+        <pose>11.116 -1.87109 0 0 0 -1.59583</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>11.116 -1.87109 0 0 0 -1.59583</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_clone_1_clone_6'>
+        <pose>11.6987 -1.56638 0 0 0 -1.59583</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>11.6987 -1.56638 0 0 0 -1.59583</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_clone_clone'>
+        <pose>1.68807 1.95949 0 0 0 -1.68654</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>1.68807 1.95949 0 0 0 -1.68654</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_clone_clone_clone'>
+        <pose>7.3802 1.94038 0 0 0 -1.68654</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>7.3802 1.94038 0 0 0 -1.68654</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_clone_clone_clone_0'>
+        <pose>1.57354 -2.03256 0 0 0 -1.68654</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>1.57354 -2.03256 0 0 0 -1.68654</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_clone_clone_clone_1'>
+        <pose>10.2583 1.89957 0 0 0 -1.68654</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>10.2583 1.89957 0 0 0 -1.68654</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_clone_clone_clone_2'>
+        <pose>11.1005 1.68804 0 0 0 -1.68654</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>11.1005 1.68804 0 0 0 -1.68654</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_clone_clone_clone_3'>
+        <pose>2.37942 -2.03147 0 0 0 -1.68654</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>2.37942 -2.03147 0 0 0 -1.68654</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='vine_plant3_clone_clone_clone_clone_clone'>
+        <pose>13.2322 1.07365 0 0 0 -1.68654</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>13.2322 1.07365 0 0 0 -1.68654</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <light name='sun'>
+        <pose>0 0 10 0 -0 0</pose>
+      </light>
+    </state>
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose>9.6661 -3.52723 51.3351 3.14159 1.57079 3.14159</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+      </camera>
+    </gui>
   </world>
 </sdf>

@@ -13,6 +13,21 @@
             <real_time_factor>1</real_time_factor>
             <real_time_update_rate>1000</real_time_update_rate>
         </physics>
+        <scene>
+            <sky>
+              <time> 12.0 </time>
+              <clouds>
+                  <speed> 0.7 </speed>
+                  <mean_size> 0.8 </mean_size>
+                  <humidity> 0.6 </humidity>
+              </clouds>
+           </sky>
+          <ambient>0.4 0.4 0.4 1</ambient>
+          <background>0.7 0.7 0.7 1</background>
+          <shadows>1</shadows>
+          <grid>false</grid>
+          <origin_visual>false</origin_visual>
+        </scene>
         <model name="aws_robomaker_hospital_floor_01_floor_1">
             <include>
                 <uri>model://aws_robomaker_hospital_floor_01_floor</uri>

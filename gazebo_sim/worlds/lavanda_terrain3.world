@@ -5,6 +5,25 @@
       <uri>model://sun</uri>
     </include>
 
+    <scene>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <sky>
+        <time> 12.0 </time>
+        <clouds>
+          <speed> 0.7 </speed>
+          <mean_size> 0.8 </mean_size>
+          <humidity> 0.6 </humidity>
+        </clouds>
+      </sky>
+      <fog>
+        <color> 1 1 1 1 </color>
+        <start> 1 </start>
+        <end> 50 </end>
+      </fog>
+      <background>0.7 0.7 0.7 1</background>
+      <shadows>1</shadows>
+    </scene>
+    
     <model  name="lavanda_models">
       <pose>0 0 0 0 0 0</pose>
 

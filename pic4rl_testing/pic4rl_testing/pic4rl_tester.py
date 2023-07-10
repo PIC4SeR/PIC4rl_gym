@@ -3,9 +3,10 @@
 import yaml
 import rclpy
 import threading
-from pic4rl_testing.pic4rl_testing_lidar import Pic4rlTesting_Lidar
-from pic4rl_testing.pic4rl_testing_camera import Pic4rlTesting_Camera
-from pic4rl_testing.tasks.following.pic4rl_testing_lidar_pf import Pic4rlTesting_Lidar_PF
+from pic4rl_testing.tasks.goToPose.pic4rl_testing_lidar import Pic4rlTesting_Lidar
+from pic4rl_testing.tasks.goToPose.pic4rl_testing_camera import Pic4rlTesting_Camera
+from pic4rl_testing.tasks.Vineyards.pic4rl_testing_vineyard import Pic4rlTesting_Vineyard
+from pic4rl_testing.tasks.Following.pic4rl_testing_lidar_pf import Pic4rlTesting_Lidar_PF
 from ament_index_python.packages import get_package_share_directory
 from pic4rl_testing.tasks.following.pic4rl_environment_lidar_pf import GetEntityClient
 
@@ -39,7 +40,7 @@ def main(args=None):
 
     rclpy.init()
 
-    if configParams['following']:
+    if configParams['task']=='following':
         get_entity_client = GetEntityClient()
         
         if configParams['sensor'] == 'lidar':
@@ -47,7 +48,15 @@ def main(args=None):
             pic4rl_testing.get_logger().info(
                 "Initialized Testing: sensor=LiDAR, task=Following\n\n")
 
+    elif configParams['task']=='vineyards':
+
+        if configParams['sensor'] == 'camera':
+            pic4rl_testing= Pic4rlTesting_Vineyard()
+            pic4rl_testing.get_logger().info(
+                "Initialized Testing: sensor=Camera, task=P2P\n\n")
+
     else:
+
         if configParams['sensor'] == 'lidar':
             pic4rl_testing= Pic4rlTesting_Lidar()
             pic4rl_testing.get_logger().info(
