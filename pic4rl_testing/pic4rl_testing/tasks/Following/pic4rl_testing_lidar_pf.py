@@ -30,9 +30,9 @@ from tf2rl.algos.td3 import TD3
 from tf2rl.algos.sac import SAC
 from tf2rl.algos.sac_ae import SACAE
 from tf2rl.algos.ppo import PPO
-from tf2rl.experiments.trainer import Trainer
+from tf2rl.experiments.tester import Tester
 from tf2rl.experiments.on_policy_trainer import OnPolicyTrainer
-from pic4rl_testing.tasks.following.pic4rl_environment_lidar_pf import Pic4rlEnvironment_Lidar_PF
+from pic4rl_testing.tasks.Following.pic4rl_environment_lidar_pf import Pic4rlEnvironment_Lidar_PF
 from ament_index_python.packages import get_package_share_directory
 
 from rclpy.executors import SingleThreadedExecutor
@@ -57,7 +57,7 @@ class Pic4rlTesting_Lidar_PF(Pic4rlEnvironment_Lidar_PF):
 
         else:
             self.set_parser_list(train_params)
-            self.trainer = self.instantiate_agent()
+            self.tester = self.instantiate_agent()
 
     def instantiate_agent(self):
         """
@@ -102,9 +102,9 @@ class Pic4rlTesting_Lidar_PF(Pic4rlEnvironment_Lidar_PF):
 
         self.print_log()
 
-        # OFF-POLICY ALGORITHM TRAINER
-        if self.policy_trainer == 'off-policy':
-            parser = Trainer.get_argument()
+        # OFF-POLICY ALGORITHM tester
+        if self.policy_tester == 'off-policy':
+            parser = Tester.get_argument()
             if self.train_policy == 'DDPG':
                 self.get_logger().debug('Parsing DDPG parameters...')
                 parser = DDPG.get_argument(parser)
@@ -186,12 +186,12 @@ class Pic4rlTesting_Lidar_PF(Pic4rlEnvironment_Lidar_PF):
                     log_level = self.log_level)
                 self.get_logger().info('Instanciate SAC agent...')
 
-            trainer = Trainer(policy, self, args, test_env=None)
+            tester = Tester(policy, self, args, test_env=None)
             #self.get_logger().info('Starting process...')
-            #trainer()
+            #tester()
 
-        # ON-POLICY ALGORITHM TRAINER
-        if self.policy_trainer == 'on-policy':
+        # ON-POLICY ALGORITHM tester
+        if self.policy_tester == 'on-policy':
             parser = OnPolicyTrainer.get_argument()
             
             if self.train_policy == 'PPO':
@@ -219,11 +219,11 @@ class Pic4rlTesting_Lidar_PF(Pic4rlEnvironment_Lidar_PF):
                     log_level = self.log_level)
                 self.get_logger().info('Instanciate PPO agent...')
 
-            trainer = OnPolicyTrainer(policy, self, args, test_env=None)
+            tester = OnPolicyTrainer(policy, self, args, test_env=None)
             #self.get_logger().info('Starting process...')
-            #trainer()
+            #tester()
             
-        return trainer
+        return tester
 
     def set_parser_list(self, params):
         """
@@ -240,9 +240,9 @@ class Pic4rlTesting_Lidar_PF(Pic4rlEnvironment_Lidar_PF):
 
     def threadFunc(self):
         try:
-            self.trainer()
+            self.tester()
         except Exception:
-            self.get_logger().error(f"Error in starting trainer:\n {traceback.format_exc()}")
+            self.get_logger().error(f"Error in starting tester:\n {traceback.format_exc()}")
             return
 
     def threadFunc_tflite(self):
@@ -303,7 +303,7 @@ class Pic4rlTesting_Lidar_PF(Pic4rlEnvironment_Lidar_PF):
         self.declare_parameters(namespace='',
         parameters=[
             ('policy', train_params['--policy']),
-            ('policy_trainer', train_params['--policy_trainer']),
+            ('policy_tester', train_params['--policy_trainer']),
             ('max_lin_vel', main_param['max_lin_vel']),
             ('min_lin_vel', main_param['min_lin_vel']),
             ('max_ang_vel', main_param['max_ang_vel']),
@@ -316,7 +316,7 @@ class Pic4rlTesting_Lidar_PF(Pic4rlEnvironment_Lidar_PF):
             ])
 
         self.train_policy = self.get_parameter('policy').get_parameter_value().string_value
-        self.policy_trainer = self.get_parameter('policy_trainer').get_parameter_value().string_value
+        self.policy_tester = self.get_parameter('policy_tester').get_parameter_value().string_value
         self.min_ang_vel = self.get_parameter('min_ang_vel').get_parameter_value().double_value
         self.min_lin_vel = self.get_parameter('min_lin_vel').get_parameter_value().double_value
         self.max_ang_vel = self.get_parameter('max_ang_vel').get_parameter_value().double_value
