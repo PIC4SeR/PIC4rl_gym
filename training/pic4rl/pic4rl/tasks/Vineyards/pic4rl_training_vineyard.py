@@ -39,25 +39,14 @@ from rclpy.executors import SingleThreadedExecutor
 from rclpy.executors import ExternalShutdownException
 
 
-class Pic4rlTraining_Camera(Pic4rlEnvironmentCamera):
+class Pic4rlTraining_Vineyards(Pic4rlEnvironmentCamera):
     def __init__(self):
         super().__init__()
         self.log_check()
         train_params = self.parameters_declaration()
 
-        if self.tflite_flag:
-            self.actor_fp16 = tf.lite.Interpreter(model_path='~/inference/actor_fp16.tflite')
-            self.actor_fp16.allocate_tensors()
-            self.input_index_image = self.actor_fp16.get_input_details()[0]["index"]
-            self.input_index_state = self.actor_fp16.get_input_details()[1]["index"]
-            self.output_index = self.actor_fp16.get_output_details()[0]["index"]
-            self.commands = [0.0,0.0]
-            self.step_counter = 0
-            self.done = False
-
-        else:
-            self.set_parser_list(train_params)
-            self.trainer = self.instantiate_agent()
+        self.set_parser_list(train_params)
+        self.trainer = self.instantiate_agent()
 
     def instantiate_agent(self):
         """
@@ -95,7 +84,7 @@ class Pic4rlTraining_Camera(Pic4rlEnvironmentCamera):
                 state = state + [[0., self.max_depth]]
         elif self.visual_data == 'image':
             self.low_state = np.zeros((self.image_height, self.image_width, self.channels),dtype=np.float32)
-            self.high_state = self.max_depth.*np.ones((self.image_height, self.image_width, self.channels),dtype=np.float32)
+            self.high_state = self.max_depth*np.ones((self.image_height, self.image_width, self.channels),dtype=np.float32)
 
         if len(state)>0:
             low_state = []
@@ -367,8 +356,6 @@ class Pic4rlTraining_Camera(Pic4rlEnvironmentCamera):
             ('min_lin_vel', main_params['min_lin_vel']),
             ('max_ang_vel', main_params['max_ang_vel']),
             ('min_ang_vel', main_params['min_ang_vel']),
-            ('tflite_flag', train_params['--tflite_flag']),
-            ('tflite_model_path', train_params['--tflite_model_path']),
             ('gpu', train_params['--gpu']),
             ('batch_size', train_params['--batch-size']),
             ('n_warmup', train_params['--n-warmup'])
@@ -380,8 +367,6 @@ class Pic4rlTraining_Camera(Pic4rlEnvironmentCamera):
         self.min_lin_vel = self.get_parameter('min_lin_vel').get_parameter_value().double_value
         self.max_ang_vel = self.get_parameter('max_ang_vel').get_parameter_value().double_value
         self.max_lin_vel = self.get_parameter('max_lin_vel').get_parameter_value().double_value
-        self.tflite_flag = self.get_parameter('tflite_flag').get_parameter_value().bool_value
-        self.tflite_model_path = self.get_parameter('tflite_model_path').get_parameter_value().string_value
         self.gpu = self.get_parameter('gpu').get_parameter_value().integer_value
         self.batch_size = self.get_parameter('batch_size').get_parameter_value().integer_value
         self.n_warmup = self.get_parameter('n_warmup').get_parameter_value().integer_value

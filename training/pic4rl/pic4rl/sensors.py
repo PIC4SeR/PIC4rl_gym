@@ -150,11 +150,12 @@ class OdomSensor():
 
 
 class DepthCamera():
-    def __init__(self, width, height, cutoff_dist,show=False):
+    def __init__(self, width, height, cutoff_dist, show=False):
         self.width = width
         self.height = height
         self.cutoff_dist = cutoff_dist
         self.show = show
+        self.random_noise = False
 
     def process_data(self, frame):
 
@@ -166,13 +167,14 @@ class DepthCamera():
    
         depth_frame = np.nan_to_num(frame, nan=0.0, posinf=max_depth, neginf=0.0)
         depth_frame = np.minimum(depth_frame, max_depth) # [m] in simulation, [mm] with real camera
-        noise1 = np.random.normal(loc=0.0, scale=0.2, size=depth_frame.shape)
-        noise2 = np.random.normal(loc=0.0, scale=1.0, size=depth_frame.shape)*depth_frame/10
-        noise1 = np.clip(noise1, -0.5,0.5)
-        noise2 = np.clip(noise2, -0.5,0.5)
+        if self.random_noise:
+            noise1 = np.random.normal(loc=0.0, scale=0.2, size=depth_frame.shape)
+            noise2 = np.random.normal(loc=0.0, scale=1.0, size=depth_frame.shape)*depth_frame/10
+            noise1 = np.clip(noise1, -0.5,0.5)
+            noise2 = np.clip(noise2, -0.5,0.5)
 
-        depth_frame = depth_frame + noise1 + noise2
-        depth_frame = np.clip(depth_frame, 0.,max_depth)
+            depth_frame = depth_frame + noise1 + noise2
+            depth_frame = np.clip(depth_frame, 0.,max_depth)
 
         depth_frame = cv2.resize(depth_frame, (self.width, self.height), interpolation = cv2.INTER_AREA)
         depth_frame = np.array(depth_frame, dtype=np.float64)

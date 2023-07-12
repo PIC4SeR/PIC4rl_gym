@@ -5,7 +5,7 @@ import rclpy
 import threading
 from pic4rl.tasks.goToPose.pic4rl_training_lidar import Pic4rlTraining_Lidar
 from pic4rl.tasks.goToPose.pic4rl_training_camera import Pic4rlTraining_Camera
-#from pic4rl.tasks.Vineyards.pic4rl_training_depth import Pic4rlTraining_Vineyard
+from pic4rl.tasks.Vineyards.pic4rl_training_vineyard import Pic4rlTraining_Vineyards
 from pic4rl.tasks.Following.pic4rl_training_lidar_pf import Pic4rlTraining_Lidar_PF
 from ament_index_python.packages import get_package_share_directory
 from pic4rl.tasks.Following.pic4rl_environment_lidar_pf import GetEntityClient
@@ -58,12 +58,11 @@ def main(args=None):
             pic4rl_training.get_logger().info(
                 "Initialized Training: sensor=LiDAR, task=Following\n\n")
 
-    #elif configParams['task']=='Vineyards':
-        ## TO DO 
-        # if configParams['sensor'] == 'camera':
-        #     pic4rl_training = Pic4rlTraining_Vineyards()
-        #     pic4rl_training.get_logger().info(
-        #         "Initialized Training: sensor=Camera, task=Vineyards\n\n")
+    elif configParams['task']=='Vineyards':
+        if configParams['sensor'] == 'camera':
+            pic4rl_training = Pic4rlTraining_Vineyards()
+            pic4rl_training.get_logger().info(
+                "Initialized Training: sensor=Camera, task=Vineyards\n\n")
     
     pic4rl_training.threadFunc()
 

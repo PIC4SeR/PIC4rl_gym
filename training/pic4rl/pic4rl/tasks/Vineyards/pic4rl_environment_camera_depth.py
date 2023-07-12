@@ -184,7 +184,7 @@ class Pic4rlEnvironmentCamera(Node):
         step_time = t1-self.t0
         self.t0 = t1
         twist_hz = 1./(step_time)
-        self.get_logger().debug('Publishing Twist at '+str(twist_hz))
+        self.get_logger().info('Publishing Twist at '+str(twist_hz))
 
     def get_sensor_data(self):
         """

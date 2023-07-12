@@ -14,14 +14,14 @@ main_node:
     goal_tolerance: 0.40
 
     # World parameters
-    world_name: "new_indoor.world" #Leave empty to obtain no world
-    data_path: "new_indoor.json"
+    world_name: "vineyard_new.world" #Leave empty to obtain no world
+    data_path: "vineyard.json"
 
     # Task parameters
-    task: 'goToPose' # goToPose, Following, Vineyards
+    task: 'Vineyards' # goToPose, Following, Vineyards
     
     # Sensors parameters
-    sensor: 'lidar' # lidar or rgb_camera or depth_camera
+    sensor: 'camera' # lidar or rgb_camera or depth_camera
     visual_data: 'features'
     features: 12544
     channels: 1
@@ -31,7 +31,7 @@ main_node:
     lidar_enabled: "true"
     sensors_topic:
       rgb_topic: "/camera/image_raw"
-      depth_topic: "/camera/depth/image_raw"
+      depth_topic: "/camera_color/depth_aligned_to_color" #"/camera/depth/image_raw"
       laser_topic: "/scan"
       imu_topic: "/imu/data"
       odom_topic: "/odom"
