@@ -30,7 +30,7 @@ from tf2rl.algos.td3 import TD3
 from tf2rl.algos.sac import SAC
 from tf2rl.algos.sac_ae import SACAE
 from tf2rl.algos.ppo import PPO
-from tf2rl.experiments.trainer import Trainer
+from tf2rl.experiments.trainer_explore import Trainer
 from tf2rl.experiments.on_policy_trainer import OnPolicyTrainer
 from pic4rl.tasks.Vineyards.pic4rl_environment_camera_depth import Pic4rlEnvironmentCamera
 from ament_index_python.packages import get_package_share_directory
@@ -40,7 +40,7 @@ from rclpy.executors import ExternalShutdownException
 
 
 class Pic4rlTraining_Vineyards(Pic4rlEnvironmentCamera):
-    def __init__(self):
+    def __init__(self,):
         super().__init__()
         self.log_check()
         train_params = self.parameters_declaration()
@@ -77,6 +77,9 @@ class Pic4rlTraining_Vineyards(Pic4rlEnvironmentCamera):
         state =[
         #[0., 15.], # goal_distance 
         #[-math.pi, math.pi], # goal angle or yaw
+        [self.min_lin_vel, self.max_lin_vel], # x_speed 
+        #[self.min_lin_vel, self.max_lin_vel], # y_speed
+        [self.min_ang_vel, self.max_ang_vel] # w_speed
         ]
 
         if self.visual_data == 'features':
@@ -290,29 +293,6 @@ class Pic4rlTraining_Vineyards(Pic4rlEnvironmentCamera):
         except Exception:
             self.get_logger().error(f"Error in starting trainer:\n {traceback.format_exc()}")
             return
-
-    def threadFunc_tflite(self):
-        while True:
-            if self.step_counter == 0:
-                observation = self.reset(self.step_counter)
-            else:
-                observation, reward, done, info = self.step(self.commands)
-                self.done = done
-            if self.done:
-                self.done = False
-                self.step_counter = 0
-                observation = self.reset(self.step_counter)
-
-            #print(observation[1].shape)
-            #print(observation[0].shape)
-            self.actor_fp16.set_tensor(self.input_index_state, observation[1])
-            self.actor_fp16.set_tensor(self.input_index_image, observation[0])
-
-            self.actor_fp16.invoke()
-            self.commands = self.actor_fp16.get_tensor(self.output_index)[0,:]
-            #print(self.commands.shape)
-
-            self.step_counter += 1
 
     def log_check(self):
         """

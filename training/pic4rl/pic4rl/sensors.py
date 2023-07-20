@@ -15,31 +15,9 @@ from sensor_msgs.msg import Image, Imu
 
 from cv_bridge import CvBridge
 
-import os
+from pic4rl.utils.env_utils import quat_to_euler, tf_decompose, euler_from_quaternion
+
 import yaml
-
-def euler_from_quaternion(quat):
-    """
-    Converts quaternion (w in last place) to euler roll, pitch, yaw
-    quat = [x, y, z, w]
-    """
-    x = quat.x
-    y = quat.y
-    z = quat.z
-    w = quat.w
-
-    sinr_cosp = 2 * (w*x + y*z)
-    cosr_cosp = 1 - 2*(x*x + y*y)
-    roll = np.arctan2(sinr_cosp, cosr_cosp)
-
-    sinp = 2 * (w*y - z*x)
-    pitch = np.arcsin(sinp)
-
-    siny_cosp = 2 * (w*z + x*y)
-    cosy_cosp = 1 - 2 * (y*y + z*z)
-    yaw = np.arctan2(siny_cosp, cosy_cosp)
-
-    return roll, pitch, yaw
 
 
 class LaserScanSensor():
@@ -56,6 +34,8 @@ class LaserScanSensor():
 
         self.max_dist = max_dist
         self.num_points = num_points
+        self.laser_info = [0.0, 6.283199787139893, 0.01750195026397705] #min angle, max angle, increment
+
         self.get_collision_vector(robot_type, robot_radius, 
             robot_size, collision_tolerance)
 
@@ -80,26 +60,29 @@ class LaserScanSensor():
         # There are some outliers (0 or nan values, they all are set to 0) that will not be passed to the DRL agent
         # Correct data:
         scan_range = []
+        
         min_dist_point = self.max_dist
         points = np.nan_to_num(points[:], nan=self.max_dist, posinf=self.max_dist, neginf=self.max_dist)
+        points[points == 0.] = self.max_dist
+        raw_data = points
         collision = np.any(points < self.collision_vector)
 
-        #min_obstacle_distance = min(points)
+        min_obstacle_distance = min(points)
         #max_obstacle_distance = max(points)
         #min_obstacle_angle = np.argmin(points)
 
         points = self.add_noise(points)
-        points = np.clip(points, 0.15, self.max_dist)
+        points = np.clip(points, 0.20, self.max_dist)
         # Takes only num_points
         div = int(360/self.num_points)
 
         # Takes only sensed measurements
         scan_range = np.minimum.reduceat(points, np.arange(0,len(points),div))
-        #print('min obstacle distance: ', self.min_obstacle_distance)
-        #print('min obstacle angle :', self.min_obstacle_angle)
+        #print('min obstacle distance: ', min_obstacle_distance)
+        #print('min obstacle angle :', min_obstacle_angle)
         #print(len(scan_range))
         #self.plot_points(points)
-        return scan_range, collision
+        return scan_range, collision, raw_data
 
     def add_noise(self, points):
         noise = np.random.normal(loc=0.0, scale=0.05, size=points.shape)
@@ -141,12 +124,22 @@ class OdomSensor():
     def __init__(self):
         pass
     
-    def process_data(self, data):
+    def process_data(self, data, vel=False):
         pos_x = data.pose.pose.position.x
         pos_y = data.pose.pose.position.y
-        _,_,yaw = euler_from_quaternion(data.pose.pose.orientation)
-        
-        return [pos_x, pos_y, yaw]
+        zqr = data.pose.pose.orientation.z
+        wqr = data.pose.pose.orientation.w
+        zr  = quat_to_euler(zqr, wqr)
+        #_,_,yaw = euler_from_quaternion(data.pose.pose.orientation)
+
+        if vel:
+            vx = data.twist.twist.linear.x
+            wz = data.twist.twist.angular.z
+
+            return [pos_x, pos_y, zr], [vx, wz]
+
+        else:        
+            return [pos_x, pos_y, yaw]
 
 
 class DepthCamera():
@@ -166,6 +159,7 @@ class DepthCamera():
         #max_depth = self.cutoff*1000 [mm]
    
         depth_frame = np.nan_to_num(frame, nan=0.0, posinf=max_depth, neginf=0.0)
+        depth_frame[depth_frame == 0.] = max_depth
         depth_frame = np.minimum(depth_frame, max_depth) # [m] in simulation, [mm] with real camera
         if self.random_noise:
             noise1 = np.random.normal(loc=0.0, scale=0.2, size=depth_frame.shape)
@@ -342,7 +336,7 @@ class Sensors():
         self.odom_data = msg
         self.sensor_msg['odom'] = msg
 
-    def get_odom(self):
+    def get_odom(self, vel=False):
         if self.odom_sub is None:
             self.node.get_logger().warn('NO Odometry subscription')
             return None
@@ -350,8 +344,12 @@ class Sensors():
             self.node.get_logger().warn('NO Odometry data')
             return None
 
-        data = self.odom_process.process_data(self.odom_data)
-        return data
+        if vel:
+            data, velocities = self.odom_process.process_data(self.odom_data, vel)
+            return data, velocities
+        else:
+            data, velocities = self.odom_process.process_data(self.odom_data)
+            return data
 
     def get_depth(self):
         if self.depth_sub is None:
@@ -392,5 +390,5 @@ class Sensors():
             self.node.get_logger().warn('NO laser data')
             return None, False
 
-        data, collision = self.laser_process.process_data(self.laser_data)
-        return data, collision
+        processed_data, collision, raw_data = self.laser_process.process_data(self.laser_data)
+        return processed_data, collision, raw_data

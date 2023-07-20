@@ -9,6 +9,19 @@
             <uri>model://vine_plant3/meshes/vineplant.dae</uri>
           </mesh>
         </geometry>
+        <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
       </collision>
       <visual name="bark">
         <geometry>

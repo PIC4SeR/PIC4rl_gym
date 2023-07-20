@@ -21,7 +21,7 @@ from std_srvs.srv import Empty
 from geometry_msgs.msg import Twist
 from ament_index_python.packages import get_package_share_directory
 from pic4rl.sensors import Sensors
-
+from pic4rl.utils.env_utils import *
 
 class Pic4rlEnvironmentLidar(Node):
     def __init__(self):
@@ -54,7 +54,8 @@ class Pic4rlEnvironmentLidar(Node):
                 ('robot_name', main_params['robot_name']),
                 ('goal_tolerance', main_params['goal_tolerance']),
                 ('lidar_dist', main_params['laser_param']['max_distance']),
-                ('lidar_points', main_params['laser_param']['num_points'])
+                ('lidar_points', main_params['laser_param']['num_points']),
+                ('update_frequency', main_params['update_frequency'])
                 ]
             )
 
@@ -75,10 +76,12 @@ class Pic4rlEnvironmentLidar(Node):
             'lidar_dist').get_parameter_value().double_value
         self.lidar_points   = self.get_parameter(
             'lidar_points').get_parameter_value().integer_value
+        self.params_update_freq   = self.get_parameter(
+            'update_frequency').get_parameter_value().double_value
 
         qos = QoSProfile(depth=10)
         self.sensors = Sensors(self)
-        self.create_logdir(train_params['--policy'], main_params['sensor'], train_params['--logdir'])
+        create_logdir(train_params['--policy'], main_params['sensor'], train_params['--logdir'])
         self.spin_sensors_callbacks()
 
         self.cmd_vel_pub = self.create_publisher(
@@ -169,24 +172,20 @@ class Pic4rlEnvironmentLidar(Node):
 
         #self.get_logger().debug("publishing twist...")
         self.cmd_vel_pub.publish(twist)
-        self.compute_frequency()
-        time.sleep(0.05)
+
+        # Regulate frequency of send action if needed
+        # freq, t1 = compute_frequency(self.t0)
+        # t0 = t1
+        # frequency_control(self.params_update_freq)
 
         #self.get_logger().debug("pausing...")
         #self.pause()
-
-    def compute_frequency(self,):
-        t1=time.perf_counter()
-        step_time = t1-self.t0
-        self.t0 = t1
-        twist_hz = 1./(step_time)
-        self.get_logger().debug('Publishing Twist at '+str(twist_hz))
 
     def get_sensor_data(self):
         """
         """
         sensor_data = {}
-        sensor_data["scan"], collision = self.sensors.get_laser()
+        sensor_data["scan"], collision, _ = self.sensors.get_laser()
         sensor_data["odom"] = self.sensors.get_odom()
         
         if sensor_data["scan"] is None:
@@ -194,33 +193,11 @@ class Pic4rlEnvironmentLidar(Node):
         if sensor_data["odom"] is None:
             sensor_data["odom"] = [0.0,0.0,0.0]
 
-        goal_info, robot_pose = self.process_odom(sensor_data["odom"])
+        goal_info, robot_pose = process_odom(sensor_data["odom"])
         lidar_measurements = sensor_data["scan"]
 
         return lidar_measurements, goal_info, robot_pose, collision
 
-    def process_odom(self, odom):
-        """
-        """
-        goal_dx = self.goal_pose[0]-odom[0]
-        goal_dy = self.goal_pose[1]-odom[1]
-
-        goal_distance = np.hypot(goal_dx, goal_dy)
-
-        path_theta = math.atan2(goal_dy, goal_dx)
-
-        goal_angle = path_theta - odom[2]
-
-        if goal_angle > math.pi:
-            goal_angle -= 2 * math.pi
-
-        elif goal_angle < -math.pi:
-            goal_angle += 2 * math.pi
-
-        goal_info = [goal_distance, goal_angle]
-        robot_pose = [odom[0], odom[1], odom[2]]
-
-        return goal_info, robot_pose
 
     def check_events(self, lidar_measurements, goal_info, robot_pose, collision):
         """
@@ -311,7 +288,7 @@ class Pic4rlEnvironmentLidar(Node):
             self.get_logger().warn('service not available, waiting again...')
         self.reset_world_client.call_async(req)
         
-        if self.episode % self.change_episode == 0. and not self.evaluate:
+        if self.episode % self.change_episode == 0. or self.evaluate:
             self.index = int(np.random.uniform()*len(self.poses)) -1 
 
         self.get_logger().debug("Respawing robot ...")
@@ -404,12 +381,3 @@ class Pic4rlEnvironmentLidar(Node):
             self.get_logger().warn('service not available, waiting again...')
         future = self.unpause_physics_client.call_async(req)
         rclpy.spin_until_future_complete(self, future)
-
-    def create_logdir(self, policy, sensor, logdir):
-        """
-        """
-        self.logdir = f"{datetime.datetime.now().strftime('%Y%m%d_%H%M%S.%f')}_{sensor}_{policy}/"
-        Path(os.path.join(logdir, self.logdir)).mkdir(parents=True, exist_ok=True)
-        logging.basicConfig(
-            filename=os.path.join(logdir, self.logdir, 'screen_logger.log'), 
-            level=logging.INFO)

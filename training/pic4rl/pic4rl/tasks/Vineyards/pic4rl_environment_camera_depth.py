@@ -22,9 +22,11 @@ from geometry_msgs.msg import Twist
 from ament_index_python.packages import get_package_share_directory
 from pic4rl.sensors import Sensors
 
+from pic4dwa.pic4dwa import Pic4DWA
+from pic4rl.utils.env_utils import *
 
 class Pic4rlEnvironmentCamera(Node):
-    def __init__(self):
+    def __init__(self,):
         """
         """
         super().__init__('pic4rl_training_camera')
@@ -60,7 +62,8 @@ class Pic4rlEnvironmentCamera(Node):
                 ('image_height', main_params['depth_param']['height']),
                 ('dist_cutoff', main_params['depth_param']['dist_cutoff']),
                 ('lidar_dist', main_params['laser_param']['max_distance']),
-                ('lidar_points', main_params['laser_param']['num_points'])
+                ('lidar_points', main_params['laser_param']['num_points']),
+                ('update_frequency', main_params['update_frequency'])
                 ])
 
         self.data_path = self.get_parameter('data_path').get_parameter_value().string_value
@@ -78,10 +81,11 @@ class Pic4rlEnvironmentCamera(Node):
         self.max_depth = self.get_parameter('dist_cutoff').get_parameter_value().double_value
         self.lidar_distance = self.get_parameter('lidar_dist').get_parameter_value().double_value
         self.lidar_points   = self.get_parameter('lidar_points').get_parameter_value().integer_value
+        self.params_update_freq   = self.get_parameter('update_frequency').get_parameter_value().double_value
 
         qos = QoSProfile(depth=10)
         self.sensors = Sensors(self)
-        self.create_logdir(train_params['--policy'], main_params['sensor'], train_params['--logdir'])
+        create_logdir(train_params['--policy'], main_params['sensor'], train_params['--logdir'])
         self.spin_sensors_callbacks()
 
         self.cmd_vel_pub = self.create_publisher(
@@ -102,6 +106,10 @@ class Pic4rlEnvironmentCamera(Node):
         self.collision_count    = 0
         self.t0                 = 0.0
         self.evaluate           = False
+
+        # if want to use a DWA to provide demonstrative exploration episodes
+        self.explore_demo = 15
+        #self.controller = Pic4DWA()
 
         self.initial_pose, self.goals, self.poses = self.get_goals_and_poses()
         self.goal_pose = self.goals[0]
@@ -129,7 +137,7 @@ class Pic4rlEnvironmentCamera(Node):
 
         self.get_logger().debug("getting sensor data...")
         self.spin_sensors_callbacks()
-        lidar_measurements, depth_image, goal_info, robot_pose, collision = self.get_sensor_data()
+        lidar_measurements, depth_image, goal_info, robot_pose, collision, _ = self.get_sensor_data()
 
         self.get_logger().debug("checking events...")
         done, event = self.check_events(lidar_measurements, goal_info, robot_pose, collision)
@@ -163,7 +171,7 @@ class Pic4rlEnvironmentCamera(Node):
         rclpy.spin_once(self)
         while None in self.sensors.sensor_msg.values():
             rclpy.spin_once(self)
-            self.get_logger().debug("spin once ...")
+            #self.get_logger().debug("spin once ...")
         self.sensors.sensor_msg = dict.fromkeys(self.sensors.sensor_msg.keys(), None)
 
     def send_action(self,twist):
@@ -174,24 +182,21 @@ class Pic4rlEnvironmentCamera(Node):
 
         #self.get_logger().debug("publishing twist...")
         self.cmd_vel_pub.publish(twist)
-        self.compute_frequency()
+
+        # Regulate frequency of send action if needed
+        # freq, t1 = compute_frequency(self.t0)
+        # t0 = t1
+        # frequency_control(self.params_update_freq)
 
         #self.get_logger().debug("pausing...")
         #self.pause()
-
-    def compute_frequency(self,):
-        t1=time.perf_counter()
-        step_time = t1-self.t0
-        self.t0 = t1
-        twist_hz = 1./(step_time)
-        self.get_logger().info('Publishing Twist at '+str(twist_hz))
 
     def get_sensor_data(self):
         """
         """
         sensor_data = {"depth":None}
-        sensor_data["scan"], collision = self.sensors.get_laser()
-        sensor_data["odom"] = self.sensors.get_odom()
+        sensor_data["scan"], collision, complete_laser_data = self.sensors.get_laser()
+        sensor_data["odom"], velocities = self.sensors.get_odom(vel=True)
         sensor_data["depth"] = self.sensors.get_depth()
 
         if sensor_data["scan"] is None:
@@ -202,35 +207,12 @@ class Pic4rlEnvironmentCamera(Node):
             sensor_data["depth"] = np.ones((self.image_height,self.image_width,1))*self.cutoff
 
         self.get_logger().debug("processing odom...")
-        goal_info, robot_pose = self.process_odom(sensor_data["odom"])
+        goal_info, robot_pose = process_odom(self.goal_pose, sensor_data["odom"])
         lidar_measurements = sensor_data["scan"]
         depth_image = sensor_data["depth"]
 
-        return lidar_measurements, depth_image, goal_info, robot_pose, collision
+        return lidar_measurements, depth_image, goal_info, robot_pose, collision, velocities
 
-    def process_odom(self, odom):
-        """
-        """
-        goal_distance = math.sqrt(
-            (self.goal_pose[0]-odom[0])**2
-            + (self.goal_pose[1]-odom[1])**2)
-
-        path_theta = math.atan2(
-            self.goal_pose[1]-odom[1],
-            self.goal_pose[0]-odom[0])
-
-        goal_angle = path_theta - odom[2]
-
-        if goal_angle > math.pi:
-            goal_angle -= 2 * math.pi
-
-        elif goal_angle < -math.pi:
-            goal_angle += 2 * math.pi
-
-        goal_info = [goal_distance, goal_angle]
-        robot_pose = [odom[0], odom[1], odom[2]]
-
-        return goal_info, robot_pose
 
     def check_events(self, lidar_measurements, goal_info, robot_pose, collision):
         """
@@ -238,6 +220,8 @@ class Pic4rlEnvironmentCamera(Node):
         # FOR VINEYARD ONLY ##
         if math.fabs(robot_pose[2]) > 1.57:
             robot_pose[2] = math.fabs(robot_pose[2]) - 3.14
+        #print('robot pose :', robot_pose)
+
         yaw_limit = math.fabs(robot_pose[2])-1.4835  #check yaw is less than 85°
         self.get_logger().debug("Yaw limit: {}".format(yaw_limit))
 
@@ -271,23 +255,27 @@ class Pic4rlEnvironmentCamera(Node):
     def get_reward(self, twist, lidar_measurements, goal_info, robot_pose, done, event):
         """
         """
-        yaw_reward = (0.5 - 2*math.sqrt(math.fabs(goal_info[1] / math.pi)))
-        y_reward = (-2**(math.fabs(4.5 - robot_pose[1]))+1)*10
+        yaw_reward = (1 - 2*math.sqrt(math.fabs(goal_info[1] / math.pi)))*0.6
+        #y_reward = (-2**(math.fabs(0.45 - 2*robot_pose[1]))+1)*10
         #distance_reward = 2*((2 * self.previous_goal_distance) / \
         #   (self.previous_goal_distance + goal_distance) - 1)
         #distance_reward = (2 - 2**(self.goal_distance / self.init_goal_distance))
-        #distance_reward = (self.previous_goal_distance - goal_distance)*35
-        #v = twist.linear.x
-        #w = twist.angular.z
-        #speed_re = (3*v - math.fabs(w))
+        distance_reward = (self.previous_goal_info[0] - goal_info[0])*35
+        v = twist.linear.x
+        w = twist.angular.z
+        speed_reward = (v - math.fabs(w))
         
-        reward =  yaw_reward + y_reward 
+        reward =  yaw_reward + distance_reward + speed_reward
 
         if event == "goal":
-            reward += 500
+            reward += 1000
         if event == "collision":
             #reward += -1000*math.fabs(v)**2
             reward = -500
+        if event == "reverse":
+            reward = -500
+        else:
+            reward += -1
 
         self.get_logger().debug(str(reward))
 
@@ -296,16 +284,18 @@ class Pic4rlEnvironmentCamera(Node):
     def get_observation(self, twist, depth_image, goal_info, robot_pose):
         """
         """
+        # flattened depth image 
         if self.visual_data == 'features':
             features = depth_image.flatten()
-        
-        #goal_info = np.array(goal_info, dtype=np.float32)
-        #state = np.concatenate((goal_info, features))
-        state = features
 
+        # previous velocity state
+        v = twist.linear.x
+        w = twist.angular.z
+        vel = np.array([v,w], dtype=np.float32)
+        state = np.concatenate((vel,features))
         return state
 
-    def update_state(self,twist, depth_image, goal_info, robot_pose, done, event):
+    def update_state(self, twist, depth_image, goal_info, robot_pose, done, event):
         """
         """
         self.previous_twist = twist
@@ -318,6 +308,7 @@ class Pic4rlEnvironmentCamera(Node):
         """
         self.episode = n_episode
         self.evaluate = evaluate
+
         logging.info(f"Total_episodes: {'evaluate' if evaluate else n_episode}, Total_steps: {tot_steps}, episode_steps: {self.episode_step+1}\n")
         print()
         self.get_logger().info("Initializing new episode ...")
@@ -329,7 +320,13 @@ class Pic4rlEnvironmentCamera(Node):
         _,_,_, = self._step(reset_step = True)
         observation,_,_, = self._step()
 
-        return observation
+        if self.episode < 500 and (self.episode % self.explore_demo == 0.) and not self.evaluate:
+            exploration_ep = True
+            self.get_logger().info("Demonstrative exploration episode ...")
+        else:
+            exploration_ep = False
+
+        return observation, exploration_ep
     
     def new_episode(self):
         """
@@ -341,7 +338,7 @@ class Pic4rlEnvironmentCamera(Node):
             self.get_logger().warn('service not available, waiting again...')
         self.reset_world_client.call_async(req)
         
-        if self.episode % self.change_episode == 0. and not self.evaluate:
+        if self.episode % self.change_episode == 0. or self.evaluate:
             self.index = int(np.random.uniform()*len(self.poses)) -1 
 
         self.get_logger().debug("Respawing robot ...")
@@ -350,27 +347,25 @@ class Pic4rlEnvironmentCamera(Node):
         self.get_logger().debug("Respawing goal ...")
         self.respawn_goal(self.index)
 
+        time.sleep(2.0)
         self.get_logger().debug("Environment reset performed ...")
 
     def respawn_goal(self, index):
         """
         """
-        if self.episode <= self.starting_episodes:
-            self.get_random_goal()
-        else:
-            self.get_goal(index)
+        self.get_goal(index)
 
         self.get_logger().info(f"Ep {'evaluate' if self.evaluate else self.episode+1} goal pose [x, y]: {self.goal_pose}")
         logging.info(f"Ep {'evaluate' if self.evaluate else self.episode+1} goal pose [x, y]: {self.goal_pose}")
 
-        position = "{x: "+str(self.goal_pose[0])+",y: "+str(self.goal_pose[1])+",z: "+str(0.01)+"}"
-        pose = "'{state: {name: 'goal',pose: {position: "+position+"}}}'"
-        subprocess.run(
-            "ros2 service call /test/set_entity_state gazebo_msgs/srv/SetEntityState "+pose,
-            shell=True,
-            stdout=subprocess.DEVNULL
-            )
-        time.sleep(0.25)
+        # position = "{x: "+str(self.goal_pose[0])+",y: "+str(self.goal_pose[1])+",z: "+str(0.01)+"}"
+        # pose = "'{state: {name: 'goal',pose: {position: "+position+"}}}'"
+        # subprocess.run(
+        #     "ros2 service call /test/set_entity_state gazebo_msgs/srv/SetEntityState "+pose,
+        #     shell=True,
+        #     stdout=subprocess.DEVNULL
+        #     )
+        # time.sleep(0.25)
 
     def get_goal(self, index):
         """
@@ -380,7 +375,7 @@ class Pic4rlEnvironmentCamera(Node):
     def respawn_robot(self, index):
         """
         """
-        if self.episode <= self.starting_episodes:
+        if self.episode < self.starting_episodes:
             x, y, yaw = tuple(self.initial_pose)
         else:
             x, y , yaw = tuple(self.poses[index])
@@ -400,7 +395,7 @@ class Pic4rlEnvironmentCamera(Node):
             shell=True,
             stdout=subprocess.DEVNULL
             )
-        time.sleep(0.25)
+        time.sleep(1.0)
 
     def pause(self):
         """
@@ -420,11 +415,33 @@ class Pic4rlEnvironmentCamera(Node):
         future = self.unpause_physics_client.call_async(req)
         rclpy.spin_until_future_complete(self, future)
 
-    def create_logdir(self, policy, sensor, logdir):
-        """
-        """
-        self.logdir = f"{datetime.datetime.now().strftime('%Y%m%d_%H%M%S.%f')}_{sensor}_{policy}/"
-        Path(os.path.join(logdir, self.logdir)).mkdir(parents=True, exist_ok=True)
-        logging.basicConfig(
-            filename=os.path.join(logdir, self.logdir, 'screen_logger.log'), 
-            level=logging.INFO)
+    # def call_DWA(self):
+    #     """
+    #     """
+    #     self.spin_sensors_callbacks()
+    #     _, _, _, robot_pose, collision, velocities = self.get_sensor_data()
+
+    #     obs = self.dwa_process_lidar(self.laser_data, robot_pose)
+
+    #     x, ob, goal = self.controller.get_env_data(robot_pose, velocities, obs, self.goal_pose)
+    #     dw = self.controller.calc_dynamic_window(x)
+    #     u, trajectory = self.controller.calc_control_and_trajectory(x, dw, goal, ob)
+
+    #     return u
+
+    # def dwa_process_lidar(self, lidar_measurements, robot_pose):
+    #     """
+    #     """
+    #     actual_angle = self.laser_info[0]
+    #     increment = self.laser_info[2]
+    #     ob = []
+    #     ob_points = []
+
+    #     for point in lidar_measurements:
+    #         p = [point*math.cos(actual_angle), point*math.sin(actual_angle)]
+    #         p = tf_decompose(robot_pose,[p[0], p[1], 0.0, 1.0])
+
+    #         ob.append([p[0], p[1]])
+    #         actual_angle += increment
+
+    #     return ob

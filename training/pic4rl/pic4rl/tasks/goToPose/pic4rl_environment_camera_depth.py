@@ -21,6 +21,7 @@ from std_srvs.srv import Empty
 from geometry_msgs.msg import Twist
 from ament_index_python.packages import get_package_share_directory
 from pic4rl.sensors import Sensors
+from pic4rl.utils.env_utils import *
 
 
 class Pic4rlEnvironmentCamera(Node):
@@ -59,7 +60,8 @@ class Pic4rlEnvironmentCamera(Node):
                 ('image_width', main_params['depth_param']['width']),
                 ('image_height', main_params['depth_param']['height']),
                 ('lidar_dist', main_params['laser_param']['max_distance']),
-                ('lidar_points', main_params['laser_param']['num_points'])
+                ('lidar_points', main_params['laser_param']['num_points']),
+                ('update_frequency', main_params['update_frequency'])
                 ])
 
         self.data_path = self.get_parameter('data_path').get_parameter_value().string_value
@@ -76,10 +78,11 @@ class Pic4rlEnvironmentCamera(Node):
         self.image_height = self.get_parameter('image_height').get_parameter_value().integer_value
         self.lidar_distance = self.get_parameter('lidar_dist').get_parameter_value().double_value
         self.lidar_points   = self.get_parameter('lidar_points').get_parameter_value().integer_value
+        self.params_update_freq   = self.get_parameter('update_frequency').get_parameter_value().double_value
 
         qos = QoSProfile(depth=10)
         self.sensors = Sensors(self)
-        self.create_logdir(train_params['--policy'], main_params['sensor'], train_params['--logdir'])
+        create_logdir(train_params['--policy'], main_params['sensor'], train_params['--logdir'])
         self.spin_sensors_callbacks()
 
         self.cmd_vel_pub = self.create_publisher(
@@ -172,24 +175,19 @@ class Pic4rlEnvironmentCamera(Node):
 
         #self.get_logger().debug("publishing twist...")
         self.cmd_vel_pub.publish(twist)
-        self.compute_frequency()
-        time.sleep(0.025)
+        # Regulate frequency of send action if needed
+        # freq, t1 = compute_frequency(self.t0)
+        # t0 = t1
+        # frequency_control(self.params_update_freq)
 
         #self.get_logger().debug("pausing...")
         #self.pause()
-
-    def compute_frequency(self,):
-        t1=time.perf_counter()
-        step_time = t1-self.t0
-        self.t0 = t1
-        twist_hz = 1./(step_time)
-        self.get_logger().debug('Publishing Twist at '+str(twist_hz))
 
     def get_sensor_data(self):
         """
         """
         sensor_data = {"depth":None}
-        sensor_data["scan"], collision = self.sensors.get_laser()
+        sensor_data["scan"], collision, _ = self.sensors.get_laser()
         sensor_data["odom"] = self.sensors.get_odom()
         sensor_data["depth"] = self.sensors.get_depth()
 
@@ -201,7 +199,7 @@ class Pic4rlEnvironmentCamera(Node):
             sensor_data["depth"] = np.ones((self.image_height,self.image_width,1))*self.cutoff
 
         self.get_logger().debug("processing odom...")
-        goal_info, robot_pose = self.process_odom(sensor_data["odom"])
+        goal_info, robot_pose = process_odom(sensor_data["odom"])
         lidar_measurements = sensor_data["scan"]
         depth_image = sensor_data["depth"]
 
@@ -328,7 +326,7 @@ class Pic4rlEnvironmentCamera(Node):
             self.get_logger().warn('service not available, waiting again...')
         self.reset_world_client.call_async(req)
         
-        if self.episode % self.change_episode == 0. and not self.evaluate:
+        if self.episode % self.change_episode == 0. or self.evaluate:
             self.index = int(np.random.uniform()*len(self.poses)) -1 
 
         self.get_logger().debug("Respawing robot ...")
@@ -421,12 +419,3 @@ class Pic4rlEnvironmentCamera(Node):
             self.get_logger().warn('service not available, waiting again...')
         future = self.unpause_physics_client.call_async(req)
         rclpy.spin_until_future_complete(self, future)
-
-    def create_logdir(self, policy, sensor, logdir):
-        """
-        """
-        self.logdir = f"{datetime.datetime.now().strftime('%Y%m%d_%H%M%S.%f')}_{sensor}_{policy}/"
-        Path(os.path.join(logdir, self.logdir)).mkdir(parents=True, exist_ok=True)
-        logging.basicConfig(
-            filename=os.path.join(logdir, self.logdir, 'screen_logger.log'), 
-            level=logging.INFO)

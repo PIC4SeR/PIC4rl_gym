@@ -8,7 +8,7 @@ from pic4rl.tasks.goToPose.pic4rl_training_camera import Pic4rlTraining_Camera
 from pic4rl.tasks.Vineyards.pic4rl_training_vineyard import Pic4rlTraining_Vineyards
 from pic4rl.tasks.Following.pic4rl_training_lidar_pf import Pic4rlTraining_Lidar_PF
 from ament_index_python.packages import get_package_share_directory
-from pic4rl.tasks.Following.pic4rl_environment_lidar_pf import GetEntityClient
+from pic4rl.utils.get_entity_client import GetEntityClient
 
 import os
 #os.environ["CUDA_VISIBLE_DEVICES"]="-1" 
@@ -54,11 +54,12 @@ def main(args=None):
         get_entity_client = GetEntityClient()
         
         if configParams['sensor'] == 'lidar':
-            pic4rl_training = Pic4rlTraining_Lidar_PF (get_entity_client)
+            pic4rl_training = Pic4rlTraining_Lidar_PF(get_entity_client)
             pic4rl_training.get_logger().info(
                 "Initialized Training: sensor=LiDAR, task=Following\n\n")
 
     elif configParams['task']=='Vineyards':
+        
         if configParams['sensor'] == 'camera':
             pic4rl_training = Pic4rlTraining_Vineyards()
             pic4rl_training.get_logger().info(

@@ -23,29 +23,8 @@ from ament_index_python.packages import get_package_share_directory
 from pic4rl.sensors import Sensors
 
 from pic4dwa.pic4dwa import Pic4DWA
+from pic4rl.utils.env_utils import *
 
-def tf_decompose(robot_pose, goal_pose):
-    """
-    This method decomposes two consecutive reference frames.
-
-    For example, it can return the pose of the goal, converted from 
-    robot reference frame to fixed reference frame, with robot_pose given in 
-    fixed reference frame and goal_pose given in robot reference frame.
-    """ 
-    xr, yr, zr = tuple(robot_pose)
-
-    A = np.zeros([4,4], dtype=float)
-    A[0,0] = math.cos(zr)
-    A[1,0] = math.sin(zr)
-    A[0,1] = -A[1,0]
-    A[1,1] = A[0,0]
-    A[0,3] = xr
-    A[1,3] = yr
-    A[2,3] = 0
-    A[3,3] = 1
-    A[2,2] = 1
-    
-    return np.matmul(A, goal_pose).tolist()
 
 
 class Pic4rlEnvironmentLidar(Node):
@@ -338,7 +317,7 @@ class Pic4rlEnvironmentLidar(Node):
             self.get_logger().warn('service not available, waiting again...')
         self.reset_world_client.call_async(req)
         
-        if self.episode % self.change_episode == 0. and not self.evaluate:
+        if self.episode % self.change_episode == 0. or self.evaluate:
             self.index = int(np.random.uniform()*len(self.poses)) -1 
 
         self.get_logger().debug("Respawing robot ...")
