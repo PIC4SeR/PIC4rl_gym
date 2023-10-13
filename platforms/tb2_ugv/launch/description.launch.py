@@ -27,12 +27,11 @@ else:
 def generate_launch_description():
     # Get the filepath to your config file
     configFilepath = os.path.join(
-        get_package_share_directory(param_pack), 'config',
-        'main_params.yaml'
+        get_package_share_directory(param_pack), 'config', 'params.yaml'
     )                       
     # Load the parameters specific to your ComposableNode
     with open(configFilepath, 'r') as file:
-        configParams = yaml.safe_load(file)['main_node']['ros__parameters']
+        configParams = yaml.safe_load(file)['params']
     imu_arg = LaunchConfiguration('imu_enabled',
             default = configParams["imu_enabled"])
     camera_arg = LaunchConfiguration('camera_enabled',

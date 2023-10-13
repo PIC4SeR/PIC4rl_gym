@@ -12,26 +12,28 @@ simulation_configFilepath = os.path.join(
     'sim_params.yaml'
     )
     
-with open(simulation_configFilepath, 'r') as file:
-    sim_configParams = yaml.safe_load(file)['sim_parameters']
+with open(simulation_configFilepath, 'r') as sim_file:
+    sim_configParams = yaml.safe_load(sim_file)['sim_parameters']
 
 mode_package = sim_configParams["package_name"]
 
 configFilepath = os.path.join(
-    get_package_share_directory(mode_package), 'config',
-    'main_params.yaml'
-    )
-with open(configFilepath, 'r') as file:
-    configParams = yaml.safe_load(file)['main_node']['ros__parameters']
+    get_package_share_directory(mode_package), 'config', 'params.yaml')
+
+with open(configFilepath, 'r') as params_file:
+    configParams = yaml.safe_load(params_file)['params']
 
 # Fetching Goals and Poses
 goals_path = os.path.join(
     get_package_share_directory(mode_package), 
-    'goals_and_poses', 
-    configParams['data_path']
+    'data', 
+    configParams['data_name']+'.yaml'
     )
-goal_and_poses = json.load(open(goals_path,'r'))
-robot_pose, goal_pose = goal_and_poses["initial_pose"], goal_and_poses["goals"][0]
+
+with open(goals_path, 'r') as goal_file:
+    robot_pose = yaml.safe_load(goal_file)['poses'][0]
+with open(goals_path, 'r') as goal_file:
+    goal_pose = yaml.safe_load(goal_file)['goals'][0]
 
 x_rob = '-x '+str(robot_pose[0])
 y_rob = '-y '+str(robot_pose[1])
@@ -46,7 +48,7 @@ y_goal = '-y '+str(goal_pose[1])
 world_path = os.path.join(
     get_package_share_directory("gazebo_sim"), 
     'worlds', 
-    configParams["world_name"]
+    configParams["world_name"]+'.world'
     )
 
 robot_pkg = get_package_share_directory(configParams["robot_name"])
