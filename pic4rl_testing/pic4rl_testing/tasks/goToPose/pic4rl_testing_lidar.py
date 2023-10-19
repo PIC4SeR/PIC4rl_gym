@@ -32,8 +32,7 @@ from tf2rl.algos.sac_ae import SACAE
 from tf2rl.algos.ppo import PPO
 from tf2rl.experiments.tester import Tester
 from tf2rl.experiments.on_policy_trainer import OnPolicyTrainer
-from pic4rl_testing.tasks.pic4rl_environment_lidar import Pic4rlEnvironmentLidar
-from pic4rl_testing.tasks.pic4rl_environment_camera_depth import Pic4rlEnvironmentCamera
+from pic4rl_testing.tasks.goToPose.pic4rl_environment_lidar import Pic4rlEnvironmentLidar
 from ament_index_python.packages import get_package_share_directory
 
 from rclpy.executors import SingleThreadedExecutor
@@ -242,11 +241,12 @@ class Pic4rlTesting_Lidar(Pic4rlEnvironmentLidar):
         for k,v in params.items():
             if v is not None:
                 kv = k+'='+str(v)
+                if k == '--log-dir':
+                    k += self.logdir
+                    self.get_logger().info(f"logdir set to: {k}")
                 self.parser_list.append(kv)
             else:
                 self.parser_list.append(k)
-
-        self.parser_list[6] += self.log_folder_name
 
     def threadFunc(self):
         try:

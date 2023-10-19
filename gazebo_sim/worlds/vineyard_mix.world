@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <sdf version="1.7">
   <world name="default">
     <plugin name="gazebo_ros_state" filename="libgazebo_ros_state.so">
@@ -9,7 +9,7 @@
       <update_rate>1.0</update_rate>
     </plugin>
     <light name="sun" type="directional">
-      <cast_shadows>1</cast_shadows>
+      <cast_shadows>0</cast_shadows>
       <pose>0 0 10 0 -0 0</pose>
       <diffuse>0.8 0.8 0.8 1</diffuse>
       <specular>0.2 0.2 0.2 1</specular>
@@ -25,16 +25,11 @@
         <outer_angle>0</outer_angle>
         <falloff>0</falloff>
       </spot>
-    </light>
-    <gravity>0 0 -9.8</gravity>
-    <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
-    <atmosphere type="adiabatic" />
-    <physics name="default_physics" default="0" type="ode">
+    </light><gravity>0 0 -9.8</gravity><magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field><atmosphere type="adiabatic"/><physics name="default_physics" default="0" type="ode">
       <max_step_size>0.001</max_step_size>
       <real_time_factor>1</real_time_factor>
       <real_time_update_rate>1000</real_time_update_rate>
-    </physics>
-    <scene>
+    </physics><scene>
       <ambient>0.4 0.4 0.4 1</ambient>
       <sky>
         <time> 12.0 </time>
@@ -50,20 +45,16 @@
         <end> 50 </end>
       </fog>
       <background>0.7 0.7 0.7 1</background>
-      <shadows>1</shadows>
-    </scene>
-    <audio>
+      <shadows>0</shadows>
+    </scene><audio>
       <device>default</device>
-    </audio>
-    <wind />
-    <spherical_coordinates>
+    </audio><wind/><spherical_coordinates>
       <surface_model>EARTH_WGS84</surface_model>
       <latitude_deg>0</latitude_deg>
       <longitude_deg>0</longitude_deg>
       <elevation>0</elevation>
       <heading_deg>0</heading_deg>
-    </spherical_coordinates>
-    <state world_name="default">
+    </spherical_coordinates><state world_name="default">
       <sim_time>30 211000000</sim_time>
       <real_time>30 237614345</real_time>
       <wall_time>1646927271 867507151</wall_time>
@@ -1748,606 +1739,10 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
-      <light name="sun">
-        <pose>0 0 10 0 -0 0</pose>
-      </light>
-    </state>
-    <gui fullscreen="0">
-      <camera name="user_camera">
-        <pose>13.317 -2.80781 52.3915 3.14159 1.57079 3.14159</pose>
-        <view_controller>orbit</view_controller>
-        <projection_type>perspective</projection_type>
-      </camera>
-    </gui>
-    <include>
-      <name>vine_plant3_c</name>
-      <uri>model://vine_plant3</uri>
-      <pose>0.747501 7.23417 0 0 -0 1.66953</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>1.81296 7.4925 0 0 -0 1.46969</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_0</name>
-      <uri>model://vine_plant3</uri>
-      <pose>2.71731 7.65394 0 0 0 -1.12467</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_1</name>
-      <uri>model://vine_plant3</uri>
-      <pose>3.60255 8.03147 0 0 -0 1.65708</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_2</name>
-      <uri>model://vine_plant3</uri>
-      <pose>4.6223 8.00913 0 0 0 -1.38054</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_3</name>
-      <uri>model://vine_plant3</uri>
-      <pose>5.65566 8.17059 0 0 0 -1.26266</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_4</name>
-      <uri>model://vine_plant3</uri>
-      <pose>6.49498 8.33204 0 0 -0 1.63536</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_5</name>
-      <uri>model://vine_plant3</uri>
-      <pose>7.36702 8.4612 0 0 0 -1.18232</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_6</name>
-      <uri>model://vine_plant3</uri>
-      <pose>8.29119 8.7637 0 0 -0 1.4727</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_7</name>
-      <uri>model://vine_plant3</uri>
-      <pose>9.14278 8.62265 0 0 0 -1.41895</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_8</name>
-      <uri>model://vine_plant3</uri>
-      <pose>10.0792 8.68723 0 0 0 -1.38532</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_9</name>
-      <uri>model://vine_plant3</uri>
-      <pose>11.0159 8.65494 0 0 0 -1.39863</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_10</name>
-      <uri>model://vine_plant3</uri>
-      <pose>12.0167 8.59036 0 0 -0 1.56798</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_11</name>
-      <uri>model://vine_plant3</uri>
-      <pose>12.9209 8.59036 0 0 0 -1.48178</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_12</name>
-      <uri>model://vine_plant3</uri>
-      <pose>13.7281 8.55807 0 0 -0 1.65296</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_13</name>
-      <uri>model://vine_plant3</uri>
-      <pose>14.5676 8.49349 0 0 0 -1.47174</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_14</name>
-      <uri>model://vine_plant3</uri>
-      <pose>15.6087 8.46359 0 0 -0 0</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_15</name>
-      <uri>model://vine_plant3</uri>
-      <pose>15.6087 8.46359 0 0 -0 1.36897</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_16</name>
-      <uri>model://vine_plant3</uri>
-      <pose>17.6433 8.26985 0 0 -0 1.5434</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_17</name>
-      <uri>model://vine_plant3</uri>
-      <pose>18.6762 8.07611 0 0 0 -1.67898</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_18</name>
-      <uri>model://vine_plant3</uri>
-      <pose>19.6129 8.01153 0 0 -0 1.56313</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_19</name>
-      <uri>model://vine_plant3</uri>
-      <pose>20.5174 7.91466 0 0 0 -1.46116</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_20</name>
-      <uri>model://vine_plant3</uri>
-      <pose>21.2277 8.01153 0 0 -0 1.52154</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_21</name>
-      <uri>model://vine_plant3</uri>
-      <pose>22.0994 7.97924 0 0 0 -1.33041</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_22</name>
-      <uri>model://vine_plant3</uri>
-      <pose>22.9068 7.94695 0 0 0 -1.24392</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_23</name>
-      <uri>model://vine_plant3</uri>
-      <pose>23.7784 8.1084 0 0 0 -0.926287</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_24</name>
-      <uri>model://vine_plant3</uri>
-      <pose>24.5854 8.36672 0 0 -0 1.69098</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_25</name>
-      <uri>model://vine_plant3</uri>
-      <pose>25.3929 8.52817 0 0 -0 1.60217</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_26</name>
-      <uri>model://vine_plant3</uri>
-      <pose>26.1032 8.68962 0 0 0 -1.18934</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_27</name>
-      <uri>model://vine_plant3</uri>
-      <pose>26.9431 8.78649 0 0 -0 1.72423</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_28</name>
-      <uri>model://vine_plant3</uri>
-      <pose>27.7176 8.91565 0 0 0 -1.35252</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_29</name>
-      <uri>model://vine_plant3</uri>
-      <pose>0.736496 5.35951 0 0 0 -1.3639</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_30</name>
-      <uri>model://vine_plant3</uri>
-      <pose>2 5.47193 0 0 0 -1.4048</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_31</name>
-      <uri>model://vine_plant3</uri>
-      <pose>2.984 5.58429 0 0 -0 1.56312</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_32</name>
-      <uri>model://vine_plant3</uri>
-      <pose>3.7712 5.73413 0 0 0 -1.09285</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_33</name>
-      <uri>model://vine_plant3</uri>
-      <pose>4.59516 5.99633 0 0 -0 1.47327</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_34</name>
-      <uri>model://vine_plant3</uri>
-      <pose>5.41911 6.10869 0 0 0 -1.2598</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_35</name>
-      <uri>model://vine_plant3</uri>
-      <pose>6.18896 6.26253 0 0 0 -1.27686</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_36</name>
-      <uri>model://vine_plant3</uri>
-      <pose>7.06654 6.44584 0 0 0 -1.37904</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_37</name>
-      <uri>model://vine_plant3</uri>
-      <pose>7.89098 6.52073 0 0 -0 0</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_38</name>
-      <uri>model://vine_plant3</uri>
-      <pose>8.6777 6.59562 0 0 0 -1.26635</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_39</name>
-      <uri>model://vine_plant3</uri>
-      <pose>9.50165 6.67051 0 0 -0 1.36938</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_40</name>
-      <uri>model://vine_plant3</uri>
-      <pose>8.63587 4.86242 0 0 -0 1.67432</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_41</name>
-      <uri>model://vine_plant3</uri>
-      <pose>9.63482 4.88184 0 0 -0 1.0362</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_42</name>
-      <uri>model://vine_plant3</uri>
-      <pose>11.2544 6.63309 0 0 0 -1.47278</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_43</name>
-      <uri>model://vine_plant3</uri>
-      <pose>12.4548 6.79682 0 0 -0 1.36769</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_44</name>
-      <uri>model://vine_plant3</uri>
-      <pose>13.4348 6.48326 0 0 0 -1.5178</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_45</name>
-      <uri>model://vine_plant3</uri>
-      <pose>14.2965 6.37083 0 0 0 -1.55413</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_46</name>
-      <uri>model://vine_plant3</uri>
-      <pose>27.8601 1.91497 0 0 0 -1.26702</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_47</name>
-      <uri>model://vine_plant3</uri>
-      <pose>15.4761 6.40436 0 0 -0 1.52863</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_48</name>
-      <uri>model://vine_plant3</uri>
-      <pose>16.544 6.18358 0 0 0 -1.52921</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_49</name>
-      <uri>model://vine_plant3</uri>
-      <pose>17.2925 6.14617 0 0 -0 1.42764</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_50</name>
-      <uri>model://vine_plant3</uri>
-      <pose>18.1169 6.03374 0 0 0 -1.64821</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_51</name>
-      <uri>model://vine_plant3</uri>
-      <pose>18.9409 5.95886 0 0 -0 1.43364</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_52</name>
-      <uri>model://vine_plant3</uri>
-      <pose>19.7653 5.95886 0 0 0 -1.35106</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_53</name>
-      <uri>model://vine_plant3</uri>
-      <pose>20.5511 6.07128 0 0 -0 1.64604</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_54</name>
-      <uri>model://vine_plant3</uri>
-      <pose>21.301 6.03375 0 0 0 -1.35837</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_55</name>
-      <uri>model://vine_plant3</uri>
-      <pose>22.1622 6.18358 0 0 0 -1.43684</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_56</name>
-      <uri>model://vine_plant3</uri>
-      <pose>23.0611 6.14617 0 0 -0 1.6217</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_57</name>
-      <uri>model://vine_plant3</uri>
-      <pose>24.0341 6.18358 0 0 0 -1.2701</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_58</name>
-      <uri>model://vine_plant3</uri>
-      <pose>24.7459 6.33342 0 0 -0 1.65613</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_59</name>
-      <uri>model://vine_plant3</uri>
-      <pose>25.6448 6.48326 0 0 0 -1.18664</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_60</name>
-      <uri>model://vine_plant3</uri>
-      <pose>26.3938 6.70798 0 0 -0 1.61861</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_61</name>
-      <uri>model://vine_plant3</uri>
-      <pose>27.1428 6.82035 0 0 0 -1.11843</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_62</name>
-      <uri>model://vine_plant3</uri>
-      <pose>27.9667 6.97018 0 0 0 -1.25902</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_4_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>0.540306 3.34405 0 0 0 -1.38337</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_35_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>1.60551 3.4735 0 0 0 -1.48497</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_3_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>2.9626 3.909 0 0 -0 1.65739</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_37_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>3.88576 3.8288 0 0 0 -1.42616</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_41_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>5.26524 4.28494 0 0 -0 1.69668</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_5_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>6.2729 4.26704 0 0 0 -1.34596</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_7_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>7.53845 4.6068 0 0 -0 1.596</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_41_clone_0</name>
-      <uri>model://vine_plant3</uri>
-      <pose>10.2845 4.62314 0 0 0 -1.43738</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_1_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>11.1489 4.58551 0 0 -0 1.39731</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_11_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>12.0896 4.58551 0 0 0 -1.38841</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_6_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>12.9177 4.54799 0 0 -0 1.475</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_9_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>13.9332 4.51035 0 0 0 -1.35976</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_11_clone_0</name>
-      <uri>model://vine_plant3</uri>
-      <pose>14.836 4.47271 0 0 -0 1.37346</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_14_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>15.7389 4.28452 0 0 -0 1.44575</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_16_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>16.7553 4.09645 0 0 0 -1.42042</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_20_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>17.8077 4.09645 0 0 0 -1.64458</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_17_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>18.7868 4.24688 0 0 -0 1.33965</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_20_clone_0</name>
-      <uri>model://vine_plant3</uri>
-      <pose>19.8018 4.09628 0 0 0 -1.42681</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_15_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>20.8454 4.07085 0 0 -0 1.38298</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_21_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>21.8839 4.06274 0 0 -0 1.52727</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_7_clone_0</name>
-      <uri>model://vine_plant3</uri>
-      <pose>22.7864 3.99974 0 0 0 -1.34614</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_13_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>23.7017 4.16187 0 0 0 -1.36288</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_15_clone_0</name>
-      <uri>model://vine_plant3</uri>
-      <pose>24.7635 4.21556 0 0 0 -1.35049</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_42_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>25.5759 4.39385 0 0 0 -1.23354</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_6_clone_0</name>
-      <uri>model://vine_plant3</uri>
-      <pose>26.6107 4.73622 0 0 -0 1.73197</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_36_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>27.6277 4.84913 0 0 0 -1.09277</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_36_clone_0</name>
-      <uri>model://vine_plant3</uri>
-      <pose>10.2624 6.66499 0 0 0 -1.27585</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_2_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>0.466614 1.72808 0 0 -0 1.68199</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_63</name>
-      <uri>model://vine_plant3</uri>
-      <pose>1.63364 1.6528 0 0 0 -1.24243</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_1_clone_0</name>
-      <uri>model://vine_plant3</uri>
-      <pose>2.95431 1.9544 0 0 -0 1.30745</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_3_clone_0</name>
-      <uri>model://vine_plant3</uri>
-      <pose>3.86934 1.79069 0 0 0 -1.53758</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_5_clone_0</name>
-      <uri>model://vine_plant3</uri>
-      <pose>5.23923 1.93743 0 0 -0 1.50073</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_8_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>6.27257 1.77763 0 0 0 -1.52967</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_10_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>7.64499 1.86186 0 0 -0 1.41861</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_41_clone_1</name>
-      <uri>model://vine_plant3</uri>
-      <pose>8.48039 2.14039 0 0 -0 1.36408</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_45_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>9.33336 1.85121 0 0 0 -1.74079</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_48_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>10.5862 1.91468 0 0 0 -1.34045</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_9_clone_0</name>
-      <uri>model://vine_plant3</uri>
-      <pose>11.5274 1.80189 0 0 -0 1.49573</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_12_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>12.5055 1.72661 0 0 0 -1.40862</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_51_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>14.6875 1.87717 0 0 0 -1.25775</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_38_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>15.8552 1.98996 0 0 -0 1.23324</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_20_clone_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>16.7192 1.95232 0 0 0 -1.27015</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_11_clone_1</name>
-      <uri>model://vine_plant3</uri>
-      <pose>17.6599 2.02748 0 0 -0 1.65964</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_36_clone_0_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>18.4875 1.80189 0 0 0 -1.25235</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_48_clone_0</name>
-      <uri>model://vine_plant3</uri>
-      <pose>19.6018 2.12034 0 0 -0 1.44931</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_45_clone_0</name>
-      <uri>model://vine_plant3</uri>
-      <pose>20.4946 1.90271 0 0 0 -1.45743</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_13_clone_0</name>
-      <uri>model://vine_plant3</uri>
-      <pose>21.8089 2.172 0 0 -0 1.54699</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_41_clone_2</name>
-      <uri>model://vine_plant3</uri>
-      <pose>22.8249 1.95232 0 0 0 -1.42336</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_35_clone_0</name>
-      <uri>model://vine_plant3</uri>
-      <pose>26.7987 2.01978 0 0 0 -1.83345</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_54_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>23.9811 2.11469 0 0 -0 1.3116</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_51_clone_0</name>
-      <uri>model://vine_plant3</uri>
-      <pose>24.8291 1.87513 0 0 0 -1.42347</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_19_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>25.9725 2.22748 0 0 -0 1.68364</pose>
-    </include>
-    <model name="real_terrain">
+      <model name='real_terrain'>
       <static>1</static>
-      <link name="terrain">
-        <collision name="collision">
+      <link name='terrain'>
+        <collision name='collision'>
           <geometry>
             <heightmap>
               <uri>model://real_terrain/materials/textures/heightmap_v3.png</uri>
@@ -2367,18 +1762,18 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode />
+              <ode/>
             </contact>
-            <bounce />
+            <bounce/>
             <friction>
               <torsional>
-                <ode />
+                <ode/>
               </torsional>
-              <ode />
+              <ode/>
             </friction>
           </surface>
         </collision>
-        <visual name="visual">
+        <visual name='visual'>
           <geometry>
             <heightmap>
               <texture>
@@ -2414,257 +1809,46 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose>7.17229 2.55883 0 0 -0 0</pose>
+      <pose>3.46298 1.4104 0 0 -0 0</pose>
     </model>
     <include>
-      <name>vine_plant3c_clone_2_clone_clone</name>
+      <name>vine_plant3_c</name>
       <uri>model://vine_plant3</uri>
-      <pose>0.661126 0.25029 0 0 -0 1.68199</pose>
+      <pose>0.747501 7.23417 0 0 -0 1.66953</pose>
     </include>
     <include>
-      <name>vine_plant3c_clone_1_clone_0_clone</name>
+      <name>vine_plant3c_clone</name>
       <uri>model://vine_plant3</uri>
-      <pose>2.06418 0.219101 0 0 -0 1.30745</pose>
+      <pose>1.81296 7.4925 0 0 -0 1.46969</pose>
     </include>
     <include>
-      <name>vine_plant3c_clone_8_clone_clone</name>
+      <name>vine_plant3c_clone_0</name>
       <uri>model://vine_plant3</uri>
-      <pose>3.12502 0.000805 0 0 0 -1.52967</pose>
+      <pose>2.71731 7.65394 0 0 0 -1.12467</pose>
     </include>
     <include>
-      <name>vine_plant3c_clone_41_clone_1_clone</name>
+      <name>vine_plant3c_clone_1</name>
       <uri>model://vine_plant3</uri>
-      <pose>4.57604 0.167922 0 0 -0 1.36408</pose>
+      <pose>3.60255 8.03147 0 0 -0 1.65708</pose>
+    </include><include>
+      <name>vine_plant3c_clone_2</name>
+      <uri>model://vine_plant3</uri>
+      <pose>4.6223 8.00913 0 0 0 -1.38054</pose>
     </include>
     <include>
-      <name>vine_plant3c_clone_5_clone_clone</name>
+      <name>vine_plant3c_clone_3</name>
       <uri>model://vine_plant3</uri>
-      <pose>5.588 -0.085242 0 0 0 -1.34596</pose>
+      <pose>5.65566 8.17059 0 0 0 -1.26266</pose>
     </include>
+    <include><name>vine_plant3c_clone_4</name>
+      <uri>model://vine_plant3</uri>
+      <pose>6.49498 8.33204 0 0 -0 1.63536</pose>
+      </include>
     <include>
-      <name>vine_plant3c_clone_20_clone_clone_clone</name>
+      <name>vine_plant3c_clone_5</name>
       <uri>model://vine_plant3</uri>
-      <pose>6.81803 -0.049109 0 0 0 -1.27015</pose>
+      <pose>7.36702 8.4612 0 0 0 -1.18232</pose>
     </include>
-    <include>
-      <name>vine_plant3c_clone_45_clone_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>7.72305 0.09554 0 0 0 -1.74079</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_9_clone_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>8.98858 -0.012976 0 0 0 -1.35976</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_47_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>10.3274 0.167922 0 0 -0 1.52863</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_42_clone_0</name>
-      <uri>model://vine_plant3</uri>
-      <pose>11.303 0.023215 0 0 0 -1.47278</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_20_clone_clone_0</name>
-      <uri>model://vine_plant3</uri>
-      <pose>12.2804 -0.012976 0 0 0 -1.64458</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_50_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>13.5104 -0.085242 0 0 0 -1.64821</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_17_clone_0</name>
-      <uri>model://vine_plant3</uri>
-      <pose>14.5952 -0.049109 0 0 0 -1.67898</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_48_clone_0_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>15.8985 0.204055 0 0 -0 1.44931</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_48_clone_0_clone_0</name>
-      <uri>model://vine_plant3</uri>
-      <pose>17.0557 0.312571 0 0 -0 1.44931</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_36_clone_0_clone_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>18.2129 0.059348 0 0 0 -1.25235</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_41_clone_2_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>19.2977 0.09554 0 0 0 -1.42336</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_7_clone_0_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>20.2505 0.082526 0 0 0 -1.34614</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_56_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>21.4793 0.248639 0 0 -0 1.6217</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_51_clone_0_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>22.542 0.082526 0 0 0 -1.42347</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_47_clone_0</name>
-      <uri>model://vine_plant3</uri>
-      <pose>23.7721 0.248639 0 0 -0 1.52863</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_19_clone_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>24.9344 0.248639 0 0 -0 1.68364</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_39_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>26.1314 0.215427 0 0 -0 1.36938</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_7_clone_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>27.2272 0.215427 0 0 -0 1.596</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_43_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>28.1901 0.182215 0 0 -0 1.36769</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_33_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>0.575256 -1.54932 0 0 -0 1.47327</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_1_clone_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>1.88977 -1.58688 0 0 -0 1.39731</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_37_clone_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>2.7157 -1.81203 0 0 0 -1.42616</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_37_clone_clone_0</name>
-      <uri>model://vine_plant3</uri>
-      <pose>3.69189 -1.77458 0 0 0 -1.42616</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_42_clone_0_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>4.78054 -1.88715 0 0 0 -1.47278</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_42_clone_0_clone_0</name>
-      <uri>model://vine_plant3</uri>
-      <pose>5.79405 -1.92484 0 0 0 -1.47278</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_1_clone_1</name>
-      <uri>model://vine_plant3</uri>
-      <pose>7.10856 -1.54932 0 0 -0 1.65708</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_5_clone_1</name>
-      <uri>model://vine_plant3</uri>
-      <pose>8.0855 -1.85303 0 0 0 -1.18232</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_39_clone_0</name>
-      <uri>model://vine_plant3</uri>
-      <pose>9.13633 -1.70284 0 0 -0 1.36938</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_36_clone_1</name>
-      <uri>model://vine_plant3</uri>
-      <pose>9.96179 -1.85303 0 0 0 -1.37904</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_8_clone_0</name>
-      <uri>model://vine_plant3</uri>
-      <pose>11.8778 -2.00321 0 0 0 -1.38532</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_15_clone_2</name>
-      <uri>model://vine_plant3</uri>
-      <pose>13.154 -1.81548 0 0 -0 1.36897</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_43_clone_0</name>
-      <uri>model://vine_plant3</uri>
-      <pose>14.2054 -1.81548 0 0 -0 1.36769</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_41_clone_0_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>15.0308 -1.96567 0 0 0 -1.43738</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_16_clone_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>16.008 -2.00321 0 0 0 -1.42042</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_20_clone_0_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>17.0231 -2.00944 0 0 0 -1.42681</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_16_clone_clone_0</name>
-      <uri>model://vine_plant3</uri>
-      <pose>17.8869 -1.97187 0 0 0 -1.42042</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_51_clone_1</name>
-      <uri>model://vine_plant3</uri>
-      <pose>19.1637 -1.78416 0 0 -0 1.43364</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_17_clone_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>20.2898 -1.78416 0 0 -0 1.33965</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_11_clone_0_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>22.3562 -1.78416 0 0 -0 1.37346</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_13_clone_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>23.1439 -1.89686 0 0 0 -1.36288</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_54_clone_0</name>
-      <uri>model://vine_plant3</uri>
-      <pose>24.1299 -1.84316 0 0 0 -1.35837</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_47_clone_0_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>25.3194 -1.72405 0 0 -0 1.52863</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_39_clone_clone</name>
-      <uri>model://vine_plant3</uri>
-      <pose>26.3932 -1.72405 0 0 -0 1.36938</pose>
-    </include>
-    <include>
-      <name>vine_plant3c_clone_20_clone_clone_clone_0</name>
-      <uri>model://vine_plant3</uri>
-      <pose>27.2671 -1.88303 0 0 0 -1.27015</pose>
-    </include>
+    <include><name>vine_plant3c_clone_6</name><uri>model://vine_plant3</uri><pose>8.29119 8.7637 0 0 -0 1.4727</pose></include><include><name>vine_plant3c_clone_7</name><uri>model://vine_plant3</uri><pose>9.14278 8.62265 0 0 0 -1.41895</pose></include><include><name>vine_plant3c_clone_8</name><uri>model://vine_plant3</uri><pose>10.0792 8.68723 0 0 0 -1.38532</pose></include><include><name>vine_plant3c_clone_9</name><uri>model://vine_plant3</uri><pose>11.0159 8.65494 0 0 0 -1.39863</pose></include><include><name>vine_plant3c_clone_10</name><uri>model://vine_plant3</uri><pose>12.0167 8.59036 0 0 -0 1.56798</pose></include><include><name>vine_plant3c_clone_11</name><uri>model://vine_plant3</uri><pose>12.9209 8.59036 0 0 0 -1.48178</pose></include><include><name>vine_plant3c_clone_12</name><uri>model://vine_plant3</uri><pose>13.7281 8.55807 0 0 -0 1.65296</pose></include><include><name>vine_plant3c_clone_13</name><uri>model://vine_plant3</uri><pose>14.5676 8.49349 0 0 0 -1.47174</pose></include><include><name>vine_plant3c_clone_14</name><uri>model://vine_plant3</uri><pose>15.6087 8.46359 0 0 -0 0</pose></include><include><name>vine_plant3c_clone_15</name><uri>model://vine_plant3</uri><pose>15.6087 8.46359 0 0 -0 1.36897</pose></include><include><name>vine_plant3c_clone_16</name><uri>model://vine_plant3</uri><pose>17.6433 8.26985 0 0 -0 1.5434</pose></include><include><name>vine_plant3c_clone_17</name><uri>model://vine_plant3</uri><pose>18.6762 8.07611 0 0 0 -1.67898</pose></include><include><name>vine_plant3c_clone_18</name><uri>model://vine_plant3</uri><pose>19.6129 8.01153 0 0 -0 1.56313</pose></include><include><name>vine_plant3c_clone_19</name><uri>model://vine_plant3</uri><pose>20.5174 7.91466 0 0 0 -1.46116</pose></include><include><name>vine_plant3c_clone_20</name><uri>model://vine_plant3</uri><pose>21.2277 8.01153 0 0 -0 1.52154</pose></include><include><name>vine_plant3c_clone_21</name><uri>model://vine_plant3</uri><pose>22.0994 7.97924 0 0 0 -1.33041</pose></include><include><name>vine_plant3c_clone_22</name><uri>model://vine_plant3</uri><pose>22.9068 7.94695 0 0 0 -1.24392</pose></include><include><name>vine_plant3c_clone_23</name><uri>model://vine_plant3</uri><pose>23.7784 8.1084 0 0 0 -0.926287</pose></include><include><name>vine_plant3c_clone_24</name><uri>model://vine_plant3</uri><pose>24.5854 8.36672 0 0 -0 1.69098</pose></include><include><name>vine_plant3c_clone_25</name><uri>model://vine_plant3</uri><pose>25.3929 8.52817 0 0 -0 1.60217</pose></include><include><name>vine_plant3c_clone_26</name><uri>model://vine_plant3</uri><pose>26.1032 8.68962 0 0 0 -1.18934</pose></include><include><name>vine_plant3c_clone_27</name><uri>model://vine_plant3</uri><pose>26.9431 8.78649 0 0 -0 1.72423</pose></include><include><name>vine_plant3c_clone_28</name><uri>model://vine_plant3</uri><pose>27.7176 8.91565 0 0 0 -1.35252</pose></include><include><name>vine_plant3c_clone_29</name><uri>model://vine_plant3</uri><pose>0.736496 5.35951 0 0 0 -1.3639</pose></include><include><name>vine_plant3c_clone_30</name><uri>model://vine_plant3</uri><pose>2 5.47193 0 0 0 -1.4048</pose></include><include><name>vine_plant3c_clone_31</name><uri>model://vine_plant3</uri><pose>2.984 5.58429 0 0 -0 1.56312</pose></include><include><name>vine_plant3c_clone_32</name><uri>model://vine_plant3</uri><pose>3.7712 5.73413 0 0 0 -1.09285</pose></include><include><name>vine_plant3c_clone_33</name><uri>model://vine_plant3</uri><pose>4.59516 5.99633 0 0 -0 1.47327</pose></include><include><name>vine_plant3c_clone_34</name><uri>model://vine_plant3</uri><pose>5.41911 6.10869 0 0 0 -1.2598</pose></include><include><name>vine_plant3c_clone_35</name><uri>model://vine_plant3</uri><pose>6.18896 6.26253 0 0 0 -1.27686</pose></include><include><name>vine_plant3c_clone_36</name><uri>model://vine_plant3</uri><pose>7.06654 6.44584 0 0 0 -1.37904</pose></include><include><name>vine_plant3c_clone_37</name><uri>model://vine_plant3</uri><pose>7.89098 6.52073 0 0 -0 0</pose></include><include><name>vine_plant3c_clone_38</name><uri>model://vine_plant3</uri><pose>8.6777 6.59562 0 0 0 -1.26635</pose></include><include><name>vine_plant3c_clone_39</name><uri>model://vine_plant3</uri><pose>9.50165 6.67051 0 0 -0 1.36938</pose></include><include><name>vine_plant3c_clone_40</name><uri>model://vine_plant3</uri><pose>8.63587 4.86242 0 0 -0 1.67432</pose></include><include><name>vine_plant3c_clone_41</name><uri>model://vine_plant3</uri><pose>9.63482 4.88184 0 0 -0 1.0362</pose></include><include><name>vine_plant3c_clone_42</name><uri>model://vine_plant3</uri><pose>11.2544 6.63309 0 0 0 -1.47278</pose></include><include><name>vine_plant3c_clone_43</name><uri>model://vine_plant3</uri><pose>12.4548 6.79682 0 0 -0 1.36769</pose></include><include><name>vine_plant3c_clone_44</name><uri>model://vine_plant3</uri><pose>13.4348 6.48326 0 0 0 -1.5178</pose></include><include><name>vine_plant3c_clone_45</name><uri>model://vine_plant3</uri><pose>14.2965 6.37083 0 0 0 -1.55413</pose></include><include><name>vine_plant3c_clone_46</name><uri>model://vine_plant3</uri><pose>27.8601 1.91497 0 0 0 -1.26702</pose></include><include><name>vine_plant3c_clone_47</name><uri>model://vine_plant3</uri><pose>15.4761 6.40436 0 0 -0 1.52863</pose></include><include><name>vine_plant3c_clone_48</name><uri>model://vine_plant3</uri><pose>16.544 6.18358 0 0 0 -1.52921</pose></include><include><name>vine_plant3c_clone_49</name><uri>model://vine_plant3</uri><pose>17.2925 6.14617 0 0 -0 1.42764</pose></include><include><name>vine_plant3c_clone_50</name><uri>model://vine_plant3</uri><pose>18.1169 6.03374 0 0 0 -1.64821</pose></include><include><name>vine_plant3c_clone_51</name><uri>model://vine_plant3</uri><pose>18.9409 5.95886 0 0 -0 1.43364</pose></include><include><name>vine_plant3c_clone_52</name><uri>model://vine_plant3</uri><pose>19.7653 5.95886 0 0 0 -1.35106</pose></include><include><name>vine_plant3c_clone_53</name><uri>model://vine_plant3</uri><pose>20.5511 6.07128 0 0 -0 1.64604</pose></include><include><name>vine_plant3c_clone_54</name><uri>model://vine_plant3</uri><pose>21.301 6.03375 0 0 0 -1.35837</pose></include><include><name>vine_plant3c_clone_55</name><uri>model://vine_plant3</uri><pose>22.1622 6.18358 0 0 0 -1.43684</pose></include><include><name>vine_plant3c_clone_56</name><uri>model://vine_plant3</uri><pose>23.0611 6.14617 0 0 -0 1.6217</pose></include><include><name>vine_plant3c_clone_57</name><uri>model://vine_plant3</uri><pose>24.0341 6.18358 0 0 0 -1.2701</pose></include><include><name>vine_plant3c_clone_58</name><uri>model://vine_plant3</uri><pose>24.7459 6.33342 0 0 -0 1.65613</pose></include><include><name>vine_plant3c_clone_59</name><uri>model://vine_plant3</uri><pose>25.6448 6.48326 0 0 0 -1.18664</pose></include><include><name>vine_plant3c_clone_60</name><uri>model://vine_plant3</uri><pose>26.3938 6.70798 0 0 -0 1.61861</pose></include><include><name>vine_plant3c_clone_61</name><uri>model://vine_plant3</uri><pose>27.1428 6.82035 0 0 0 -1.11843</pose></include><include><name>vine_plant3c_clone_62</name><uri>model://vine_plant3</uri><pose>27.9667 6.97018 0 0 0 -1.25902</pose></include><include><name>vine_plant3c_clone_4_clone</name><uri>model://vine_plant3</uri><pose>0.540306 3.34405 0 0 0 -1.38337</pose></include><include><name>vine_plant3c_clone_35_clone</name><uri>model://vine_plant3</uri><pose>1.60551 3.4735 0 0 0 -1.48497</pose></include><include><name>vine_plant3c_clone_3_clone</name><uri>model://vine_plant3</uri><pose>2.9626 3.909 0 0 -0 1.65739</pose></include><include><name>vine_plant3c_clone_37_clone</name><uri>model://vine_plant3</uri><pose>3.88576 3.8288 0 0 0 -1.42616</pose></include><include><name>vine_plant3c_clone_41_clone</name><uri>model://vine_plant3</uri><pose>5.26524 4.28494 0 0 -0 1.69668</pose></include><include><name>vine_plant3c_clone_5_clone</name><uri>model://vine_plant3</uri><pose>6.2729 4.26704 0 0 0 -1.34596</pose></include><include><name>vine_plant3c_clone_7_clone</name><uri>model://vine_plant3</uri><pose>7.53845 4.6068 0 0 -0 1.596</pose></include><include><name>vine_plant3c_clone_41_clone_0</name><uri>model://vine_plant3</uri><pose>10.2845 4.62314 0 0 0 -1.43738</pose></include><include><name>vine_plant3c_clone_1_clone</name><uri>model://vine_plant3</uri><pose>11.1489 4.58551 0 0 -0 1.39731</pose></include><include><name>vine_plant3c_clone_11_clone</name><uri>model://vine_plant3</uri><pose>12.0896 4.58551 0 0 0 -1.38841</pose></include><include><name>vine_plant3c_clone_6_clone</name><uri>model://vine_plant3</uri><pose>12.9177 4.54799 0 0 -0 1.475</pose></include><include><name>vine_plant3c_clone_9_clone</name><uri>model://vine_plant3</uri><pose>13.9332 4.51035 0 0 0 -1.35976</pose></include><include><name>vine_plant3c_clone_11_clone_0</name><uri>model://vine_plant3</uri><pose>14.836 4.47271 0 0 -0 1.37346</pose></include><include><name>vine_plant3c_clone_14_clone</name><uri>model://vine_plant3</uri><pose>15.7389 4.28452 0 0 -0 1.44575</pose></include><include><name>vine_plant3c_clone_16_clone</name><uri>model://vine_plant3</uri><pose>16.7553 4.09645 0 0 0 -1.42042</pose></include><include><name>vine_plant3c_clone_20_clone</name><uri>model://vine_plant3</uri><pose>17.8077 4.09645 0 0 0 -1.64458</pose></include><include><name>vine_plant3c_clone_17_clone</name><uri>model://vine_plant3</uri><pose>18.7868 4.24688 0 0 -0 1.33965</pose></include><include><name>vine_plant3c_clone_20_clone_0</name><uri>model://vine_plant3</uri><pose>19.8018 4.09628 0 0 0 -1.42681</pose></include><include><name>vine_plant3c_clone_15_clone</name><uri>model://vine_plant3</uri><pose>20.8454 4.07085 0 0 -0 1.38298</pose></include><include><name>vine_plant3c_clone_21_clone</name><uri>model://vine_plant3</uri><pose>21.8839 4.06274 0 0 -0 1.52727</pose></include><include><name>vine_plant3c_clone_7_clone_0</name><uri>model://vine_plant3</uri><pose>22.7864 3.99974 0 0 0 -1.34614</pose></include><include><name>vine_plant3c_clone_13_clone</name><uri>model://vine_plant3</uri><pose>23.7017 4.16187 0 0 0 -1.36288</pose></include><include><name>vine_plant3c_clone_15_clone_0</name><uri>model://vine_plant3</uri><pose>24.7635 4.21556 0 0 0 -1.35049</pose></include><include><name>vine_plant3c_clone_42_clone</name><uri>model://vine_plant3</uri><pose>25.5759 4.39385 0 0 0 -1.23354</pose></include><include><name>vine_plant3c_clone_6_clone_0</name><uri>model://vine_plant3</uri><pose>26.6107 4.73622 0 0 -0 1.73197</pose></include><include><name>vine_plant3c_clone_36_clone</name><uri>model://vine_plant3</uri><pose>27.6277 4.84913 0 0 0 -1.09277</pose></include><include><name>vine_plant3c_clone_36_clone_0</name><uri>model://vine_plant3</uri><pose>10.2624 6.66499 0 0 0 -1.27585</pose></include><include><name>vine_plant3c_clone_2_clone</name><uri>model://vine_plant3</uri><pose>0.466614 1.72808 0 0 -0 1.68199</pose></include><include><name>vine_plant3c_clone_63</name><uri>model://vine_plant3</uri><pose>1.63364 1.6528 0 0 0 -1.24243</pose></include><include><name>vine_plant3c_clone_1_clone_0</name><uri>model://vine_plant3</uri><pose>2.95431 1.9544 0 0 -0 1.30745</pose></include><include><name>vine_plant3c_clone_3_clone_0</name><uri>model://vine_plant3</uri><pose>3.86934 1.79069 0 0 0 -1.53758</pose></include><include><name>vine_plant3c_clone_5_clone_0</name><uri>model://vine_plant3</uri><pose>5.23923 1.93743 0 0 -0 1.50073</pose></include><include><name>vine_plant3c_clone_8_clone</name><uri>model://vine_plant3</uri><pose>6.27257 1.77763 0 0 0 -1.52967</pose></include><include><name>vine_plant3c_clone_10_clone</name><uri>model://vine_plant3</uri><pose>7.64499 1.86186 0 0 -0 1.41861</pose></include><include><name>vine_plant3c_clone_41_clone_1</name><uri>model://vine_plant3</uri><pose>8.48039 2.14039 0 0 -0 1.36408</pose></include><include><name>vine_plant3c_clone_45_clone</name><uri>model://vine_plant3</uri><pose>9.33336 1.85121 0 0 0 -1.74079</pose></include><include><name>vine_plant3c_clone_48_clone</name><uri>model://vine_plant3</uri><pose>10.5862 1.91468 0 0 0 -1.34045</pose></include><include><name>vine_plant3c_clone_9_clone_0</name><uri>model://vine_plant3</uri><pose>11.5274 1.80189 0 0 -0 1.49573</pose></include><include><name>vine_plant3c_clone_12_clone</name><uri>model://vine_plant3</uri><pose>12.5055 1.72661 0 0 0 -1.40862</pose></include><include><name>vine_plant3c_clone_51_clone</name><uri>model://vine_plant3</uri><pose>14.6875 1.87717 0 0 0 -1.25775</pose></include><include><name>vine_plant3c_clone_38_clone</name><uri>model://vine_plant3</uri><pose>15.8552 1.98996 0 0 -0 1.23324</pose></include><include><name>vine_plant3c_clone_20_clone_clone</name><uri>model://vine_plant3</uri><pose>16.7192 1.95232 0 0 0 -1.27015</pose></include><include><name>vine_plant3c_clone_11_clone_1</name><uri>model://vine_plant3</uri><pose>17.6599 2.02748 0 0 -0 1.65964</pose></include><include><name>vine_plant3c_clone_36_clone_0_clone</name><uri>model://vine_plant3</uri><pose>18.4875 1.80189 0 0 0 -1.25235</pose></include><include><name>vine_plant3c_clone_48_clone_0</name><uri>model://vine_plant3</uri><pose>19.6018 2.12034 0 0 -0 1.44931</pose></include><include><name>vine_plant3c_clone_45_clone_0</name><uri>model://vine_plant3</uri><pose>20.4946 1.90271 0 0 0 -1.45743</pose></include><include><name>vine_plant3c_clone_13_clone_0</name><uri>model://vine_plant3</uri><pose>21.8089 2.172 0 0 -0 1.54699</pose></include><include><name>vine_plant3c_clone_41_clone_2</name><uri>model://vine_plant3</uri><pose>22.8249 1.95232 0 0 0 -1.42336</pose></include><include><name>vine_plant3c_clone_35_clone_0</name><uri>model://vine_plant3</uri><pose>26.7987 2.01978 0 0 0 -1.83345</pose></include><include><name>vine_plant3c_clone_54_clone</name><uri>model://vine_plant3</uri><pose>23.9811 2.11469 0 0 -0 1.3116</pose></include><include><name>vine_plant3c_clone_51_clone_0</name><uri>model://vine_plant3</uri><pose>24.8291 1.87513 0 0 0 -1.42347</pose></include><include><name>vine_plant3c_clone_19_clone</name><uri>model://vine_plant3</uri><pose>25.9725 2.22748 0 0 -0 1.68364</pose></include><include><name>vine_plant3c_clone_2_clone_clone</name><uri>model://vine_plant3</uri><pose>0.661126 0.25029 0 0 -0 1.68199</pose></include><include><name>vine_plant3c_clone_1_clone_0_clone</name><uri>model://vine_plant3</uri><pose>2.06418 0.219101 0 0 -0 1.30745</pose></include><include><name>vine_plant3c_clone_8_clone_clone</name><uri>model://vine_plant3</uri><pose>3.12502 0.000805 0 0 0 -1.52967</pose></include><include><name>vine_plant3c_clone_41_clone_1_clone</name><uri>model://vine_plant3</uri><pose>4.57604 0.167922 0 0 -0 1.36408</pose></include><include><name>vine_plant3c_clone_5_clone_clone</name><uri>model://vine_plant3</uri><pose>5.588 -0.085242 0 0 0 -1.34596</pose></include><include><name>vine_plant3c_clone_20_clone_clone_clone</name><uri>model://vine_plant3</uri><pose>6.81803 -0.049109 0 0 0 -1.27015</pose></include><include><name>vine_plant3c_clone_45_clone_clone</name><uri>model://vine_plant3</uri><pose>7.72305 0.09554 0 0 0 -1.74079</pose></include><include><name>vine_plant3c_clone_9_clone_clone</name><uri>model://vine_plant3</uri><pose>8.98858 -0.012976 0 0 0 -1.35976</pose></include><include><name>vine_plant3c_clone_47_clone</name><uri>model://vine_plant3</uri><pose>10.3274 0.167922 0 0 -0 1.52863</pose></include><include><name>vine_plant3c_clone_42_clone_0</name><uri>model://vine_plant3</uri><pose>11.303 0.023215 0 0 0 -1.47278</pose></include><include><name>vine_plant3c_clone_20_clone_clone_0</name><uri>model://vine_plant3</uri><pose>12.2804 -0.012976 0 0 0 -1.64458</pose></include><include><name>vine_plant3c_clone_50_clone</name><uri>model://vine_plant3</uri><pose>13.5104 -0.085242 0 0 0 -1.64821</pose></include><include><name>vine_plant3c_clone_17_clone_0</name><uri>model://vine_plant3</uri><pose>14.5952 -0.049109 0 0 0 -1.67898</pose></include><include><name>vine_plant3c_clone_48_clone_0_clone</name><uri>model://vine_plant3</uri><pose>15.8985 0.204055 0 0 -0 1.44931</pose></include><include><name>vine_plant3c_clone_48_clone_0_clone_0</name><uri>model://vine_plant3</uri><pose>17.0557 0.312571 0 0 -0 1.44931</pose></include><include><name>vine_plant3c_clone_36_clone_0_clone_clone</name><uri>model://vine_plant3</uri><pose>18.2129 0.059348 0 0 0 -1.25235</pose></include><include><name>vine_plant3c_clone_41_clone_2_clone</name><uri>model://vine_plant3</uri><pose>19.2977 0.09554 0 0 0 -1.42336</pose></include><include><name>vine_plant3c_clone_7_clone_0_clone</name><uri>model://vine_plant3</uri><pose>20.2505 0.082526 0 0 0 -1.34614</pose></include><include><name>vine_plant3c_clone_56_clone</name><uri>model://vine_plant3</uri><pose>21.4793 0.248639 0 0 -0 1.6217</pose></include><include><name>vine_plant3c_clone_51_clone_0_clone</name><uri>model://vine_plant3</uri><pose>22.542 0.082526 0 0 0 -1.42347</pose></include><include><name>vine_plant3c_clone_47_clone_0</name><uri>model://vine_plant3</uri><pose>23.7721 0.248639 0 0 -0 1.52863</pose></include><include><name>vine_plant3c_clone_19_clone_clone</name><uri>model://vine_plant3</uri><pose>24.9344 0.248639 0 0 -0 1.68364</pose></include><include><name>vine_plant3c_clone_39_clone</name><uri>model://vine_plant3</uri><pose>26.1314 0.215427 0 0 -0 1.36938</pose></include><include><name>vine_plant3c_clone_7_clone_clone</name><uri>model://vine_plant3</uri><pose>27.2272 0.215427 0 0 -0 1.596</pose></include><include><name>vine_plant3c_clone_43_clone</name><uri>model://vine_plant3</uri><pose>28.1901 0.182215 0 0 -0 1.36769</pose></include><include><name>vine_plant3c_clone_33_clone</name><uri>model://vine_plant3</uri><pose>0.575256 -1.54932 0 0 -0 1.47327</pose></include><include><name>vine_plant3c_clone_1_clone_clone</name><uri>model://vine_plant3</uri><pose>1.88977 -1.58688 0 0 -0 1.39731</pose></include><include><name>vine_plant3c_clone_37_clone_clone</name><uri>model://vine_plant3</uri><pose>2.7157 -1.81203 0 0 0 -1.42616</pose></include><include><name>vine_plant3c_clone_37_clone_clone_0</name><uri>model://vine_plant3</uri><pose>3.69189 -1.77458 0 0 0 -1.42616</pose></include><include><name>vine_plant3c_clone_42_clone_0_clone</name><uri>model://vine_plant3</uri><pose>4.78054 -1.88715 0 0 0 -1.47278</pose></include><include><name>vine_plant3c_clone_42_clone_0_clone_0</name><uri>model://vine_plant3</uri><pose>5.79405 -1.92484 0 0 0 -1.47278</pose></include><include><name>vine_plant3c_clone_1_clone_1</name><uri>model://vine_plant3</uri><pose>7.10856 -1.54932 0 0 -0 1.65708</pose></include><include><name>vine_plant3c_clone_5_clone_1</name><uri>model://vine_plant3</uri><pose>8.0855 -1.85303 0 0 0 -1.18232</pose></include><include><name>vine_plant3c_clone_39_clone_0</name><uri>model://vine_plant3</uri><pose>9.13633 -1.70284 0 0 -0 1.36938</pose></include><include><name>vine_plant3c_clone_36_clone_1</name><uri>model://vine_plant3</uri><pose>9.96179 -1.85303 0 0 0 -1.37904</pose></include><include><name>vine_plant3c_clone_8_clone_0</name><uri>model://vine_plant3</uri><pose>11.8778 -2.00321 0 0 0 -1.38532</pose></include><include><name>vine_plant3c_clone_15_clone_2</name><uri>model://vine_plant3</uri><pose>13.154 -1.81548 0 0 -0 1.36897</pose></include><include><name>vine_plant3c_clone_43_clone_0</name><uri>model://vine_plant3</uri><pose>14.2054 -1.81548 0 0 -0 1.36769</pose></include><include><name>vine_plant3c_clone_41_clone_0_clone</name><uri>model://vine_plant3</uri><pose>15.0308 -1.96567 0 0 0 -1.43738</pose></include><include><name>vine_plant3c_clone_16_clone_clone</name><uri>model://vine_plant3</uri><pose>16.008 -2.00321 0 0 0 -1.42042</pose></include><include><name>vine_plant3c_clone_20_clone_0_clone</name><uri>model://vine_plant3</uri><pose>17.0231 -2.00944 0 0 0 -1.42681</pose></include><include><name>vine_plant3c_clone_16_clone_clone_0</name><uri>model://vine_plant3</uri><pose>17.8869 -1.97187 0 0 0 -1.42042</pose></include><include><name>vine_plant3c_clone_51_clone_1</name><uri>model://vine_plant3</uri><pose>19.1637 -1.78416 0 0 -0 1.43364</pose></include><include><name>vine_plant3c_clone_17_clone_clone</name><uri>model://vine_plant3</uri><pose>20.2898 -1.78416 0 0 -0 1.33965</pose></include><include><name>vine_plant3c_clone_11_clone_0_clone</name><uri>model://vine_plant3</uri><pose>22.3562 -1.78416 0 0 -0 1.37346</pose></include><include><name>vine_plant3c_clone_13_clone_clone</name><uri>model://vine_plant3</uri><pose>23.1439 -1.89686 0 0 0 -1.36288</pose></include><include><name>vine_plant3c_clone_54_clone_0</name><uri>model://vine_plant3</uri><pose>24.1299 -1.84316 0 0 0 -1.35837</pose></include><include><name>vine_plant3c_clone_47_clone_0_clone</name><uri>model://vine_plant3</uri><pose>25.3194 -1.72405 0 0 -0 1.52863</pose></include><include><name>vine_plant3c_clone_39_clone_clone</name><uri>model://vine_plant3</uri><pose>26.3932 -1.72405 0 0 -0 1.36938</pose></include><include><name>vine_plant3c_clone_20_clone_clone_clone_0</name><uri>model://vine_plant3</uri><pose>27.2671 -1.88303 0 0 0 -1.27015</pose></include>
   </world>
 </sdf>

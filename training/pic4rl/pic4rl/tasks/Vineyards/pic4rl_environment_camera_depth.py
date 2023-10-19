@@ -22,14 +22,14 @@ from geometry_msgs.msg import Twist
 from ament_index_python.packages import get_package_share_directory
 from pic4rl.sensors import Sensors
 
-from pic4dwa.pic4dwa import Pic4DWA
+#from pic4dwa.pic4dwa import Pic4DWA
 from pic4rl.utils.env_utils import *
 
 class Pic4rlEnvironmentCamera(Node):
     def __init__(self,):
         """
         """
-        super().__init__('pic4rl_training_camera')
+        super().__init__('pic4rl_training_vineyard_camera')
         goals_path      = os.path.join(
             get_package_share_directory('pic4rl'), 'goals_and_poses')
         main_params_path  = os.path.join(
@@ -85,7 +85,8 @@ class Pic4rlEnvironmentCamera(Node):
 
         qos = QoSProfile(depth=10)
         self.sensors = Sensors(self)
-        create_logdir(train_params['--policy'], main_params['sensor'], train_params['--logdir'])
+        
+        self.logdir = create_logdir(train_params['--policy'], main_params['sensor'], train_params['--logdir'])
         self.spin_sensors_callbacks()
 
         self.cmd_vel_pub = self.create_publisher(
@@ -154,6 +155,8 @@ class Pic4rlEnvironmentCamera(Node):
 
         # Send observation and reward
         self.update_state(twist, depth_image, goal_info, robot_pose, done, event)
+        if done:
+            time.sleep(1.5)
 
         return observation, reward, done
 
@@ -171,7 +174,7 @@ class Pic4rlEnvironmentCamera(Node):
         rclpy.spin_once(self)
         while None in self.sensors.sensor_msg.values():
             rclpy.spin_once(self)
-            #self.get_logger().debug("spin once ...")
+            self.get_logger().debug("spin once ...")
         self.sensors.sensor_msg = dict.fromkeys(self.sensors.sensor_msg.keys(), None)
 
     def send_action(self,twist):
@@ -184,9 +187,9 @@ class Pic4rlEnvironmentCamera(Node):
         self.cmd_vel_pub.publish(twist)
 
         # Regulate frequency of send action if needed
-        # freq, t1 = compute_frequency(self.t0)
-        # t0 = t1
-        # frequency_control(self.params_update_freq)
+        freq, t1 = compute_frequency(self.t0)
+        t0 = t1
+        frequency_control(self.params_update_freq)
 
         #self.get_logger().debug("pausing...")
         #self.pause()
@@ -237,7 +240,7 @@ class Pic4rlEnvironmentCamera(Node):
                 logging.info(f"Ep {'evaluate' if self.evaluate else self.episode+1}: Collision")
                 return True, "collision"
             else:
-                return False, "collision"
+                return False, "None"
 
         if goal_info[0] < self.goal_tolerance:
             self.get_logger().info(f"Ep {'evaluate' if self.evaluate else self.episode+1}: Goal")
@@ -255,30 +258,32 @@ class Pic4rlEnvironmentCamera(Node):
     def get_reward(self, twist, lidar_measurements, goal_info, robot_pose, done, event):
         """
         """
-        yaw_reward = (1 - 2*math.sqrt(math.fabs(goal_info[1] / math.pi)))*0.6
+        yaw_reward = (1 - 3*math.sqrt(math.fabs(goal_info[1] / math.pi)))*0.1
         #y_reward = (-2**(math.fabs(0.45 - 2*robot_pose[1]))+1)*10
         #distance_reward = 2*((2 * self.previous_goal_distance) / \
         #   (self.previous_goal_distance + goal_distance) - 1)
         #distance_reward = (2 - 2**(self.goal_distance / self.init_goal_distance))
-        distance_reward = (self.previous_goal_info[0] - goal_info[0])*35
+        distance_reward = (self.previous_goal_info[0] - goal_info[0])*5
         v = twist.linear.x
         w = twist.angular.z
-        speed_reward = (v - math.fabs(w))
+        #speed_reward = (v - math.fabs(w))
         
-        reward =  yaw_reward + distance_reward + speed_reward
+        reward =  yaw_reward + distance_reward
 
         if event == "goal":
-            reward += 1000
-        if event == "collision":
-            #reward += -1000*math.fabs(v)**2
-            reward = -500
-        if event == "reverse":
-            reward = -500
+            reward = 300
+        elif event == "collision":
+            #reward = -1000*math.fabs(v)**2
+            reward = -100
+        elif event == "reverse":
+            reward = -200
         else:
-            reward += -1
+            reward += -0.1
 
-        self.get_logger().debug(str(reward))
-
+        #print("yaw reward: ", yaw_reward)
+        #print("speed reward: ", speed_reward)
+        #print("distance_reward: ", distance_reward)
+        #print("reward_tot ", reward)
         return reward
 
     def get_observation(self, twist, depth_image, goal_info, robot_pose):
@@ -309,20 +314,28 @@ class Pic4rlEnvironmentCamera(Node):
         self.episode = n_episode
         self.evaluate = evaluate
 
+
         logging.info(f"Total_episodes: {'evaluate' if evaluate else n_episode}, Total_steps: {tot_steps}, episode_steps: {self.episode_step+1}\n")
         print()
         self.get_logger().info("Initializing new episode ...")
         logging.info("Initializing new episode ...")
+
+        self.get_logger().debug("pausing...")
+        self.pause()
+
         self.new_episode()
+
+        self.get_logger().debug("unpausing...")
+        self.unpause()
         self.get_logger().debug("Performing null step to reset variables")
         self.episode_step = 0
 
         _,_,_, = self._step(reset_step = True)
         observation,_,_, = self._step()
 
-        if self.episode < 500 and (self.episode % self.explore_demo == 0.) and not self.evaluate:
+        if self.episode < 50 or (self.episode % self.explore_demo == 0.) and not self.evaluate:
             exploration_ep = True
-            self.get_logger().info("Demonstrative exploration episode ...")
+            self.get_logger().info("Pseudo-Demonstrative exploration episode ...")
         else:
             exploration_ep = False
 
@@ -331,12 +344,13 @@ class Pic4rlEnvironmentCamera(Node):
     def new_episode(self):
         """
         """
-        self.get_logger().debug("Resetting simulation ...")
-        req = Empty.Request()
 
-        while not self.reset_world_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().warn('service not available, waiting again...')
-        self.reset_world_client.call_async(req)
+        # self.get_logger().debug("Resetting simulation ...")
+        # req = Empty.Request()
+
+        # while not self.reset_world_client.wait_for_service(timeout_sec=1.0):
+        #     self.get_logger().warn('service not available, waiting again...')
+        # self.reset_world_client.call_async(req)
         
         if self.episode % self.change_episode == 0. or self.evaluate:
             self.index = int(np.random.uniform()*len(self.poses)) -1 
@@ -347,7 +361,7 @@ class Pic4rlEnvironmentCamera(Node):
         self.get_logger().debug("Respawing goal ...")
         self.respawn_goal(self.index)
 
-        time.sleep(2.0)
+        time.sleep(1.0)
         self.get_logger().debug("Environment reset performed ...")
 
     def respawn_goal(self, index):

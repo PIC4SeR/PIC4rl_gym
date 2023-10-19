@@ -1,16 +1,16 @@
 training_params:
 # Trainer parameters
     --max-steps: 1000000 # (int) The maximum steps for training. The default is ``int(1e6)``
-    --episode-max-steps: 500 # (int) The maximum steps for an episode. The default is ``int(1e3)``
+    --episode-max-steps: 700 # (int) The maximum steps for an episode. The default is ``int(1e3)``
     --n-experiments: 1 # (int) Number of experiments. The default is ``1``
 # --show-progress: # Call ``render`` function during training
     --save-model-interval: 5000 # (int) Interval to save model. The default is ``int(1e4)``
     --save-summary-interval: 5000 # (int) Interval to save summary. The default is ``int(1e3)``
-#    --model-dir: '/root/gym_ws/src/PIC4rl_gym/training/pic4rl/models/agent_lidar/tunnel_SAC_lidar60/' # (str) Directory to restore model.
+#   --model-dir: '/root/gym_ws/src/Results/20231013_201633.102241_camera_SAC/' # (str) Directory to restore model.
 #    --dir-suffix: ""  # (str) Suffix for directory that stores results.
 #    --normalize-obs: # Whether normalize observation
     --logdir: '/root/gym_ws/src/Results/' # (str) Output directory name. The default is ``"results"``
-#    --evaluate: # Whether evaluate trained model
+#   --evaluate: # Whether evaluate trained model
     --test-interval: 20000 # (int) Interval to evaluate trained model. The default is ``int(1e4)``
 # --show-test-progress: # Call ``render`` function during evaluation.
     --test-episodes: 3 # (int) Number of episodes at test. The default is ``5``
@@ -21,11 +21,11 @@ training_params:
     --use-nstep-rb: # Use Nstep experience replay
     --n-step: 4 # (int) Number of steps for nstep experience reward. The default is ``4``
     #--restore-rb: # Load experience replay buffer
-    --rb-path: '/root/gym_ws/src/Results/rb_SAC_100k_pr_ns4.npz'
+    #--rb-path: '/root/gym_ws/src/Results/vineyard/last_rb_SAC_150k_pr_ns4.npz'
     --logging-level: INFO # (DEBUG, INFO, WARNING) Choose logging level. The default is ``INFO``
     --policy: 'SAC' # training policy
     --policy_trainer: 'off-policy' # trainer off-policy / on-policy
-    --change_goal_and_pose: 5
+    --change_goal_and_pose: 10
     --starting_episodes: 0
     --batch-size: 64 # (int) Batch size for training. The default is ``32``.
     --gpu: 0 # (int) GPU id. ``-1`` disables GPU. The default is ``0``.

@@ -140,7 +140,7 @@ class Pic4rlTesting_Vineyard(Pic4rlEnvironmentCamera):
                     batch_size= self.batch_size,
                     n_warmup=self.n_warmup,
                     memory_capacity=self.memory_capacity,
-                    epsilon = 1.0, 
+                    epsilon = 0.0, 
                     epsilon_decay = 0.998, 
                     epsilon_min = 0.05,
                     log_level = self.log_level)
@@ -159,7 +159,7 @@ class Pic4rlTesting_Vineyard(Pic4rlEnvironmentCamera):
                     lr_critic = 2e-4,
                     sigma = 0.2,
                     tau = 0.01,
-                    epsilon = 1.0, 
+                    epsilon = 0.0, 
                     epsilon_decay = 0.998, 
                     epsilon_min = 0.05,
                     gpu = self.gpu,
@@ -197,7 +197,7 @@ class Pic4rlTesting_Vineyard(Pic4rlEnvironmentCamera):
                     batch_size= self.batch_size,
                     n_warmup=self.n_warmup,
                     memory_capacity=self.memory_capacity,
-                    epsilon = 1.0, 
+                    epsilon = 0.0, 
                     epsilon_decay = 0.996, 
                     epsilon_min = 0.05,
                     log_level = self.log_level)
@@ -237,7 +237,7 @@ class Pic4rlTesting_Vineyard(Pic4rlEnvironmentCamera):
                     batch_size= self.batch_size,
                     n_warmup=self.n_warmup,
                     memory_capacity=self.memory_capacity,
-                    epsilon = 1.0, 
+                    epsilon = 0.0, 
                     epsilon_decay = 0.998, 
                     epsilon_min = 0.05,
                     log_level = self.log_level)
@@ -289,11 +289,12 @@ class Pic4rlTesting_Vineyard(Pic4rlEnvironmentCamera):
         for k,v in params.items():
             if v is not None:
                 kv = k+'='+str(v)
+                if k == '--log-dir':
+                    k += self.logdir
+                    self.get_logger().info(f"logdir set to: {k}")
                 self.parser_list.append(kv)
             else:
                 self.parser_list.append(k)
-
-        self.parser_list[5] += self.logdir
 
     def threadFunc(self):
         try:

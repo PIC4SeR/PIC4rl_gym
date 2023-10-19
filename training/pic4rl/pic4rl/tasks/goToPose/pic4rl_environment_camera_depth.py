@@ -82,7 +82,7 @@ class Pic4rlEnvironmentCamera(Node):
 
         qos = QoSProfile(depth=10)
         self.sensors = Sensors(self)
-        create_logdir(train_params['--policy'], main_params['sensor'], train_params['--logdir'])
+        self.logdir = create_logdir(train_params['--policy'], main_params['sensor'], train_params['--logdir'])
         self.spin_sensors_callbacks()
 
         self.cmd_vel_pub = self.create_publisher(
@@ -176,9 +176,9 @@ class Pic4rlEnvironmentCamera(Node):
         #self.get_logger().debug("publishing twist...")
         self.cmd_vel_pub.publish(twist)
         # Regulate frequency of send action if needed
-        # freq, t1 = compute_frequency(self.t0)
-        # t0 = t1
-        # frequency_control(self.params_update_freq)
+        freq, t1 = compute_frequency(self.t0)
+        t0 = t1
+        frequency_control(self.params_update_freq)
 
         #self.get_logger().debug("pausing...")
         #self.pause()
@@ -199,47 +199,16 @@ class Pic4rlEnvironmentCamera(Node):
             sensor_data["depth"] = np.ones((self.image_height,self.image_width,1))*self.cutoff
 
         self.get_logger().debug("processing odom...")
-        goal_info, robot_pose = process_odom(sensor_data["odom"])
+        goal_info, robot_pose = process_odom(self.goal_pose, sensor_data["odom"])
         lidar_measurements = sensor_data["scan"]
         depth_image = sensor_data["depth"]
 
         return lidar_measurements, depth_image, goal_info, robot_pose, collision
 
-    def process_odom(self, odom):
-        """
-        """
-        goal_distance = math.sqrt(
-            (self.goal_pose[0]-odom[0])**2
-            + (self.goal_pose[1]-odom[1])**2)
-
-        path_theta = math.atan2(
-            self.goal_pose[1]-odom[1],
-            self.goal_pose[0]-odom[0])
-
-        goal_angle = path_theta - odom[2]
-
-        if goal_angle > math.pi:
-            goal_angle -= 2 * math.pi
-
-        elif goal_angle < -math.pi:
-            goal_angle += 2 * math.pi
-
-        goal_info = [goal_distance, goal_angle]
-        robot_pose = [odom[0], odom[1], odom[2]]
-
-        return goal_info, robot_pose
 
     def check_events(self, lidar_measurements, goal_info, robot_pose, collision):
         """
         """
-        ## FOR VINEYARD ONLY ##
-        # if math.fabs(robot_pose[2]) > 1.57:
-        #     robot_pose[2] = math.fabs(robot_pose[2]) - 3.14
-        # yaw_limit = math.fabs(robot_pose[2])-1.4835  #check yaw is less than 85°
-        # self.get_logger().debug("Yaw limit: {}".format(yaw_limit))
-        # if yaw_limit > 0:
-        #     self.get_logger().info('Reverse: yaw too high')
-        #     return True, "reverse"
         if collision:
             self.collision_count += 1
             if self.collision_count >= 3:
@@ -248,7 +217,7 @@ class Pic4rlEnvironmentCamera(Node):
                 logging.info(f"Ep {'evaluate' if self.evaluate else self.episode+1}: Collision")
                 return True, "collision"
             else:
-                return False, "collision"
+                return False, "None"
 
         if goal_info[0] < self.goal_tolerance:
             self.get_logger().info(f"Ep {'evaluate' if self.evaluate else self.episode+1}: Goal")
@@ -348,14 +317,14 @@ class Pic4rlEnvironmentCamera(Node):
         self.get_logger().info(f"Ep {'evaluate' if self.evaluate else self.episode+1} goal pose [x, y]: {self.goal_pose}")
         logging.info(f"Ep {'evaluate' if self.evaluate else self.episode+1} goal pose [x, y]: {self.goal_pose}")
 
-        position = "{x: "+str(self.goal_pose[0])+",y: "+str(self.goal_pose[1])+",z: "+str(0.01)+"}"
-        pose = "'{state: {name: 'goal',pose: {position: "+position+"}}}'"
-        subprocess.run(
-            "ros2 service call /test/set_entity_state gazebo_msgs/srv/SetEntityState "+pose,
-            shell=True,
-            stdout=subprocess.DEVNULL
-            )
-        time.sleep(0.25)
+        # position = "{x: "+str(self.goal_pose[0])+",y: "+str(self.goal_pose[1])+",z: "+str(0.01)+"}"
+        # pose = "'{state: {name: 'goal',pose: {position: "+position+"}}}'"
+        # subprocess.run(
+        #     "ros2 service call /test/set_entity_state gazebo_msgs/srv/SetEntityState "+pose,
+        #     shell=True,
+        #     stdout=subprocess.DEVNULL
+        #     )
+        # time.sleep(0.25)
 
     def get_goal(self, index):
         """

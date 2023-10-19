@@ -6,9 +6,12 @@ Home-page: https://github.com/keiohta/tf2rl
 Author: Kei Ohta
 Author-email: dev.ohtakei@gmail.com
 License: MIT
-Description: UNKNOWN
 Platform: UNKNOWN
 Provides-Extra: examples
 Provides-Extra: test
 Provides-Extra: tf
 Provides-Extra: tf_gpu
+License-File: LICENSE
+
+UNKNOWN
+

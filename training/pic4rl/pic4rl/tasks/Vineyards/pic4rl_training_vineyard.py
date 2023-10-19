@@ -145,14 +145,15 @@ class Pic4rlTraining_Vineyards(Pic4rlEnvironmentCamera):
                 policy = TD3(
                     state_shape = self.observation_space.shape,
                     action_dim = self.action_space.high.size,
+                    image_shape=(self.image_height, self.image_width,1),
                     max_action=self.action_space.high,
                     min_action=self.action_space.low,
                     lr_actor = 2e-4,
                     lr_critic = 2e-4,
                     sigma = 0.2,
                     tau = 0.01,
-                    epsilon = 1.0, 
-                    epsilon_decay = 0.998, 
+                    epsilon = 0.0, 
+                    epsilon_decay = 0.992, 
                     epsilon_min = 0.05,
                     gpu = self.gpu,
                     batch_size= self.batch_size,
@@ -163,7 +164,7 @@ class Pic4rlTraining_Vineyards(Pic4rlEnvironmentCamera):
                     noise_clip = 0.5,
                     actor_units = (256, 256),
                     critic_units = (256, 256),
-                    #network='conv',
+                    network='conv',
                     log_level = self.log_level)
                 self.get_logger().info('Instantiate TD3 agent...')
             
@@ -174,13 +175,14 @@ class Pic4rlTraining_Vineyards(Pic4rlEnvironmentCamera):
                 policy = SAC(
                     state_shape = self.observation_space.shape,
                     action_dim = self.action_space.high.size,
+                    image_shape=(self.image_height, self.image_width,1),
                     max_action = self.action_space.high,
                     min_action=self.action_space.low,
                     lr=2e-4,
                     lr_alpha=3e-4,
                     actor_units=(256, 256),
                     critic_units=(256, 256),
-                    #network='conv',
+                    network='conv',
                     tau=5e-3,
                     alpha=.2,
                     auto_alpha=False, 
@@ -189,8 +191,8 @@ class Pic4rlTraining_Vineyards(Pic4rlEnvironmentCamera):
                     batch_size= self.batch_size,
                     n_warmup=self.n_warmup,
                     memory_capacity=self.memory_capacity,
-                    epsilon = 1.0, 
-                    epsilon_decay = 0.996, 
+                    epsilon = 0.0, 
+                    epsilon_decay = 0.992, 
                     epsilon_min = 0.05,
                     log_level = self.log_level)
                 self.get_logger().info('Instantiate SAC agent...')
@@ -281,11 +283,12 @@ class Pic4rlTraining_Vineyards(Pic4rlEnvironmentCamera):
         for k,v in params.items():
             if v is not None:
                 kv = k+'='+str(v)
+                if k == '--log-dir':
+                    k += self.logdir
+                    self.get_logger().info(f"logdir set to: {k}")
                 self.parser_list.append(kv)
             else:
                 self.parser_list.append(k)
-
-        self.parser_list[5] += self.logdir
 
     def threadFunc(self):
         try:

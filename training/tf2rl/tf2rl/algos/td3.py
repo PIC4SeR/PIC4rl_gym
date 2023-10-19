@@ -22,6 +22,7 @@ class TD3(DDPG):
             self,
             state_shape,
             action_dim,
+            image_shape=(112,112,1),
             name="TD3",
             actor_update_freq=2,
             policy_noise=0.2,
@@ -71,8 +72,8 @@ class TD3(DDPG):
             self.actor = Actor(state_shape, action_dim, max_action, min_action, actor_units)
             self.actor_target = Actor(state_shape, action_dim, max_action, min_action, actor_units)
         elif network=='conv':
-            self.actor = ConvActor(state_shape, action_dim, max_action, min_action, actor_units)
-            self.actor_target = ConvActor(state_shape, action_dim, max_action, min_action, actor_units)
+            self.actor = ConvActor(state_shape, image_shape, action_dim, max_action, min_action, actor_units)
+            self.actor_target = ConvActor(state_shape, image_shape, action_dim, max_action, min_action, actor_units)
         self.actor_optimizer = tf.keras.optimizers.Adam(learning_rate=lr_actor)
         update_target_variables(self.actor_target.weights,
                                 self.actor.weights, tau=1.)
@@ -83,8 +84,8 @@ class TD3(DDPG):
             self.critic = CriticTD3(state_shape, action_dim, critic_units, name="Q1_Q2")
             self.critic_target = CriticTD3(state_shape, action_dim, critic_units, name="target_Q1_Q2")
         elif network=='conv':
-            self.critic = ConvMixCriticTD3(state_shape, action_dim, critic_units, name="Q1_Q2")
-            self.critic_target = ConvMixCriticTD3(state_shape, action_dim, critic_units, name="target_Q1_Q2")
+            self.critic = ConvMixCriticTD3(state_shape, image_shape, action_dim, critic_units, name="Q1_Q2")
+            self.critic_target = ConvMixCriticTD3(state_shape, image_shape, action_dim, critic_units, name="target_Q1_Q2")
         self.critic_optimizer = tf.keras.optimizers.Adam(
                 learning_rate=lr_critic)
         update_target_variables(
@@ -134,6 +135,7 @@ class TD3(DDPG):
                     zip(actor_grad, self.actor.trainable_variables))
 
             tf.cond(pred=tf.equal(remainder, 0), true_fn=optimize_actor, false_fn=tf.no_op)
+
             # Update target networks
             update_target_variables(
                 self.critic_target.weights, self.critic.weights, self.tau)

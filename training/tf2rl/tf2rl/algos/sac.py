@@ -27,8 +27,7 @@ class SAC(OffPolicyAgent):
             self,
             state_shape,
             action_dim,
-            state_1d_shape=2,
-            state_2d_shape=(112,112,1),
+            image_shape=(112,112,1),
             name="SAC",
             max_action=(0.5,1.0),
             min_action=(0.,-1.),
@@ -75,8 +74,8 @@ class SAC(OffPolicyAgent):
             name=name, memory_capacity=memory_capacity, n_warmup=n_warmup, **kwargs)
 
         self.log_level = log_level
-        self._setup_actor(state_shape, state_1d_shape, state_2d_shape, action_dim, actor_units, lr, max_action, min_action, network)
-        self._setup_critic_q(state_shape, state_1d_shape, state_2d_shape, action_dim, critic_units, lr, network)
+        self._setup_actor(state_shape, image_shape, action_dim, actor_units, lr, max_action, min_action, network)
+        self._setup_critic_q(state_shape, image_shape, action_dim, critic_units, lr, network)
 
         # Set hyper-parameters
         self.tau = tau
@@ -98,17 +97,17 @@ class SAC(OffPolicyAgent):
 
         self.state_ndim = len(state_shape)
 
-    def _setup_actor(self, state_shape, state_1d_shape, state_2d_shape, action_dim, actor_units, lr, max_action, min_action, network='mlp'):
+    def _setup_actor(self, state_shape, image_shape, action_dim, actor_units, lr, max_action, min_action, network='mlp'):
         if network=='mlp':
             self.actor = GaussianActor(
                 state_shape, action_dim, max_action, min_action, squash=True, units=actor_units)
         elif network=='conv':
             self.actor = ConvGaussianActor(
-                state_shape, state_1d_shape, state_2d_shape, action_dim, max_action, min_action, squash=True, units=actor_units)
+                state_shape, image_shape, action_dim, max_action, min_action, squash=True, units=actor_units)
         self.actor_optimizer = tf.keras.optimizers.Adam(learning_rate=lr)
         #self.actor.model().summary()
 
-    def _setup_critic_q(self, state_shape, state_1d_shape, state_2d_shape, action_dim, critic_units, lr, network='mlp'):
+    def _setup_critic_q(self, state_shape, image_shape, action_dim, critic_units, lr, network='mlp'):
         if network=='mlp':
             self.qf1 = CriticQ(state_shape, action_dim,  critic_units=critic_units, name="qf1")
             if self.log_level < 20:
@@ -117,12 +116,12 @@ class SAC(OffPolicyAgent):
             self.qf1_target = CriticQ(state_shape, action_dim,  critic_units=critic_units, name="qf1_target")
             self.qf2_target = CriticQ(state_shape, action_dim, critic_units=critic_units, name="qf2_target")
         elif network=='conv':
-            self.qf1 = ConvMixCriticQ(state_shape, state_1d_shape, state_2d_shape, action_dim, critic_units=critic_units, name="qf1")
+            self.qf1 = ConvMixCriticQ(state_shape, image_shape, action_dim, critic_units=critic_units, name="qf1")
             if self.log_level < 20:
                 self.qf1.model().summary()
-            self.qf2 = ConvMixCriticQ(state_shape, state_1d_shape, state_2d_shape, action_dim, critic_units=critic_units, name="qf2")
-            self.qf1_target = ConvMixCriticQ(state_shape, state_1d_shape, state_2d_shape, action_dim, critic_units=critic_units, name="qf1_target")
-            self.qf2_target = ConvMixCriticQ(state_shape, state_1d_shape, state_2d_shape, action_dim, critic_units=critic_units, name="qf2_target")
+            self.qf2 = ConvMixCriticQ(state_shape, image_shape, action_dim, critic_units=critic_units, name="qf2")
+            self.qf1_target = ConvMixCriticQ(state_shape, image_shape, action_dim, critic_units=critic_units, name="qf1_target")
+            self.qf2_target = ConvMixCriticQ(state_shape, image_shape, action_dim, critic_units=critic_units, name="qf2_target")
         update_target_variables(self.qf1_target.weights, self.qf1.weights, tau=1.)
         update_target_variables(self.qf2_target.weights, self.qf2.weights, tau=1.)
         self.qf1_optimizer = tf.keras.optimizers.Adam(learning_rate=lr)

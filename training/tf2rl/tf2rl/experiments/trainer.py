@@ -206,7 +206,8 @@ class Trainer:
 
             if total_steps % self._save_model_interval == 0:
                 self.checkpoint_manager.save()
-                replay_buffer.save_transitions(self._rb_path, safe=True)
+                if self._rb_path is not None:
+                    replay_buffer.save_transitions(self._rb_path, safe=True)
 
         tf.summary.flush()
 

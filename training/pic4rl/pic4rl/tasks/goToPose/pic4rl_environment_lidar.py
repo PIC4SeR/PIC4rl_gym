@@ -186,14 +186,14 @@ class Pic4rlEnvironmentLidar(Node):
         """
         sensor_data = {}
         sensor_data["scan"], collision, _ = self.sensors.get_laser()
-        sensor_data["odom"] = self.sensors.get_odom()
+        sensor_data["odom"] = self.sensors.get_odom(vel=False)
         
         if sensor_data["scan"] is None:
             sensor_data["scan"] = (np.ones(self.lidar_points)*self.lidar_distance).tolist()
         if sensor_data["odom"] is None:
             sensor_data["odom"] = [0.0,0.0,0.0]
 
-        goal_info, robot_pose = process_odom(sensor_data["odom"])
+        goal_info, robot_pose = process_odom(self.goal_pose, sensor_data["odom"])
         lidar_measurements = sensor_data["scan"]
 
         return lidar_measurements, goal_info, robot_pose, collision
@@ -210,7 +210,7 @@ class Pic4rlEnvironmentLidar(Node):
                 logging.info(f"Ep {'evaluate' if self.evaluate else self.episode+1}: Collision")
                 return True, "collision"
             else:
-                return False, "collision"
+                return False, "None"
 
         if goal_info[0] < self.goal_tolerance:
             self.get_logger().info(f"Ep {'evaluate' if self.evaluate else self.episode+1}: Goal")
@@ -310,14 +310,14 @@ class Pic4rlEnvironmentLidar(Node):
         self.get_logger().info(f"Ep {'evaluate' if self.evaluate else self.episode+1} goal pose [x, y]: {self.goal_pose}")
         logging.info(f"Ep {'evaluate' if self.evaluate else self.episode+1} goal pose [x, y]: {self.goal_pose}")
 
-        position = "{x: "+str(self.goal_pose[0])+",y: "+str(self.goal_pose[1])+",z: "+str(0.01)+"}"
-        pose = "'{state: {name: 'goal',pose: {position: "+position+"}}}'"
-        subprocess.run(
-            "ros2 service call /test/set_entity_state gazebo_msgs/srv/SetEntityState "+pose,
-            shell=True,
-            stdout=subprocess.DEVNULL
-            )
-        time.sleep(0.25)
+        # position = "{x: "+str(self.goal_pose[0])+",y: "+str(self.goal_pose[1])+",z: "+str(0.01)+"}"
+        # pose = "'{state: {name: 'goal',pose: {position: "+position+"}}}'"
+        # subprocess.run(
+        #     "ros2 service call /test/set_entity_state gazebo_msgs/srv/SetEntityState "+pose,
+        #     shell=True,
+        #     stdout=subprocess.DEVNULL
+        #     )
+        # time.sleep(0.25)
 
     def get_goal(self, index):
         """

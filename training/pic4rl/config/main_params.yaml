@@ -8,14 +8,14 @@ main_node:
     min_ang_vel: -1.0
     robot_type: "rectangular" # rectangular or circular
     robot_radius: 0.3 # [m], If robot_type is cicrular
-    robot_size: [0.508, 0.430] # [m, m], Lenght, Width if robot_type is rectangular
-    collision_tolerance: 0.08 # [m], tollerance of collision added to robot_radius or robot_size
+    robot_size: [0.508, 0.430] #[0.508, 0.430] # [m, m], Lenght, Width if robot_type is rectangular
+    collision_tolerance: 0.05 # [m], tollerance of collision added to robot_radius or robot_size
     warning_tolerance: 0.1 # [m], warning window added to robot_radius or robot_size
     goal_tolerance: 0.40
 
     # World parameters
-    world_name: "new_indoor.world" #Leave empty to obtain no world
-    data_path: "new_indoor.json"
+    world_name: ".world" #Leave empty to obtain no world
+    data_path: ".json"
 
     # Task parameters
     task: 'goToPose' # goToPose, Following, Vineyards
@@ -32,12 +32,12 @@ main_node:
     lidar_enabled: "true"
     sensors_topic:
       rgb_topic: "/camera/image_raw"
-      depth_topic: "/camera/depth/image_raw" #"/camera_color/depth_aligned_to_color" 
+      depth_topic:  "/camera/depth/image_raw" #"/camera_stereo/depth/image_raw"
       laser_topic: "/scan" #scan
-      imu_topic: "/imu/data" #imu_data
+      imu_topic: "/imu_data" #imu_data
       odom_topic: "/odom"
     laser_param:
-      max_distance: 12.0 # Meters
+      max_distance: 10.0 # Meters
       num_points: 36 # int divider of 360
     depth_param:
       dist_cutoff: 5 # Meters

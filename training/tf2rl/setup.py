@@ -10,26 +10,30 @@ install_requires = [
     "scipy",
     "scikit-image"]
 
-tf_version = "2.11"  # Default Version
+tf_version = "2.10"  # Default Version, 2.11 and latest version give unsolved errors in td3
 
-compatible_tfp = {"2.12": ["tensorflow-probability~=0.20.0"],
-                  "2.11": ["tensorflow-probability~=0.19.0"],
-		  "2.10": ["tensorflow-probability~=0.18.0"],
-		  "2.6": ["tensorflow-probability~=0.14.1"],
-		  "2.4": ["tensorflow-probability~=0.12.0"],
-                  "2.3": ["tensorflow-probability~=0.11.0"],
-                  "2.2": ["tensorflow-probability~=0.10.0"],
-                  "2.1": ["tensorflow-probability~=0.8.0"],
-                  "2.0": ["tensorflow-probability~=0.8.0"]}
-compatible_tfa = {"2.12": ["tensorflow-addons~=0.20.0"],
-                  "2.11": ["tensorflow-addons~=0.19.0"],
-		  "2.10": ["tensorflow-addons~=0.18.0"],
-		  "2.6": ["tensorflow_addons~=0.14.0"],
-		  "2.4": ["tensorflow_addons~=0.13.0"],
-                  "2.3": ["tensorflow_addons~=0.13.0"],
-                  "2.2": ["tensorflow_addons==0.11.2"],
-                  "2.1": ["tensorflow_addons~=0.9.1"],
-                  "2.0": ["tensorflow_addons~=0.6.0"]}
+compatible_tfp = {"2.10": ["tensorflow-probability~=0.18"],
+		  "2.9": ["tensorflow-probability~=0.17"],
+		  "2.8": ["tensorflow-probability~=0.16"],
+		  "2.7": ["tensorflow-probability~=0.15"],
+		  "2.6": ["tensorflow-probability~=0.14"],
+		  "2.5": ["tensorflow-probability~=0.15"],
+		  "2.4": ["tensorflow-probability~=0.12"],
+                  "2.3": ["tensorflow-probability~=0.11"],
+                  "2.2": ["tensorflow-probability~=0.10"],
+                  "2.1": ["tensorflow-probability~=0.8"],
+                  "2.0": ["tensorflow-probability~=0.8"]}
+compatible_tfa = {"2.10": ["tensorflow-addons~=0.18"],
+		  "2.9": ["tensorflow-addons~=0.17"],
+		  "2.8": ["tensorflow-addons~=0.16"],
+		  "2.7": ["tensorflow-addons~=0.15"],
+		  "2.6": ["tensorflow-addons~=0.14"],
+		  "2.5": ["tensorflow-addons~=0.15"],
+		  "2.4": ["tensorflow-addons~=0.13"],
+                  "2.3": ["tensorflow-addons~=0.13"],
+                  "2.2": ["tensorflow-addons==0.11"],
+                  "2.1": ["tensorflow-addons~=0.9"],
+                  "2.0": ["tensorflow-addons~=0.6"]}
 install_requires.append(*compatible_tfp[tf_version])
 
 if not (platform.system() == 'Windows' and tf_version == "2.0"):

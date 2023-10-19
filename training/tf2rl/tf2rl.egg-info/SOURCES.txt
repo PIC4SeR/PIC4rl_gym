@@ -1,3 +1,4 @@
+LICENSE
 README.md
 setup.py
 examples/__init__.py
@@ -94,7 +95,9 @@ tf2rl/experiments/irl_trainer.py
 tf2rl/experiments/me_trpo_trainer.py
 tf2rl/experiments/mpc_trainer.py
 tf2rl/experiments/on_policy_trainer.py
+tf2rl/experiments/tester.py
 tf2rl/experiments/trainer.py
+tf2rl/experiments/trainer_explore.py
 tf2rl/experiments/utils.py
 tf2rl/misc/__init__.py
 tf2rl/misc/discount_cumsum.py
@@ -105,14 +108,16 @@ tf2rl/misc/normalizer.py
 tf2rl/misc/periodic_ops.py
 tf2rl/misc/prepare_output_dir.py
 tf2rl/misc/target_update_ops.py
-tf2rl/networks/NeuralNetworks.py
 tf2rl/networks/__init__.py
+tf2rl/networks/actor_critic_networks.py
 tf2rl/networks/atari_model.py
 tf2rl/networks/dmc_model.py
 tf2rl/networks/noisy_dense.py
 tf2rl/networks/spectral_norm_dense.py
 tf2rl/policies/__init__.py
 tf2rl/policies/tfp_categorical_actor.py
+tf2rl/policies/tfp_conv_gaussian_actor.py
+tf2rl/policies/tfp_convmix_gaussian_actor.py
 tf2rl/policies/tfp_gaussian_actor.py
 tf2rl/tools/__init__.py
 tf2rl/tools/img_tools.py

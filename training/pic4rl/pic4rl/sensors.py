@@ -63,13 +63,13 @@ class LaserScanSensor():
         
         min_dist_point = self.max_dist
         points = np.nan_to_num(points[:], nan=self.max_dist, posinf=self.max_dist, neginf=self.max_dist)
-        points[points == 0.] = self.max_dist
+        points[points < 0.2] = self.max_dist
         raw_data = points
         collision = np.any(points < self.collision_vector)
 
         min_obstacle_distance = min(points)
         #max_obstacle_distance = max(points)
-        #min_obstacle_angle = np.argmin(points)
+        min_obstacle_angle = np.argmin(points)
 
         points = self.add_noise(points)
         points = np.clip(points, 0.20, self.max_dist)
@@ -82,6 +82,7 @@ class LaserScanSensor():
         #print('min obstacle angle :', min_obstacle_angle)
         #print(len(scan_range))
         #self.plot_points(points)
+
         return scan_range, collision, raw_data
 
     def add_noise(self, points):
@@ -93,18 +94,31 @@ class LaserScanSensor():
     def plot_points(self, points):
         x_coord = []
         y_coord = []
-        for i in range(359):
-            x = points[i]*math.cos(-i)
-            y = points[i]*math.sin(-i)
+
+        x_collision = []
+        y_collision = []
+        degrees = np.arange(0, math.pi*2, math.pi/180)
+        for i in range(len(degrees)):
+            angle = degrees[i]
+            x = points[i]*math.cos(-angle)
+            y = points[i]*math.sin(-angle)
+
+            x_c = self.collision_vector[i]*math.cos(-angle)
+            y_c = self.collision_vector[i]*math.sin(-angle)
 
             x_coord.append(x)
             y_coord.append(y)
-            plt.scatter(y_coord, x_coord)
+            x_collision.append(x_c)
+            y_collision.append(y_c)
+
+        plt.scatter(y_coord, x_coord, label='lidar')
+        plt.scatter(y_collision, x_collision, label='collision')
         plt.ylabel('x [m]')
         plt.xlabel('y [m]')
         plt.title('Lidar points')
+        plt.legend()
         plt.grid(True)
-        plt.show(block=False)
+        plt.show(block=True)
         plt.pause(1)
         plt.close()
 
@@ -139,7 +153,7 @@ class OdomSensor():
             return [pos_x, pos_y, zr], [vx, wz]
 
         else:        
-            return [pos_x, pos_y, yaw]
+            return [pos_x, pos_y, zr]
 
 
 class DepthCamera():
@@ -348,7 +362,7 @@ class Sensors():
             data, velocities = self.odom_process.process_data(self.odom_data, vel)
             return data, velocities
         else:
-            data, velocities = self.odom_process.process_data(self.odom_data)
+            data = self.odom_process.process_data(self.odom_data)
             return data
 
     def get_depth(self):

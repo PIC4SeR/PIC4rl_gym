@@ -7,13 +7,13 @@ import numpy as np
 import tensorflow as tf
 from gym.spaces import Box
 
-from tf2rl.experiments.utils import save_path, frames_to_gif
+from tf2rl.experiments.utils import save_path, frames_to_gif, save_replay_buffer, load_replay_buffer
 from tf2rl.misc.get_replay_buffer import get_replay_buffer
 from tf2rl.misc.prepare_output_dir import prepare_output_dir
 from tf2rl.misc.initialize_logger import initialize_logger
 from tf2rl.envs.normalizer import EmpiricalNormalizer
 
-
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
 if tf.config.experimental.list_physical_devices('GPU'):
     for cur_device in tf.config.experimental.list_physical_devices("GPU"):
         print(cur_device)
@@ -127,27 +127,20 @@ class Trainer:
         replay_buffer = get_replay_buffer(
             self._policy, self._env, self._use_prioritized_rb,
             self._use_nstep_rb, self._n_step)
-
-        obs = self._env.reset(n_episode)
+            
+        if self._restore_rb:
+            replay_buffer.load_transitions(self._rb_path)
+            
+        obs = self._env.reset(n_episode, total_steps)
 
         while total_steps < self._max_steps:
             if total_steps < self._policy.n_warmup:
-                if total_steps < self._policy.n_warmup/2:
-                    action = self._env.action_space.sample()
-                else:
-                    action = np.array([0.36, 0.0], dtype=np.float32)
-                    noise_v = np.clip(np.random.normal(loc=0.0, scale=0.015),-0.04, 0.04, dtype=np.float32)
-                    if total_steps % 2 == 0:
-                        noise_w = np.clip(np.random.normal(loc=0.025, scale=0.015), 0.01, 0.05, dtype=np.float32)
-                    else:
-                        noise_w = np.clip(np.random.normal(loc=-0.025, scale=0.015), -0.05, -0.01, dtype=np.float32)
-                    noise = np.array([noise_v, noise_w], dtype=np.float32)
-                    action = action + noise
+                action = self._env.action_space.sample()
 
             else:
                 action = self._policy.get_action(obs)
 
-            next_obs, reward, done, _ = self._env.step(action)
+            next_obs, reward, done, _ = self._env.step(action, episode_steps)
 
             if self._show_progress:
                 self._env.render()
@@ -168,11 +161,11 @@ class Trainer:
             if done or episode_steps == self._episode_max_steps:
                 replay_buffer.on_episode_end()
                 n_episode += 1
-                obs = self._env.reset(n_episode)
                 
                 fps = episode_steps / (time.perf_counter() - episode_start_time)
                 self.logger.info("Total Epi: {0: 5} Steps: {1: 5} Episode Steps: {2: 5} Return: {3: 5.4f} Eps: {4: 5} FPS: {5:5.2f}".format(
                     n_episode, total_steps, episode_steps, episode_return, self._policy.epsilon, fps))
+                obs = self._env.reset(n_episode, total_steps)
                 tf.summary.scalar(name="Common/training_return", data=episode_return)
                 tf.summary.scalar(name="Common/training_episode_length", data=episode_steps)
 
@@ -213,6 +206,8 @@ class Trainer:
 
             if total_steps % self._save_model_interval == 0:
                 self.checkpoint_manager.save()
+                if self._rb_path is not None:
+                    replay_buffer.save_transitions(self._rb_path, safe=True)
 
         tf.summary.flush()
 
@@ -247,11 +242,11 @@ class Trainer:
         for i in range(self._test_episodes):
             episode_return = 0.
             frames = []
-            obs = self._test_env.reset(i+n_episode)
+            obs = self._test_env.reset(n_episode, total_steps, evaluate=True)
             avg_test_steps += 1
-            for _ in range(self._episode_max_steps):
+            for episode_step in range(self._episode_max_steps):
                 action = self._policy.get_action(obs, test=True)
-                next_obs, reward, done, _ = self._test_env.step(action)
+                next_obs, reward, done, _ = self._test_env.step(action, episode_step)
                 avg_test_steps += 1
                 if self._save_test_path:
                     replay_buffer.add(obs=obs, act=action,
@@ -298,6 +293,8 @@ class Trainer:
         self._use_prioritized_rb = args.use_prioritized_rb
         self._use_nstep_rb = args.use_nstep_rb
         self._n_step = args.n_step
+        self._restore_rb = args.restore_rb
+        self._rb_path = args.rb_path
         # test settings
         self._evaluate = args.evaluate
         self._test_interval = args.test_interval
@@ -341,6 +338,18 @@ class Trainer:
                             help='Normalize observation')
         parser.add_argument('--logdir', type=str, default='results',
                             help='Output directory')
+        parser.add_argument('--policy', type=str, default='DQN',
+                            help='Policy used for training')
+        parser.add_argument('--policy_trainer', type=str, default='off-policy',
+                            help='Policy type, on-policy or off-policy')
+        parser.add_argument('--change_goal_and_pose', type=int, default='20',
+                            help='How many step for each goal-pose pair')
+        parser.add_argument('--starting_episodes', type=int, default='400',
+                            help='How many episodes with random goals')
+        parser.add_argument('--tflite_flag', type=bool, default='False',
+                            help='Use or not tflite models')
+        parser.add_argument('--tflite_model_path', type=str, default='~/inference/actor_fp16.tflite',
+                            help='Path of tflite model')
         # test settings
         parser.add_argument('--evaluate', action='store_true',
                             help='Evaluate trained model')
@@ -363,6 +372,10 @@ class Trainer:
                             help='Flag to use nstep experience replay')
         parser.add_argument('--n-step', type=int, default=4,
                             help='Number of steps to look over')
+        parser.add_argument('--restore-rb', action='store_true',
+                            help='Flag to load replay buffer')
+        parser.add_argument('--rb-path', type=str, default=None,
+                            help='Path to restore replay buffer')
         # others
         parser.add_argument('--logging-level', choices=['DEBUG', 'INFO', 'WARNING'],
                             default='INFO', help='Logging level')
