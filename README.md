@@ -13,9 +13,15 @@ The PIC4rl_gym project is intended to develop a set of ROS2 packages in order to
 
 The repository is organized as follows:
 - **training** contains all the ROS 2 packages that handles the communication with Gazebo and define the task environment. It also contains all the DRL packages dedicated to policy selection and training
-- **platforms** groups all the ROS 2 packages for platform usage in the simulation environment
-- **gazebo_sim** contains whatever related to simulation environments
 - **testing** contains the ROS 2 package to test agent policy
+- **gazebo_sim** contains whatever related to simulation environments
+
+- The PIC4rl-gym is intended to provide a flexible configurable Gazebo simulation for your training. You can use whatever robotic platform that you have in a ROS 2 / Gazebo package. If you would like to start with a set of differnet pre-built platforms you can download the repo from https://github.com/PIC4SeR/PIC4rl_gym_Platforms.
+
+You can download a full set of worlds and models for Gazebo if you want to use our work for your research:
+- worlds download link: https://naspic4ser.polito.it/files/sharing/nehiOIHkY
+- models download link: https://naspic4ser.polito.it/files/sharing/9EFOxow8b
+(Ask us the password by email: mauro.martini@polito.it, andrea.eirale@polito.it)
 
 ## The PIC4rl_gym packages for training agents in simulation:
 ![alt text](/images/gym_diagram.png "PIC4rl_gym")

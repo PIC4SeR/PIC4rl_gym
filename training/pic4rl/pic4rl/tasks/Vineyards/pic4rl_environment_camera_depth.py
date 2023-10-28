@@ -221,26 +221,26 @@ class Pic4rlEnvironmentCamera(Node):
         """
         """
         # FOR VINEYARD ONLY ##
-        if math.fabs(robot_pose[2]) > 1.57:
-            robot_pose[2] = math.fabs(robot_pose[2]) - 3.14
-        #print('robot pose :', robot_pose)
+        # if math.fabs(robot_pose[2]) > 1.57:
+        #     robot_pose[2] = math.fabs(robot_pose[2]) - 3.14
+        # #print('robot pose :', robot_pose)
 
-        yaw_limit = math.fabs(robot_pose[2])-1.4835  #check yaw is less than 85°
-        self.get_logger().debug("Yaw limit: {}".format(yaw_limit))
+        # yaw_limit = math.fabs(robot_pose[2])-1.4835  #check yaw is less than 85°
+        # self.get_logger().debug("Yaw limit: {}".format(yaw_limit))
 
-        if yaw_limit > 0:
-            self.get_logger().info('Reverse: yaw too high')
-            return True, "reverse"
+        # if yaw_limit > 0:
+        #     self.get_logger().info('Reverse: yaw too high')
+        #     return True, "reverse"
 
-        if collision:
-            self.collision_count += 1
-            if self.collision_count >= 3:
-                self.collision_count = 0
-                self.get_logger().info(f"Ep {'evaluate' if self.evaluate else self.episode+1}: Collision")
-                logging.info(f"Ep {'evaluate' if self.evaluate else self.episode+1}: Collision")
-                return True, "collision"
-            else:
-                return False, "None"
+        # if collision:
+        #     self.collision_count += 1
+        #     if self.collision_count >= 3:
+        #         self.collision_count = 0
+        #         self.get_logger().info(f"Ep {'evaluate' if self.evaluate else self.episode+1}: Collision")
+        #         logging.info(f"Ep {'evaluate' if self.evaluate else self.episode+1}: Collision")
+        #         return True, "collision"
+        #     else:
+        #         return False, "None"
 
         if goal_info[0] < self.goal_tolerance:
             self.get_logger().info(f"Ep {'evaluate' if self.evaluate else self.episode+1}: Goal")
@@ -333,11 +333,11 @@ class Pic4rlEnvironmentCamera(Node):
         _,_,_, = self._step(reset_step = True)
         observation,_,_, = self._step()
 
-        if self.episode < 50 or (self.episode % self.explore_demo == 0.) and not self.evaluate:
-            exploration_ep = True
-            self.get_logger().info("Pseudo-Demonstrative exploration episode ...")
-        else:
-            exploration_ep = False
+        # if self.episode < 50 or (self.episode % self.explore_demo == 0.) and not self.evaluate:
+        #    exploration_ep = True
+        #    self.get_logger().info("Pseudo-Demonstrative exploration episode ...")
+        # else:
+        exploration_ep = False
 
         return observation, exploration_ep
     
@@ -400,7 +400,7 @@ class Pic4rlEnvironmentCamera(Node):
         self.get_logger().info(f"Ep {'evaluate' if self.evaluate else self.episode+1} robot pose [x,y,yaw]: {[x, y, yaw]}")
         logging.info(f"Ep {'evaluate' if self.evaluate else self.episode+1} robot pose [x,y,yaw]: {[x, y, yaw]}")
 
-        position = "position: {x: "+str(x)+",y: "+str(y)+",z: "+str(0.07)+"}"
+        position = "position: {x: "+str(x)+",y: "+str(y)+",z: "+str(0.1)+"}"
         orientation = "orientation: {z: "+str(qz)+",w: "+str(qw)+"}"
         pose = position+", "+orientation
         state = "'{state: {name: '"+self.robot_name+"',pose: {"+pose+"}}}'"
