@@ -7,18 +7,9 @@ from launch_ros.actions import Node
 from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, TimerAction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 
-simulation_configFilepath = os.path.join(
-    get_package_share_directory("gazebo_sim"), 'config',
-    'sim_params.yaml'
-    )
-    
-with open(simulation_configFilepath, 'r') as file:
-    sim_configParams = yaml.safe_load(file)['sim_parameters']
-
-mode_package = sim_configParams["package_name"]
 
 configFilepath = os.path.join(
-    get_package_share_directory(mode_package), 'config',
+    get_package_share_directory("pic4rl"), 'config',
     'main_params.yaml'
     )
 with open(configFilepath, 'r') as file:
@@ -26,7 +17,7 @@ with open(configFilepath, 'r') as file:
 
 # Fetching Goals and Poses
 goals_path = os.path.join(
-    get_package_share_directory(mode_package), 
+    get_package_share_directory("pic4rl"), 
     'goals_and_poses', 
     configParams['data_path']
     )

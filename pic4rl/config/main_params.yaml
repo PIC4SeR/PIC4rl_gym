@@ -1,0 +1,65 @@
+main_node:
+  ros__parameters:
+    # Mode
+    mode: "training" # Training or testing
+    # Robot parameters
+    robot_name: "jackal_ugv" # robot entity name in gazebo
+    max_lin_vel: 0.5
+    min_lin_vel: 0.0
+    max_ang_vel: 1.0
+    min_ang_vel: -1.0
+    robot_type: "rectangular" # rectangular or circular
+    robot_radius: 0.3 # [m], If robot_type is cicrular
+    robot_size: [0.508, 0.430] #[0.508, 0.430] # [m, m], Lenght, Width if robot_type is rectangular
+    collision_tolerance: 0.01 # [m], tollerance of collision added to robot_radius or robot_size
+    warning_tolerance: 0.1 # [m], warning window added to robot_radius or robot_size
+    goal_tolerance: 0.40
+
+    # World parameters
+    world_name: "empty.world" # Leave empty to obtain no world
+    data_path: "new_indoor.json" # Indicate a goals and poses json file from goals_and_poses folder
+
+    # Task parameters
+    task: 'goToPose' # goToPose, Following, Vineyards
+    
+    # Sensors parameters
+    update_frequency: 20.0
+    sensor: 'lidar' # lidar or camera
+    visual_data: 'features'
+    features: 12544
+    channels: 1
+    imu_enabled: "false"
+    camera_enabled: "true"
+    stereo_camera_enabled: "false"
+    lidar_enabled: "true"
+    sensors_topic:
+      rgb_topic: "/camera/image_raw"
+      depth_topic: "/camera/depth/image_raw" # "/camera/depth/image_raw" 
+      laser_topic: "/scan" # /scan or /front/scan
+      imu_topic: "/imu/data" #imu_data or /imu/data
+      odom_topic: "/odom" # /odom or /jackal/ground_truth
+    laser_param:
+      max_distance: 10.0 # Meters
+      num_points: 36 # int divider of 360
+    depth_param:
+      dist_cutoff: 5 # Meters
+      width: 112
+      height: 112
+      show_image: False
+    rgb_param:
+      width: 640
+      height: 480
+      show_image: False 
+
+    # Metrics
+    robot_poses: True
+    robot_velocities: True
+    path_distance: True
+    distance_path_ratio: True
+    clearance_time: True
+    mean_velocities: True
+    max_min_accelerations: True
+    cumulative_heading_average: True
+    obstacle_clereance: False
+    following_heading_metrics: False
+    row_crop_path_comparison: False
