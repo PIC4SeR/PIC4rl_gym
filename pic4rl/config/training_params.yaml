@@ -9,7 +9,7 @@ training_params:
 #    --model-dir: '/root/gym_ws/src/Results/' # (str) Directory to restore model.
 #    --dir-suffix: ""  # (str) Suffix for directory that stores results.
 #    --normalize-obs: # Whether normalize observation
-    --logdir: '/root/gym_ws/src/Results' # (str) Output directory name. The default is ``"results"``
+    --logdir: '/root/gym_ws/src/Results/' # (str) Output directory name. The default is ``"results"``
 
 # ENABLE TESTING MODE    
 #    --evaluate: THIS FLAG ENABLE TESTING MODE

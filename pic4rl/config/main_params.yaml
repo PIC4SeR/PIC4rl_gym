@@ -60,6 +60,6 @@ main_node:
     mean_velocities: True
     max_min_accelerations: True
     cumulative_heading_average: True
-    obstacle_clereance: False
+    obstacle_clearance: False
     following_heading_metrics: False
     row_crop_path_comparison: False

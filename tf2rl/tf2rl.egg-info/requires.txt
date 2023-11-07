@@ -5,8 +5,8 @@ numpy>=1.16.0
 scikit-image
 scipy
 setuptools>=41.0.0
-tensorflow-addons~=0.17
-tensorflow-probability~=0.17
+tensorflow-addons~=0.18
+tensorflow-probability~=0.18
 
 [examples]
 gym[atari]>=0.21.0
