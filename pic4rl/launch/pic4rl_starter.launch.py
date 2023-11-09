@@ -1,11 +1,64 @@
 from launch import LaunchDescription
 from launch_ros.actions import Node
-from launch.actions import DeclareLaunchArgument
-from launch.substitutions import (
-    LaunchConfiguration,
-    PathJoinSubstitution,
-)
+from launch.actions import DeclareLaunchArgument, OpaqueFunction, SetLaunchConfiguration
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.substitutions import FindPackageShare
+from launch_ros.descriptions import ParameterFile, Parameter, ParameterValue
+import yaml
+
+from nav2_common.launch import ReplaceString, RewrittenYaml
+
+
+def print_params(context, *args, **kwargs):
+    sensor = LaunchConfiguration("sensor")
+    task = LaunchConfiguration("task")
+    pkg_name = LaunchConfiguration("pkg_name")
+    # executable_name = LaunchConfiguration("executable_name")
+
+    main_params = PathJoinSubstitution(
+        [FindPackageShare(pkg_name), "config", "main_params.yaml"]
+    )
+    if not (
+        sensor.perform(context=context) == "" and task.perform(context=context) == ""
+    ):
+        configured_params = ParameterFile(
+            RewrittenYaml(
+                source_file=main_params,
+                param_rewrites={
+                    "sensor": sensor,
+                    "task": task,
+                },
+                convert_types=True,
+            ),
+            allow_substs=True,
+        )
+    else:
+        configured_params = ParameterFile(
+            main_params,
+            allow_substs=True,
+        )
+    # executable_name = None
+    # open file of Parameters
+    with open(configured_params.param_file[0].perform(context=context), "r") as file:
+        main_params = yaml.safe_load(file)["main_node"]["ros__parameters"]
+        sensor_name = main_params["sensor"]
+        task_name = main_params["task"]
+        print(camel_to_snake(task_name) + "_" + camel_to_snake(sensor_name))
+        executable_name = camel_to_snake(task_name) + "_" + camel_to_snake(sensor_name)
+        # SetLaunchConfiguration(
+        #     executable_name,
+        #     camel_to_snake(task_name) + "_" + camel_to_snake(sensor_name),
+        # )
+    task_node = Node(
+        package=pkg_name,
+        executable=executable_name,
+        name="pic4rl_starter",
+        output="screen",
+        emulate_tty=True,
+        parameters=[main_params],
+        arguments=["--sensor", sensor, "--task", task],
+    )
+    return [task_node]
 
 
 def cameltosnake(camel_string: str) -> str:
@@ -35,37 +88,45 @@ def generate_launch_description():
     sensor = LaunchConfiguration("sensor")
     task = LaunchConfiguration("task")
     pkg_name = LaunchConfiguration("pkg_name")
-    executable_name = LaunchConfiguration("executable_name")
+    # executable_name = LaunchConfiguration("executable_name")
 
     main_params = PathJoinSubstitution(
         [FindPackageShare(pkg_name), "config", "main_params.yaml"]
     )
 
-    # Get the executable name from the parameters
-
-    executable_name = camel_to_snake(executable_name)
+    # configured_params = ParameterFile(
+    #     RewrittenYaml(
+    #         source_file=main_params,
+    #         param_rewrites={
+    #             "sensor": sensor,
+    #             "task": task,
+    #         },
+    #         convert_types=True,
+    #     ),
+    #     allow_substs=True,
+    # )
 
     # Specify the task node
 
-    task_node = Node(
-        package=pkg_name,
-        executable=executable_name,
-        name="pic4rl_starter",
-        output="screen",
-        emulate_tty=True,
-        parameters=[main_params],
-        arguments=["--sensor", sensor, "--task", task],
-    )
+    # task_node = Node(
+    #     package=pkg_name,
+    #     executable=,
+    #     name="pic4rl_starter",
+    #     output="screen",
+    #     emulate_tty=True,
+    #     parameters=[main_params],
+    #     arguments=["--sensor", sensor, "--task", task],
+    # )
 
     # Declare the launch arguments
 
     sensor_arg = DeclareLaunchArgument(
-        "sensor", default_value="camera", description="sensor type: camera or lidar"
+        "sensor", default_value="", description="sensor type: camera or lidar"
     )
 
     task_arg = DeclareLaunchArgument(
         "task",
-        default_value="goToPose",
+        default_value="",
         description="task type: goToPose, Following, Vineyards",
     )
 
@@ -73,18 +134,19 @@ def generate_launch_description():
         "pkg_name", default_value="pic4rl", description="package name"
     )
 
-    executable_name_arg = DeclareLaunchArgument(
-        "executable_name",
-        default_value="go_to_pose_lidar",
-        description="executable name",
-    )
+    # executable_name_arg = DeclareLaunchArgument(
+    #     "executable_name",
+    #     default_value="go_to_pose_camera",
+    #     description="executable name",
+    # )
 
     # Specify the actions
     ld = LaunchDescription()
     ld.add_action(sensor_arg)
     ld.add_action(task_arg)
     ld.add_action(pkg_name_arg)
-    ld.add_action(executable_name_arg)
-    ld.add_action(task_node)
-
+    # ld.add_action(executable_name_arg)
+    # ld.add_action(task_node)
+    # ld.add_action(print_params)
+    ld.add_action(OpaqueFunction(function=print_params))
     return ld
