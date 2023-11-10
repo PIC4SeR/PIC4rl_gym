@@ -13,7 +13,6 @@ def print_params(context, *args, **kwargs):
     sensor = LaunchConfiguration("sensor")
     task = LaunchConfiguration("task")
     pkg_name = LaunchConfiguration("pkg_name")
-    # executable_name = LaunchConfiguration("executable_name")
 
     main_params = PathJoinSubstitution(
         [FindPackageShare(pkg_name), "config", "main_params.yaml"]
@@ -27,6 +26,7 @@ def print_params(context, *args, **kwargs):
                 param_rewrites={
                     "sensor": sensor,
                     "task": task,
+                    "package_name": pkg_name,
                 },
                 convert_types=True,
             ),
@@ -45,18 +45,16 @@ def print_params(context, *args, **kwargs):
         task_name = main_params["task"]
         print(camel_to_snake(task_name) + "_" + camel_to_snake(sensor_name))
         executable_name = camel_to_snake(task_name) + "_" + camel_to_snake(sensor_name)
-        # SetLaunchConfiguration(
-        #     executable_name,
-        #     camel_to_snake(task_name) + "_" + camel_to_snake(sensor_name),
-        # )
+
     task_node = Node(
         package=pkg_name,
         executable=executable_name,
         name="pic4rl_starter",
         output="screen",
         emulate_tty=True,
-        parameters=[main_params],
-        arguments=["--sensor", sensor, "--task", task],
+        parameters=[
+            main_params,
+        ],
     )
     return [task_node]
 
@@ -85,39 +83,6 @@ def camel_to_snake(s):
 
 def generate_launch_description():
     # Launch configuration variables specific to simulation
-    sensor = LaunchConfiguration("sensor")
-    task = LaunchConfiguration("task")
-    pkg_name = LaunchConfiguration("pkg_name")
-    # executable_name = LaunchConfiguration("executable_name")
-
-    main_params = PathJoinSubstitution(
-        [FindPackageShare(pkg_name), "config", "main_params.yaml"]
-    )
-
-    # configured_params = ParameterFile(
-    #     RewrittenYaml(
-    #         source_file=main_params,
-    #         param_rewrites={
-    #             "sensor": sensor,
-    #             "task": task,
-    #         },
-    #         convert_types=True,
-    #     ),
-    #     allow_substs=True,
-    # )
-
-    # Specify the task node
-
-    # task_node = Node(
-    #     package=pkg_name,
-    #     executable=,
-    #     name="pic4rl_starter",
-    #     output="screen",
-    #     emulate_tty=True,
-    #     parameters=[main_params],
-    #     arguments=["--sensor", sensor, "--task", task],
-    # )
-
     # Declare the launch arguments
 
     sensor_arg = DeclareLaunchArgument(
@@ -134,19 +99,10 @@ def generate_launch_description():
         "pkg_name", default_value="pic4rl", description="package name"
     )
 
-    # executable_name_arg = DeclareLaunchArgument(
-    #     "executable_name",
-    #     default_value="go_to_pose_camera",
-    #     description="executable name",
-    # )
-
     # Specify the actions
     ld = LaunchDescription()
     ld.add_action(sensor_arg)
     ld.add_action(task_arg)
     ld.add_action(pkg_name_arg)
-    # ld.add_action(executable_name_arg)
-    # ld.add_action(task_node)
-    # ld.add_action(print_params)
     ld.add_action(OpaqueFunction(function=print_params))
     return ld
