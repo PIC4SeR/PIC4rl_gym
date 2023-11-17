@@ -4,6 +4,7 @@ from launch.actions import DeclareLaunchArgument, OpaqueFunction, SetLaunchConfi
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.substitutions import FindPackageShare
 from launch_ros.descriptions import ParameterFile, Parameter, ParameterValue
+from pic4rl.utils.launch_utils import camel_to_snake
 import yaml
 
 from nav2_common.launch import ReplaceString, RewrittenYaml
@@ -37,7 +38,6 @@ def print_params(context, *args, **kwargs):
             main_params,
             allow_substs=True,
         )
-    # executable_name = None
     # open file of Parameters
     with open(configured_params.param_file[0].perform(context=context), "r") as file:
         main_params = yaml.safe_load(file)["main_node"]["ros__parameters"]
@@ -47,7 +47,7 @@ def print_params(context, *args, **kwargs):
         executable_name = camel_to_snake(task_name) + "_" + camel_to_snake(sensor_name)
 
     task_node = Node(
-        package='pic4rl',
+        package=pkg_name,
         executable=executable_name,
         name="pic4rl_starter",
         output="screen",
@@ -57,29 +57,6 @@ def print_params(context, *args, **kwargs):
         ],
     )
     return [task_node]
-
-
-def cameltosnake(camel_string: str) -> str:
-    # If the input string is empty, return an empty string
-    if not camel_string:
-        return ""
-    # If the first character of the input string is uppercase,
-    # add an underscore before it and make it lowercase
-    elif camel_string[0].isupper():
-        return f"_{camel_string[0].lower()}{cameltosnake(camel_string[1:])}"
-    # If the first character of the input string is lowercase,
-    # simply return it and call the function recursively on the remaining string
-    else:
-        return f"{camel_string[0]}{cameltosnake(camel_string[1:])}"
-
-
-def camel_to_snake(s):
-    if len(s) <= 1:
-        return s.lower()
-    # Changing the first character of the input string to lowercase
-    # and calling the recursive function on the modified string
-    return cameltosnake(s[0].lower() + s[1:])
-
 
 def generate_launch_description():
     # Launch configuration variables specific to simulation

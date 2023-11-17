@@ -29,12 +29,12 @@ main_node:
     features: 12544
     channels: 1
     imu_enabled: "false"
-    camera_enabled: "false"
+    camera_enabled: "true"
     stereo_camera_enabled: "false"
     lidar_enabled: "true"
     sensors_topic:
-      rgb_topic: "/camera/image_raw"
-      depth_topic: "/camera/depth/image_raw" # "/camera/depth/image_raw" 
+      rgb_topic: "/camera_color/image_raw"
+      depth_topic: "/camera_color/depth/image_raw" # "/camera/depth/image_raw" 
       laser_topic: "/front/scan" # /scan or /front/scan
       imu_topic: "/imu/data" #imu_data or /imu/data
       odom_topic: "/jackal/odom" # /odom or /jackal/ground_truth
