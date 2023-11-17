@@ -310,7 +310,7 @@ class Pic4rlLidar(Pic4rlEnvironmentLidar):
 
     def parameters_declaration(self):
         """ """
-        self.declare_parameter("package_name", "pic4rl")
+        # self.declare_parameter("package_name", "pic4rl")
         self.package_name = (
             self.get_parameter("package_name").get_parameter_value().string_value
         )
@@ -335,11 +335,11 @@ class Pic4rlLidar(Pic4rlEnvironmentLidar):
             parameters=[
                 # ("policy", train_params["--policy"]),
                 # ("policy_trainer", train_params["--policy_trainer"]),
-                ("max_lin_vel", None),
-                ("min_lin_vel", None),
-                ("max_ang_vel", None),
-                ("min_ang_vel", None),
-                ("sensor", None),
+                ("max_lin_vel", rclpy.Parameter.Type.DOUBLE),
+                ("min_lin_vel", rclpy.Parameter.Type.DOUBLE),
+                ("max_ang_vel", rclpy.Parameter.Type.DOUBLE),
+                ("min_ang_vel", rclpy.Parameter.Type.DOUBLE),
+                # ("sensor", rclpy.Parameter.Type.STRING),
                 # ("gpu", train_params["--gpu"]),
                 # ("batch_size", train_params["--batch-size"]),
                 # ("n_warmup", train_params["--n-warmup"]),
@@ -391,36 +391,40 @@ class Pic4rlLidar(Pic4rlEnvironmentLidar):
         self.tflite_model_path = train_params["--tflite_model_path"]
 
         if self.train_policy == "PPO":
-            self.declare_parameters(
-                namespace="",
-                parameters=[
-                    ("horizon", train_params["--horizon"]),
-                    ("normalize_adv", train_params["--normalize-adv"]),
-                    ("enable_gae", train_params["--enable-gae"]),
-                ],
-            )
+            # self.declare_parameters(
+            #     namespace="",
+            #     parameters=[
+            #         ("horizon", train_params["--horizon"]),
+            #         ("normalize_adv", train_params["--normalize-adv"]),
+            #         ("enable_gae", train_params["--enable-gae"]),
+            #     ],
+            # )
 
-            self.horizon = (
-                self.get_parameter("horizon").get_parameter_value().integer_value
-            )
-            self.normalize_adv = (
-                self.get_parameter("normalize_adv").get_parameter_value().bool_value
-            )
-            self.enable_gae = (
-                self.get_parameter("enable_gae").get_parameter_value().bool_value
-            )
+            # self.horizon = (
+            #     self.get_parameter("horizon").get_parameter_value().integer_value
+            # )
+            # self.normalize_adv = (
+            #     self.get_parameter("normalize_adv").get_parameter_value().bool_value
+            # )
+            # self.enable_gae = (
+            #     self.get_parameter("enable_gae").get_parameter_value().bool_value
+            # )
+            self.horizon = int(train_params["--horizon"])
+            self.normalize_adv = bool(train_params["--normalize-adv"])
+            self.enable_gae = bool(train_params["--enable-gae"])
 
         else:
-            self.declare_parameters(
-                namespace="",
-                parameters=[("memory_capacity", train_params["--memory-capacity"])],
-            )
+            # self.declare_parameters(
+            #     namespace="",
+            #     parameters=[("memory_capacity", train_params["--memory-capacity"])],
+            # )
 
-            self.memory_capacity = (
-                self.get_parameter("memory_capacity")
-                .get_parameter_value()
-                .integer_value
-            )
+            # self.memory_capacity = (
+            #     self.get_parameter("memory_capacity")
+            #     .get_parameter_value()
+            #     .integer_value
+            # )
+            self.memory_capacity = int(train_params["--memory-capacity"])
 
         self.log_dict = {
             "policy": train_params["--policy"],
@@ -432,23 +436,3 @@ class Pic4rlLidar(Pic4rlEnvironmentLidar):
         }
 
         return train_params
-
-
-def main(args=None):
-    rclpy.init(args=args)
-
-    pic4rl_lidar = Pic4rlLidar()
-
-    executor = SingleThreadedExecutor()
-    executor.add_node(pic4rl_lidar)
-
-    if pic4rl_lidar.tflite_flag:
-        executor.spin(pic4rl_lidar.threadFunc_tflite)
-    else:
-        executor.spin(pic4rl_lidar.threadFunc)
-
-    rclpy.shutdown()
-
-
-if __name__ == "__main__":
-    main()

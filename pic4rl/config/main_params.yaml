@@ -3,7 +3,7 @@ main_node:
     # Mode
     mode: "training" # Training or testing
     # Robot parameters
-    robot_name: "jackal_ugv" # robot entity name in gazebo
+    robot_name: "jackal" # robot entity name in gazebo
     max_lin_vel: 0.5
     min_lin_vel: 0.0
     max_ang_vel: 1.0
@@ -29,15 +29,15 @@ main_node:
     features: 12544
     channels: 1
     imu_enabled: "false"
-    camera_enabled: "true"
+    camera_enabled: "false"
     stereo_camera_enabled: "false"
     lidar_enabled: "true"
     sensors_topic:
       rgb_topic: "/camera/image_raw"
       depth_topic: "/camera/depth/image_raw" # "/camera/depth/image_raw" 
-      laser_topic: "/scan" # /scan or /front/scan
+      laser_topic: "/front/scan" # /scan or /front/scan
       imu_topic: "/imu/data" #imu_data or /imu/data
-      odom_topic: "/odom" # /odom or /jackal/ground_truth
+      odom_topic: "/jackal/odom" # /odom or /jackal/ground_truth
     laser_param:
       max_distance: 10.0 # Meters
       num_points: 36 # int divider of 360

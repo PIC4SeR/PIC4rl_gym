@@ -13,12 +13,11 @@ def print_params(context, *args, **kwargs):
     sensor = LaunchConfiguration("sensor")
     task = LaunchConfiguration("task")
     pkg_name = LaunchConfiguration("pkg_name")
-
-    main_params = PathJoinSubstitution(
-        [FindPackageShare(pkg_name), "config", "main_params.yaml"]
-    )
+    main_params = LaunchConfiguration("main_params")
+    mode = LaunchConfiguration("mode")
+    
     if not (
-        sensor.perform(context=context) == "" and task.perform(context=context) == ""
+        sensor.perform(context=context) == "" and task.perform(context=context) == "" and mode.perform(context=context) == ""
     ):
         configured_params = ParameterFile(
             RewrittenYaml(
@@ -27,6 +26,7 @@ def print_params(context, *args, **kwargs):
                     "sensor": sensor,
                     "task": task,
                     "package_name": pkg_name,
+                    "mode": mode,
                 },
                 convert_types=True,
             ),
@@ -47,7 +47,7 @@ def print_params(context, *args, **kwargs):
         executable_name = camel_to_snake(task_name) + "_" + camel_to_snake(sensor_name)
 
     task_node = Node(
-        package=pkg_name,
+        package='pic4rl',
         executable=executable_name,
         name="pic4rl_starter",
         output="screen",
@@ -84,6 +84,7 @@ def camel_to_snake(s):
 def generate_launch_description():
     # Launch configuration variables specific to simulation
     # Declare the launch arguments
+    pkg_name = LaunchConfiguration("pkg_name")
 
     sensor_arg = DeclareLaunchArgument(
         "sensor", default_value="", description="sensor type: camera or lidar"
@@ -99,10 +100,24 @@ def generate_launch_description():
         "pkg_name", default_value="pic4rl", description="package name"
     )
 
+    main_params_arg = DeclareLaunchArgument(
+        "main_params",
+        default_value=PathJoinSubstitution([FindPackageShare(pkg_name), "config", "main_params.yaml"]),
+        description="main_params.yaml",
+    )
+
+    mode_params_arg = DeclareLaunchArgument(
+        "mode",
+        default_value="",
+        description="mode: training or testing",
+    )
+
     # Specify the actions
     ld = LaunchDescription()
     ld.add_action(sensor_arg)
     ld.add_action(task_arg)
     ld.add_action(pkg_name_arg)
+    ld.add_action(main_params_arg)
+    ld.add_action(mode_params_arg)
     ld.add_action(OpaqueFunction(function=print_params))
     return ld

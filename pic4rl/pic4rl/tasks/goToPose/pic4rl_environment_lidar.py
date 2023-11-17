@@ -58,17 +58,17 @@ class Pic4rlEnvironmentLidar(Node):
         self.declare_parameters(
             namespace="",
             parameters=[
-                ("mode", None),
-                ("data_path", None),
+                ("mode", rclpy.Parameter.Type.STRING),
+                ("data_path", rclpy.Parameter.Type.STRING),
                 # ("change_goal_and_pose", train_params["--change_goal_and_pose"]),
                 # ("starting_episodes", train_params["--starting_episodes"]),
                 # ("timeout_steps", train_params["--episode-max-steps"]),
-                ("robot_name", None),
-                ("goal_tolerance", None),
-                ("laser_param.max_distance", None),
-                ("laser_param.num_points", None),
-                ("update_frequency", None),
-                ("sensor", None),
+                ("robot_name", rclpy.Parameter.Type.STRING),
+                ("goal_tolerance", rclpy.Parameter.Type.DOUBLE),
+                ("laser_param.max_distance", rclpy.Parameter.Type.DOUBLE),
+                ("laser_param.num_points", rclpy.Parameter.Type.INTEGER),
+                ("update_frequency", rclpy.Parameter.Type.DOUBLE),
+                ("sensor", rclpy.Parameter.Type.STRING),
             ],
         )
 
@@ -77,9 +77,10 @@ class Pic4rlEnvironmentLidar(Node):
             self.get_parameter("data_path").get_parameter_value().string_value
         )
         self.data_path = os.path.join(goals_path, self.data_path)
-        self.change_episode = int(train_param_file["--change_goal_and_pose"])
-        self.starting_episodes = int(train_param_file["--starting_episodes"])
-        self.timeout_steps = int(train_param_file["--episode-max-steps"])
+        print(train_params["--change_goal_and_pose"])
+        self.change_episode = int(train_params["--change_goal_and_pose"])
+        self.starting_episodes = int(train_params["--starting_episodes"])
+        self.timeout_steps = int(train_params["--episode-max-steps"])
         self.robot_name = (
             self.get_parameter("robot_name").get_parameter_value().string_value
         )
@@ -106,8 +107,11 @@ class Pic4rlEnvironmentLidar(Node):
 
         qos = QoSProfile(depth=10)
         self.sensors = Sensors(self)
+
+        log_path = os.path.join(get_package_share_directory(self.package_name),'../../../../', train_params["--logdir"])
+
         self.logdir = create_logdir(
-            train_params["--policy"], self.sensor_type, train_params["--logdir"]
+            train_params["--policy"], self.sensor_type, log_path
         )
         self.get_logger().info(self.logdir)
 
