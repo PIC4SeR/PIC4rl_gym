@@ -1,6 +1,5 @@
 /gazebo_sim/worlds
 /gazebo_sim/models
-pic4rl/results
-pic4rl/models
-pic4rl/goals_and_poses/*
-pic4rl/pic4rl/tasks/goToPoseDWA
+training/pic4rl/results
+training/pic4rl/models
+/training/pic4rl/pic4rl/tasks/goToPoseDWA
