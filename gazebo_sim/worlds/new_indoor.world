@@ -21,7 +21,7 @@
           <surface>
             <contact>
               <collide_bitmask>65535</collide_bitmask>
-              <ode/>
+              <ode />
             </contact>
             <friction>
               <ode>
@@ -29,10 +29,10 @@
                 <mu2>50</mu2>
               </ode>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
             </friction>
-            <bounce/>
+            <bounce />
           </surface>
           <max_contacts>10</max_contacts>
         </collision>
@@ -46,7 +46,8 @@
           </geometry>
           <material>
             <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <uri>model://media/materials/scripts/</uri>
+              <uri>model://media/materials/textures/</uri>
               <name>Gazebo/Grey</name>
             </script>
           </material>
@@ -119,14 +120,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -139,7 +140,8 @@
           </geometry>
           <material>
             <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <uri>model://media/materials/scripts/</uri>
+              <uri>model://media/materials/textures/</uri>
               <name>Gazebo/Wood</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -161,14 +163,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -181,7 +183,8 @@
           </geometry>
           <material>
             <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <uri>model://media/materials/scripts/</uri>
+              <uri>model://media/materials/textures/</uri>
               <name>Gazebo/Wood</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -203,14 +206,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -223,7 +226,8 @@
           </geometry>
           <material>
             <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <uri>model://media/materials/scripts/</uri>
+              <uri>model://media/materials/textures/</uri>
               <name>Gazebo/Wood</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -245,14 +249,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -265,7 +269,8 @@
           </geometry>
           <material>
             <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <uri>model://media/materials/scripts/</uri>
+              <uri>model://media/materials/textures/</uri>
               <name>Gazebo/Wood</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -291,14 +296,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -311,7 +316,8 @@
           </geometry>
           <material>
             <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <uri>model://media/materials/scripts/</uri>
+              <uri>model://media/materials/textures/</uri>
               <name>Gazebo/Wood</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -333,14 +339,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -353,7 +359,8 @@
           </geometry>
           <material>
             <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <uri>model://media/materials/scripts/</uri>
+              <uri>model://media/materials/textures/</uri>
               <name>Gazebo/Wood</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -375,14 +382,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -395,7 +402,8 @@
           </geometry>
           <material>
             <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <uri>model://media/materials/scripts/</uri>
+              <uri>model://media/materials/textures/</uri>
               <name>Gazebo/Wood</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -417,14 +425,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -437,7 +445,8 @@
           </geometry>
           <material>
             <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <uri>model://media/materials/scripts/</uri>
+              <uri>model://media/materials/textures/</uri>
               <name>Gazebo/Wood</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -459,14 +468,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -479,7 +488,8 @@
           </geometry>
           <material>
             <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <uri>model://media/materials/scripts/</uri>
+              <uri>model://media/materials/textures/</uri>
               <name>Gazebo/Wood</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -501,14 +511,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -521,7 +531,8 @@
           </geometry>
           <material>
             <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <uri>model://media/materials/scripts/</uri>
+              <uri>model://media/materials/textures/</uri>
               <name>Gazebo/Wood</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -543,14 +554,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -563,7 +574,8 @@
           </geometry>
           <material>
             <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <uri>model://media/materials/scripts/</uri>
+              <uri>model://media/materials/textures/</uri>
               <name>Gazebo/Wood</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -585,14 +597,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -605,7 +617,8 @@
           </geometry>
           <material>
             <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <uri>model://media/materials/scripts/</uri>
+              <uri>model://media/materials/textures/</uri>
               <name>Gazebo/Wood</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -627,14 +640,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -647,7 +660,8 @@
           </geometry>
           <material>
             <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <uri>model://media/materials/scripts/</uri>
+              <uri>model://media/materials/textures/</uri>
               <name>Gazebo/Wood</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -669,14 +683,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -689,7 +703,8 @@
           </geometry>
           <material>
             <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <uri>model://media/materials/scripts/</uri>
+              <uri>model://media/materials/textures/</uri>
               <name>Gazebo/Wood</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -711,14 +726,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -731,7 +746,8 @@
           </geometry>
           <material>
             <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <uri>model://media/materials/scripts/</uri>
+              <uri>model://media/materials/textures/</uri>
               <name>Gazebo/Wood</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -753,14 +769,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -773,7 +789,8 @@
           </geometry>
           <material>
             <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <uri>model://media/materials/scripts/</uri>
+              <uri>model://media/materials/textures/</uri>
               <name>Gazebo/Wood</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -795,14 +812,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -815,7 +832,8 @@
           </geometry>
           <material>
             <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <uri>model://media/materials/scripts/</uri>
+              <uri>model://media/materials/textures/</uri>
               <name>Gazebo/Wood</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -837,14 +855,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -857,7 +875,8 @@
           </geometry>
           <material>
             <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <uri>model://media/materials/scripts/</uri>
+              <uri>model://media/materials/textures/</uri>
               <name>Gazebo/Wood</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -879,14 +898,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -899,7 +918,8 @@
           </geometry>
           <material>
             <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <uri>model://media/materials/scripts/</uri>
+              <uri>model://media/materials/textures/</uri>
               <name>Gazebo/Wood</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -921,14 +941,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -941,7 +961,8 @@
           </geometry>
           <material>
             <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <uri>model://media/materials/scripts/</uri>
+              <uri>model://media/materials/textures/</uri>
               <name>Gazebo/Wood</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -963,14 +984,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -983,7 +1004,8 @@
           </geometry>
           <material>
             <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <uri>model://media/materials/scripts/</uri>
+              <uri>model://media/materials/textures/</uri>
               <name>Gazebo/Wood</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -998,8 +1020,8 @@
     </model>
     <gravity>0 0 -9.8</gravity>
     <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
-    <atmosphere type='adiabatic'/>
-    <wind/>
+    <atmosphere type='adiabatic' />
+    <wind />
     <spherical_coordinates>
       <surface_model>EARTH_WGS84</surface_model>
       <latitude_deg>0</latitude_deg>
@@ -1021,14 +1043,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -1061,28 +1083,30 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_Wardrobe_01/meshes/aws_Wardrobe_01_collision.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_Wardrobe_01/meshes/aws_Wardrobe_01_collision.DAE</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_Wardrobe_01/meshes/aws_Wardrobe_01_visual.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_Wardrobe_01/meshes/aws_Wardrobe_01_visual.DAE</uri>
             </mesh>
           </geometry>
           <meta>
@@ -1113,21 +1137,22 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_SofaB_01/meshes/aws_SofaB_01_collision.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_SofaB_01/meshes/aws_SofaB_01_collision.DAE</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -1163,28 +1188,30 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_TVCabinet_01/meshes/aws_TVCabinet_01_collision.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_TVCabinet_01/meshes/aws_TVCabinet_01_collision.DAE</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_TVCabinet_01/meshes/aws_TVCabinet_01_visual.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_TVCabinet_01/meshes/aws_TVCabinet_01_visual.DAE</uri>
             </mesh>
           </geometry>
           <meta>
@@ -1215,28 +1242,30 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_ReadingDesk_01/meshes/aws_ReadingDesk_01_collision.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_ReadingDesk_01/meshes/aws_ReadingDesk_01_collision.DAE</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_ReadingDesk_01/meshes/aws_ReadingDesk_01_visual.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_ReadingDesk_01/meshes/aws_ReadingDesk_01_visual.DAE</uri>
             </mesh>
           </geometry>
           <meta>
@@ -1259,27 +1288,29 @@
           <max_contacts>10</max_contacts>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_KitchenCabinet_01/meshes/aws_KitchenCabinet_01_collision.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_KitchenCabinet_01/meshes/aws_KitchenCabinet_01_collision.DAE</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_KitchenCabinet_01/meshes/aws_KitchenCabinet_01_visual.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_KitchenCabinet_01/meshes/aws_KitchenCabinet_01_visual.DAE</uri>
             </mesh>
           </geometry>
           <meta>
@@ -1301,28 +1332,30 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_Refrigerator_01/meshes/aws_Refrigerator_01_collision.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_Refrigerator_01/meshes/aws_Refrigerator_01_collision.DAE</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_Refrigerator_01/meshes/aws_Refrigerator_01_visual.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_Refrigerator_01/meshes/aws_Refrigerator_01_visual.DAE</uri>
             </mesh>
           </geometry>
           <meta>
@@ -1353,28 +1386,30 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_KitchenTable_01/meshes/aws_KitchenTable_01_collision.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_KitchenTable_01/meshes/aws_KitchenTable_01_collision.DAE</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_KitchenTable_01/meshes/aws_KitchenTable_01_visual.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_KitchenTable_01/meshes/aws_KitchenTable_01_visual.DAE</uri>
             </mesh>
           </geometry>
           <meta>
@@ -1404,28 +1439,30 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_ChairA_01/meshes/aws_ChairA_01_collision.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_ChairA_01/meshes/aws_ChairA_01_collision.DAE</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_ChairA_01/meshes/aws_ChairA_01_visual.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_ChairA_01/meshes/aws_ChairA_01_visual.DAE</uri>
             </mesh>
           </geometry>
           <meta>
@@ -1455,28 +1492,30 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_ChairA_01/meshes/aws_ChairA_01_collision.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_ChairA_01/meshes/aws_ChairA_01_collision.DAE</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_ChairA_01/meshes/aws_ChairA_01_visual.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_ChairA_01/meshes/aws_ChairA_01_visual.DAE</uri>
             </mesh>
           </geometry>
           <meta>
@@ -1506,28 +1545,30 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_ChairA_01/meshes/aws_ChairA_01_collision.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_ChairA_01/meshes/aws_ChairA_01_collision.DAE</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_ChairA_01/meshes/aws_ChairA_01_visual.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_ChairA_01/meshes/aws_ChairA_01_visual.DAE</uri>
             </mesh>
           </geometry>
           <meta>
@@ -1557,28 +1598,30 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_ChairA_01/meshes/aws_ChairA_01_collision.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_ChairA_01/meshes/aws_ChairA_01_collision.DAE</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_ChairA_01/meshes/aws_ChairA_01_visual.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_ChairA_01/meshes/aws_ChairA_01_visual.DAE</uri>
             </mesh>
           </geometry>
           <meta>
@@ -1608,28 +1651,30 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_ChairA_01/meshes/aws_ChairA_01_collision.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_ChairA_01/meshes/aws_ChairA_01_collision.DAE</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_ChairA_01/meshes/aws_ChairA_01_visual.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_ChairA_01/meshes/aws_ChairA_01_visual.DAE</uri>
             </mesh>
           </geometry>
           <meta>
@@ -2287,28 +2332,30 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_NightStand_01/meshes/aws_NightStand_01_collision.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_NightStand_01/meshes/aws_NightStand_01_collision.DAE</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_NightStand_01/meshes/aws_NightStand_01_visual.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_NightStand_01/meshes/aws_NightStand_01_visual.DAE</uri>
             </mesh>
           </geometry>
           <meta>
@@ -2337,14 +2384,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -2382,21 +2429,22 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_SofaB_01/meshes/aws_SofaB_01_collision.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_SofaB_01/meshes/aws_SofaB_01_collision.DAE</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -2433,21 +2481,22 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_SofaB_01/meshes/aws_SofaB_01_collision.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_SofaB_01/meshes/aws_SofaB_01_collision.DAE</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -2475,28 +2524,30 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_Wardrobe_01/meshes/aws_Wardrobe_01_collision.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_Wardrobe_01/meshes/aws_Wardrobe_01_collision.DAE</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_Wardrobe_01/meshes/aws_Wardrobe_01_visual.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_Wardrobe_01/meshes/aws_Wardrobe_01_visual.DAE</uri>
             </mesh>
           </geometry>
           <meta>
@@ -2527,28 +2578,30 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_ChairD_01/meshes/aws_ChairD_01_collision.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_ChairD_01/meshes/aws_ChairD_01_collision.DAE</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_ChairD_01/meshes/aws_ChairD_01_visual.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_ChairD_01/meshes/aws_ChairD_01_visual.DAE</uri>
             </mesh>
           </geometry>
           <meta>
@@ -2578,28 +2631,30 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_ChairD_01/meshes/aws_ChairD_01_collision.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_ChairD_01/meshes/aws_ChairD_01_collision.DAE</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_ChairD_01/meshes/aws_ChairD_01_visual.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_ChairD_01/meshes/aws_ChairD_01_visual.DAE</uri>
             </mesh>
           </geometry>
           <meta>
@@ -2629,28 +2684,30 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_ChairD_01/meshes/aws_ChairD_01_collision.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_ChairD_01/meshes/aws_ChairD_01_collision.DAE</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_ChairD_01/meshes/aws_ChairD_01_visual.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_ChairD_01/meshes/aws_ChairD_01_visual.DAE</uri>
             </mesh>
           </geometry>
           <meta>
@@ -2680,28 +2737,30 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_ChairD_01/meshes/aws_ChairD_01_collision.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_ChairD_01/meshes/aws_ChairD_01_collision.DAE</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_ChairD_01/meshes/aws_ChairD_01_visual.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_ChairD_01/meshes/aws_ChairD_01_visual.DAE</uri>
             </mesh>
           </geometry>
           <meta>
@@ -2731,28 +2790,30 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_ChairD_01/meshes/aws_ChairD_01_collision.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_ChairD_01/meshes/aws_ChairD_01_collision.DAE</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_ChairD_01/meshes/aws_ChairD_01_visual.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_ChairD_01/meshes/aws_ChairD_01_visual.DAE</uri>
             </mesh>
           </geometry>
           <meta>
@@ -2782,28 +2843,30 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_ChairD_01/meshes/aws_ChairD_01_collision.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_ChairD_01/meshes/aws_ChairD_01_collision.DAE</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_ChairD_01/meshes/aws_ChairD_01_visual.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_ChairD_01/meshes/aws_ChairD_01_visual.DAE</uri>
             </mesh>
           </geometry>
           <meta>
@@ -2833,28 +2896,30 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_ChairD_01/meshes/aws_ChairD_01_collision.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_ChairD_01/meshes/aws_ChairD_01_collision.DAE</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_ChairD_01/meshes/aws_ChairD_01_visual.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_ChairD_01/meshes/aws_ChairD_01_visual.DAE</uri>
             </mesh>
           </geometry>
           <meta>
@@ -2891,14 +2956,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -2912,14 +2977,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -2954,28 +3019,30 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_ChairD_01/meshes/aws_ChairD_01_collision.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_ChairD_01/meshes/aws_ChairD_01_collision.DAE</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_ChairD_01/meshes/aws_ChairD_01_visual.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_ChairD_01/meshes/aws_ChairD_01_visual.DAE</uri>
             </mesh>
           </geometry>
           <meta>
@@ -3005,21 +3072,22 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_Trash_01/meshes/aws_Trash_01_collision.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_Trash_01/meshes/aws_Trash_01_collision.DAE</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -3062,14 +3130,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -3103,14 +3171,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -3155,14 +3223,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -3194,14 +3262,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -3235,7 +3303,8 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://aws_robomaker_warehouse_ClutteringC_01/meshes/aws_robomaker_warehouse_ClutteringC_01_collision.DAE</uri>
+              <uri>
+                model://aws_robomaker_warehouse_ClutteringC_01/meshes/aws_robomaker_warehouse_ClutteringC_01_collision.DAE</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
@@ -3259,16 +3328,17 @@
               </torsional>
             </friction>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
           </surface>
           <max_contacts>10</max_contacts>
         </collision>
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>model://aws_robomaker_warehouse_ClutteringC_01/meshes/aws_robomaker_warehouse_ClutteringC_01_visual.DAE</uri>
+              <uri>
+                model://aws_robomaker_warehouse_ClutteringC_01/meshes/aws_robomaker_warehouse_ClutteringC_01_visual.DAE</uri>
             </mesh>
           </geometry>
           <meta>
@@ -3315,21 +3385,22 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_retail_Computer_01/meshes/aws_Computer_01_collision.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_retail_Computer_01/meshes/aws_Computer_01_collision.DAE</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -3369,14 +3440,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -3418,14 +3489,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -3455,14 +3526,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -3493,14 +3564,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -3541,14 +3612,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -3584,14 +3655,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -3622,14 +3693,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -3664,21 +3735,22 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>model://models/aws_robomaker_residential_SofaC_01/meshes/aws_SofaC_01_collision.DAE</uri>
+              <uri>
+                model://models/aws_robomaker_residential_SofaC_01/meshes/aws_SofaC_01_collision.DAE</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -3711,14 +3783,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -3756,14 +3828,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -3793,14 +3865,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -3834,14 +3906,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
@@ -3855,14 +3927,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode/>
+              <ode />
             </contact>
-            <bounce/>
+            <bounce />
             <friction>
               <torsional>
-                <ode/>
+                <ode />
               </torsional>
-              <ode/>
+              <ode />
             </friction>
           </surface>
         </collision>
