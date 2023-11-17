@@ -6,11 +6,7 @@
   <description>A ROS2 package to launch and manage the simulation environment</description>
   <maintainer email="simone.cerrato@polito.it">root</maintainer>
   <license>TODO: License declaration</license>
-  
-  <exec_depend>rclpy</exec_depend>
-  <exec_depend>sensor_msgs</exec_depend>
-  <exec_depend>geometry_msgs</exec_depend>
-  <exec_depend>gazebo_msgs</exec_depend>
+  <buildtool_depend>ament_cmake</buildtool_depend>  
   
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
@@ -18,6 +14,6 @@
   <test_depend>python3-pytest</test_depend>
 
   <export>
-    <build_type>ament_python</build_type>
+    <build_type>ament_cmake</build_type>
   </export>
 </package>

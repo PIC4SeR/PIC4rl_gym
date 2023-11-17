@@ -6,10 +6,10 @@ training_params:
 # --show-progress: # Call ``render`` function during training
     --save-model-interval: 1000 # (int) Interval to save model. The default is ``int(1e4)``
     --save-summary-interval: 1000 # (int) Interval to save summary. The default is ``int(1e3)``
-#    --model-dir: '/root/gym_ws/src/Results/' # (str) Directory to restore model.
+#    --model-dir: 'src/Results/' # (str) Directory to restore model.
 #    --dir-suffix: ""  # (str) Suffix for directory that stores results.
 #    --normalize-obs: # Whether normalize observation
-    --logdir: '/root/gym_ws/src/Results' # (str) Output directory name. The default is ``"results"``
+    --logdir: src/Results/ # (str) Output directory name. The default is ``"results"`` (it is relative to workspace directory).
 
 # ENABLE TESTING MODE    
 #    --evaluate: THIS FLAG ENABLE TESTING MODE
@@ -23,7 +23,7 @@ training_params:
     --use-nstep-rb: # Use Nstep experience replay
     --n-step: 4 # (int) Number of steps for nstep experience reward. The default is ``4``
     #--restore-rb: # Load experience replay buffer
-    #--rb-path: '/root/gym_ws/src/Results/vineyard/last_rb_SAC_150k_pr_ns4.npz'
+    #--rb-path: 'src/Results/vineyard/last_rb_SAC_150k_pr_ns4.npz'
     --logging-level: INFO # (DEBUG, INFO, WARNING) Choose logging level. The default is ``INFO``
     --policy: 'SAC' # training policy
     --policy_trainer: 'off-policy' # trainer off-policy / on-policy
