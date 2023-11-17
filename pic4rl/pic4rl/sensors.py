@@ -20,42 +20,39 @@ from pic4rl.utils.env_utils import quat_to_euler, tf_decompose, euler_from_quate
 import yaml
 
 
-class LaserScanSensor:
+class LaserScanSensor():
+
     def __init__(
-        self,
-        max_dist,
-        num_points,
-        robot_type,
-        robot_radius,
-        robot_size,
-        collision_tolerance,
-    ):
+            self, 
+            max_dist, 
+            num_points, 
+            robot_type, 
+            robot_radius, 
+            robot_size, 
+            collision_tolerance
+            ):
+
         self.max_dist = max_dist
         self.num_points = num_points
-        self.laser_info = [
-            0.0,
-            6.283199787139893,
-            0.01750195026397705,
-        ]  # min angle, max angle, increment
+        self.laser_info = [0.0, 6.283199787139893, 0.01750195026397705] #min angle, max angle, increment
 
-        self.get_collision_vector(
-            robot_type, robot_radius, robot_size, collision_tolerance
-        )
+        self.get_collision_vector(robot_type, robot_radius, 
+            robot_size, collision_tolerance)
 
-    def get_collision_vector(
-        self, robot_type, robot_radius, robot_size, collision_tolerance
-    ):
-        """ """
+    def get_collision_vector(self, robot_type, robot_radius, 
+            robot_size, collision_tolerance):
+        """
+        """
         if robot_type == "circular":
             self.collision_vector = np.full(360, robot_radius + collision_tolerance)
 
         elif robot_type == "rectangular":
-            sL = robot_size[0] / 2 + collision_tolerance  # Rover lenght semiaxis
-            sW = robot_size[1] / 2 + collision_tolerance  # Rover width semiaxis
+            sL = robot_size[0]/2 + collision_tolerance # Rover lenght semiaxis
+            sW = robot_size[1]/2 + collision_tolerance # Rover width semiaxis
 
-            degrees = np.arange(0, math.pi * 2, math.pi / 180)
-            vec1 = sL / np.cos(degrees)
-            vec2 = sW / np.sin(degrees + 0.0001)
+            degrees = np.arange(0, math.pi*2, math.pi/180)
+            vec1 = sL/np.cos(degrees)
+            vec2 = sW/np.sin(degrees+0.0001)
 
             self.collision_vector = np.minimum(np.abs(vec1), np.abs(vec2))
 
@@ -63,37 +60,35 @@ class LaserScanSensor:
         # There are some outliers (0 or nan values, they all are set to 0) that will not be passed to the DRL agent
         # Correct data:
         scan_range = []
-
+        
         min_dist_point = self.max_dist
-        points = np.nan_to_num(
-            points[:], nan=self.max_dist, posinf=self.max_dist, neginf=self.max_dist
-        )
+        points = np.nan_to_num(points[:], nan=self.max_dist, posinf=self.max_dist, neginf=self.max_dist)
         points[points < 0.2] = self.max_dist
         raw_data = points
         collision = np.any(points < self.collision_vector)
 
         min_obstacle_distance = min(points)
-        # max_obstacle_distance = max(points)
+        #max_obstacle_distance = max(points)
         min_obstacle_angle = np.argmin(points)
 
         points = self.add_noise(points)
         points = np.clip(points, 0.20, self.max_dist)
         # Takes only num_points
-        div = int(360 / self.num_points)
+        div = int(360/self.num_points)
 
         # Takes only sensed measurements
-        scan_range = np.minimum.reduceat(points, np.arange(0, len(points), div))
-        # print('min obstacle distance: ', min_obstacle_distance)
-        # print('min obstacle angle :', min_obstacle_angle)
-        # print(len(scan_range))
-        # self.plot_points(points)
+        scan_range = np.minimum.reduceat(points, np.arange(0,len(points),div))
+        #print('min obstacle distance: ', min_obstacle_distance)
+        #print('min obstacle angle :', min_obstacle_angle)
+        #print(len(scan_range))
+        #self.plot_points(points)
 
         return scan_range, collision, raw_data
 
     def add_noise(self, points):
         noise = np.random.normal(loc=0.0, scale=0.05, size=points.shape)
         noisy_points = points + noise
-        # print('360 noisy lidar points: ', noisy_points)
+        #print('360 noisy lidar points: ', noisy_points)
         return noisy_points
 
     def plot_points(self, points):
@@ -102,25 +97,25 @@ class LaserScanSensor:
 
         x_collision = []
         y_collision = []
-        degrees = np.arange(0, math.pi * 2, math.pi / 180)
+        degrees = np.arange(0, math.pi*2, math.pi/180)
         for i in range(len(degrees)):
             angle = degrees[i]
-            x = points[i] * math.cos(-angle)
-            y = points[i] * math.sin(-angle)
+            x = points[i]*math.cos(-angle)
+            y = points[i]*math.sin(-angle)
 
-            x_c = self.collision_vector[i] * math.cos(-angle)
-            y_c = self.collision_vector[i] * math.sin(-angle)
+            x_c = self.collision_vector[i]*math.cos(-angle)
+            y_c = self.collision_vector[i]*math.sin(-angle)
 
             x_coord.append(x)
             y_coord.append(y)
             x_collision.append(x_c)
             y_collision.append(y_c)
 
-        plt.scatter(y_coord, x_coord, label="lidar")
-        plt.scatter(y_collision, x_collision, label="collision")
-        plt.ylabel("x [m]")
-        plt.xlabel("y [m]")
-        plt.title("Lidar points")
+        plt.scatter(y_coord, x_coord, label='lidar')
+        plt.scatter(y_collision, x_collision, label='collision')
+        plt.ylabel('x [m]')
+        plt.xlabel('y [m]')
+        plt.title('Lidar points')
         plt.legend()
         plt.grid(True)
         plt.show(block=True)
@@ -128,27 +123,28 @@ class LaserScanSensor:
         plt.close()
 
 
-class ImuSensor:
+class ImuSensor():
+    
     def __init__(self):
         pass
-
+    
     def process_data(self, data):
-        _, _, yaw = euler_from_quaternion(data.orientation)
+        _,_,yaw = euler_from_quaternion(data.orientation)
 
         return yaw
 
-
-class OdomSensor:
+class OdomSensor():
+    
     def __init__(self):
         pass
-
+    
     def process_data(self, data, vel=False):
         pos_x = data.pose.pose.position.x
         pos_y = data.pose.pose.position.y
         zqr = data.pose.pose.orientation.z
         wqr = data.pose.pose.orientation.w
-        zr = quat_to_euler(zqr, wqr)
-        # _,_,yaw = euler_from_quaternion(data.pose.pose.orientation)
+        zr  = quat_to_euler(zqr, wqr)
+        #_,_,yaw = euler_from_quaternion(data.pose.pose.orientation)
 
         if vel:
             vx = data.twist.twist.linear.x
@@ -156,11 +152,11 @@ class OdomSensor:
 
             return [pos_x, pos_y, zr], [vx, wz]
 
-        else:
+        else:        
             return [pos_x, pos_y, zr]
 
 
-class DepthCamera:
+class DepthCamera():
     def __init__(self, width, height, cutoff_dist, show=False):
         self.width = width
         self.height = height
@@ -169,66 +165,52 @@ class DepthCamera:
         self.random_noise = False
 
     def process_data(self, frame):
-        np.seterr(all="raise")
-        # IF SIMULATION
-        max_depth = self.cutoff_dist  # [m]
-        # IF REAL CAMERA
-        # max_depth = self.cutoff*1000 [mm]
 
+        np.seterr(all='raise')
+        # IF SIMULATION
+        max_depth = self.cutoff_dist # [m]
+        # IF REAL CAMERA
+        #max_depth = self.cutoff*1000 [mm]
+   
         depth_frame = np.nan_to_num(frame, nan=0.0, posinf=max_depth, neginf=0.0)
-        depth_frame[depth_frame == 0.0] = max_depth
-        depth_frame = np.minimum(
-            depth_frame, max_depth
-        )  # [m] in simulation, [mm] with real camera
+        depth_frame[depth_frame == 0.] = max_depth
+        depth_frame = np.minimum(depth_frame, max_depth) # [m] in simulation, [mm] with real camera
         if self.random_noise:
             noise1 = np.random.normal(loc=0.0, scale=0.2, size=depth_frame.shape)
-            noise2 = (
-                np.random.normal(loc=0.0, scale=1.0, size=depth_frame.shape)
-                * depth_frame
-                / 10
-            )
-            noise1 = np.clip(noise1, -0.5, 0.5)
-            noise2 = np.clip(noise2, -0.5, 0.5)
+            noise2 = np.random.normal(loc=0.0, scale=1.0, size=depth_frame.shape)*depth_frame/10
+            noise1 = np.clip(noise1, -0.5,0.5)
+            noise2 = np.clip(noise2, -0.5,0.5)
 
             depth_frame = depth_frame + noise1 + noise2
-            depth_frame = np.clip(depth_frame, 0.0, max_depth)
+            depth_frame = np.clip(depth_frame, 0.,max_depth)
 
-        depth_frame = cv2.resize(
-            depth_frame, (self.width, self.height), interpolation=cv2.INTER_AREA
-        )
+        depth_frame = cv2.resize(depth_frame, (self.width, self.height), interpolation = cv2.INTER_AREA)
         depth_frame = np.array(depth_frame, dtype=np.float64)
-        # depth_frame = depth_frame/max_depth
+        #depth_frame = depth_frame/max_depth
         # if using a pretrained backbone which normalize data, scale in [0.,255.]
-        # depth_frame = depth_frame*255.0
+        #depth_frame = depth_frame*255.0
         depth_frame = depth_frame.astype(dtype=np.float32)
 
         if self.show:
-            depth_frame = (
-                depth_frame / max_depth
-                if np.amax(depth_frame) > 1.0 and np.amax(depth_frame) <= max_depth
-                else depth_frame
-            )
-            depth_frame = (
-                depth_frame * 255.0 if np.amax(depth_frame) <= 1.0 else depth_frame
-            )
+            depth_frame = depth_frame/max_depth if np.amax(depth_frame) > 1.0 and np.amax(depth_frame) <= max_depth else depth_frame
+            depth_frame = depth_frame*255.0 if np.amax(depth_frame) <= 1.0 else depth_frame
             self.show_image(depth_frame)
-
+        
         # add a channel to have dims = 3
-        depth_frame = np.expand_dims(depth_frame, axis=-1)
+        depth_frame = np.expand_dims(depth_frame, axis = -1)
 
         # if 3 channels are needed by the backbone copy over 3
-        # depth_frame = np.tile(depth_frame, (1, 1, 3))
+        #depth_frame = np.tile(depth_frame, (1, 1, 3))
 
         return depth_frame
 
     def show_image(self, image):
-        colormap = np.asarray(image, dtype=np.uint8)
-        cv2.namedWindow("Depth Image", cv2.WINDOW_AUTOSIZE)
-        cv2.imshow("Depth Image", colormap)
+        colormap = np.asarray(image, dtype = np.uint8)
+        cv2.namedWindow('Depth Image', cv2.WINDOW_AUTOSIZE)
+        cv2.imshow('Depth Image',colormap)
         cv2.waitKey(1)
-
-
-class RGBCamera:
+        
+class RGBCamera():
     def __init__(self, width, height, show=False):
         self.width = width
         self.height = height
@@ -241,15 +223,15 @@ class RGBCamera:
         return np.array(img_resized)
 
     def show_image(self, image):
-        colormap = np.asarray(image, dtype=np.uint8)
-        cv2.namedWindow("Depth Image", cv2.WINDOW_AUTOSIZE)
-        cv2.imshow("Depth Image", colormap)
+        colormap = np.asarray(image, dtype = np.uint8)
+        cv2.namedWindow('Depth Image', cv2.WINDOW_AUTOSIZE)
+        cv2.imshow('Depth Image',colormap)
         cv2.waitKey(1)
 
 
-class Sensors:
+class Sensors():
     def __init__(self, node, testing=False):
-        # super().__init__("generic_sensors_node")
+        #super().__init__("generic_sensors_node")
         self.param = self.get_param(testing)
 
         self.odom_data = None
@@ -273,109 +255,107 @@ class Sensors:
         self.sensor_msg = {}
         self.sensors = self.activate_sensors()
         self.bridge = CvBridge()
+        
 
     def get_param(self, testing):
         if testing:
             configFilepath = os.path.join(
-                get_package_share_directory("testing"), "config", "main_params.yaml"
-            )
+                get_package_share_directory("testing"), 'config',
+                'main_params.yaml')
         else:
             configFilepath = os.path.join(
-                get_package_share_directory("pic4rl"), "config", "main_params.yaml"
-            )
-
+                get_package_share_directory("pic4rl"), 'config',
+                'main_params.yaml')
+                            
         # Load the topic parameters
-        with open(configFilepath, "r") as file:
-            configParams = yaml.safe_load(file)["main_node"]["ros__parameters"]
+        with open(configFilepath, 'r') as file:
+            configParams = yaml.safe_load(file)['main_node']['ros__parameters']
 
         return configParams
 
     def activate_sensors(self):
-        if self.param["imu_enabled"] == "true":
-            self.node.get_logger().debug("IMU subscription done")
+        if self.param["imu_enabled"]=="true":
+            self.node.get_logger().debug('IMU subscription done')
             self.imu_sub = self.node.create_subscription(
-                Imu, self.param["sensors_topic"]["imu_topic"], self.imu_cb, 1
-            )
+            Imu,
+            self.param["sensors_topic"]["imu_topic"], 
+            self.imu_cb,
+            1)
 
             self.imu_process = ImuSensor()
-            self.sensor_msg["imu"] = "None"
+            self.sensor_msg['imu'] = 'None'
 
-        if self.param["camera_enabled"] == "true":
-            self.node.get_logger().debug("Depth subscription done")
+        if self.param["camera_enabled"]=="true":
+            self.node.get_logger().debug('Depth subscription done')
             self.depth_sub = self.node.create_subscription(
                 Image,
-                self.param["sensors_topic"]["depth_topic"],
+                self.param["sensors_topic"]["depth_topic"], 
                 self.depth_camera_cb,
-                1,
-            )
-            self.depth_process = DepthCamera(
-                self.param["depth_param"]["width"],
-                self.param["depth_param"]["height"],
-                self.param["depth_param"]["dist_cutoff"],
-                self.param["depth_param"]["show_image"],
-            )
-            self.sensor_msg["depth"] = "None"
+                1)
+            self.depth_process = DepthCamera(self.param["depth_param"]["width"], self.param["depth_param"]["height"], self.param["depth_param"]["dist_cutoff"],self.param["depth_param"]["show_image"])
+            self.sensor_msg['depth'] = 'None'
 
-        #      self.node.get_logger().info('RGB subscription done')
-        #      self.rgb_sub = self.node.create_subscription(
-        # Image,
-        # self.param["sensors_topic"]["rgb_topic"],
-        # self.rgb_camera_cb,
-        # 1)
-        #      self.rgb_process = RGBCamera(self.param["rgb_param"]["width"], self.param["rgb_param"]["height"], self.param["rgb_param"]["show_image"])
-        #      self.sensor_msg['rgb'] = 'None'
-
-        if self.param["lidar_enabled"] == "true":
-            self.node.get_logger().debug("Laser scan subscription done")
+       #      self.node.get_logger().info('RGB subscription done')
+       #      self.rgb_sub = self.node.create_subscription(
+                # Image,
+                # self.param["sensors_topic"]["rgb_topic"], 
+                # self.rgb_camera_cb,
+                # 1)
+       #      self.rgb_process = RGBCamera(self.param["rgb_param"]["width"], self.param["rgb_param"]["height"], self.param["rgb_param"]["show_image"])
+       #      self.sensor_msg['rgb'] = 'None'
+            
+        if self.param["lidar_enabled"]=="true":
+            self.node.get_logger().debug('Laser scan subscription done')
             self.laser_sub = self.node.create_subscription(
-                LaserScan,
-                self.param["sensors_topic"]["laser_topic"],
-                self.laser_scan_cb,
-                1,
-            )
+            LaserScan,
+            self.param["sensors_topic"]["laser_topic"], 
+            self.laser_scan_cb,
+            1)
             self.laser_process = LaserScanSensor(
-                self.param["laser_param"]["max_distance"],
-                self.param["laser_param"]["num_points"],
+                self.param["laser_param"]["max_distance"], 
+                self.param["laser_param"]["num_points"], 
                 self.param["robot_type"],
                 self.param["robot_radius"],
                 self.param["robot_size"],
-                self.param["collision_tolerance"],
-            )
-            self.sensor_msg["scan"] = "None"
-
-        self.node.get_logger().debug("Odometry subscription done")
+                self.param["collision_tolerance"]
+                )
+            self.sensor_msg['scan'] = 'None'
+        
+        self.node.get_logger().debug('Odometry subscription done')
         self.odom_sub = self.node.create_subscription(
-            Odometry, self.param["sensors_topic"]["odom_topic"], self.odometry_cb, 1
-        )
+            Odometry,
+            self.param["sensors_topic"]["odom_topic"], 
+            self.odometry_cb,
+            1)
         self.odom_process = OdomSensor()
-        self.sensor_msg["odom"] = "None"
+        self.sensor_msg['odom'] = 'None'
 
     def imu_cb(self, msg):
         self.imu_data = msg
-        self.sensor_msg["imu"] = msg
-
+        self.sensor_msg['imu'] = msg
+        
     def depth_camera_cb(self, msg):
-        self.depth_data = self.bridge.imgmsg_to_cv2(msg, "32FC1")
-        self.sensor_msg["depth"] = msg
-
+        self.depth_data = self.bridge.imgmsg_to_cv2(msg, '32FC1')
+        self.sensor_msg['depth'] = msg
+        
     def rgb_camera_cb(self, msg):
         self.rgb_data = self.bridge.imgmsg_to_cv2(msg)
-        self.sensor_msg["rgb"] = msg
+        self.sensor_msg['rgb'] = msg
 
     def laser_scan_cb(self, msg):
         self.laser_data = msg.ranges
-        self.sensor_msg["scan"] = msg
-
+        self.sensor_msg['scan'] = msg
+        
     def odometry_cb(self, msg):
         self.odom_data = msg
-        self.sensor_msg["odom"] = msg
+        self.sensor_msg['odom'] = msg
 
     def get_odom(self, vel=False):
         if self.odom_sub is None:
-            self.node.get_logger().warn("NO Odometry subscription")
+            self.node.get_logger().warn('NO Odometry subscription')
             return None
         if self.odom_data is None:
-            self.node.get_logger().warn("NO Odometry data")
+            self.node.get_logger().warn('NO Odometry data')
             return None
 
         if vel:
@@ -387,44 +367,42 @@ class Sensors:
 
     def get_depth(self):
         if self.depth_sub is None:
-            self.get_logger().warn("NO Depth subscription")
+            self.get_logger().warn('NO Depth subscription')
             return None
         if self.depth_data is None:
-            self.node.get_logger().warn("NO depth image")
+            self.node.get_logger().warn('NO depth image')
             return None
         data = self.depth_process.process_data(self.depth_data)
         return data
 
     def get_rgb(self):
         if self.rgb_sub is None:
-            self.get_logger().warn("NO RGB subscription")
+            self.get_logger().warn('NO RGB subscription')
             return None
         if self.rgb_data is None:
-            self.node.get_logger().warn("NO RGB image")
+            self.node.get_logger().warn('NO RGB image')
             return None
 
         data = self.rgb_process.process_data(self.rgb_data)
         return data
-
+        
     def get_imu(self):
         if self.imu_sub is None:
-            self.get_logger().warn("NO IMU subscription")
+            self.get_logger().warn('NO IMU subscription')
             return None
         elif self.imu_data is None:
-            self.get_logger().warn("NO IMU data")
+            self.get_logger().warn('NO IMU data')
         else:
             data = self.imu_process.process_data(self.imu_data)
             return data
 
     def get_laser(self):
         if self.laser_sub is None:
-            self.node.get_logger().warn("NO laser subscription")
+            self.node.get_logger().warn('NO laser subscription')
             return None, False
         if self.laser_data is None:
-            self.node.get_logger().warn("NO laser data")
+            self.node.get_logger().warn('NO laser data')
             return None, False
 
-        processed_data, collision, raw_data = self.laser_process.process_data(
-            self.laser_data
-        )
+        processed_data, collision, raw_data = self.laser_process.process_data(self.laser_data)
         return processed_data, collision, raw_data
