@@ -40,7 +40,7 @@ world_path = os.path.join(
     configParams["world_name"]
     )
 
-robot_pkg = get_package_share_directory(configParams["robot_name"] + "_description")
+robot_pkg = get_package_share_directory(configParams["robot_name"])
 
 goal_entity = os.path.join(get_package_share_directory("gazebo_sim"), 'models', 
             'goal_box', 'model.sdf')
