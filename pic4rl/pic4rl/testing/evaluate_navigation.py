@@ -34,7 +34,7 @@ from rcl_interfaces.srv import SetParameters, GetParameters, ListParameters
 from rcl_interfaces.msg import ParameterDescriptor, ParameterValue
 
 # from pic4rl.nav_param_client import DWBparamsClient
-from nav2_simple_commander.robot_navigator import BasicNavigator, NavigationResult
+from nav2_simple_commander.robot_navigator import BasicNavigator, TaskResult
 from pic4rl.testing.nav_metrics import Navigation_Metrics
 
 
@@ -46,13 +46,11 @@ class EvaluateNav(Node):
             self.get_parameter("package_name").get_parameter_value().string_value
         )
 
-        # rclpy.logging.set_logger_level('evaluate_nav', 10)
+
         goals_path = os.path.join(
             get_package_share_directory(self.package_name), "goals_and_poses"
         )
-        # main_params_path = os.path.join(
-        #     get_package_share_directory(self.package_name), "config", "main_params.yaml"
-        # )
+        
         train_params_path = os.path.join(
             get_package_share_directory(self.package_name),
             "config",
@@ -62,8 +60,6 @@ class EvaluateNav(Node):
             get_package_share_directory("gazebo_sim"), "models/goal_box/model.sdf"
         )
 
-        # with open(main_params_path, "r") as file:
-        #     main_params = yaml.safe_load(file)["main_node"]["ros__parameters"]
         with open(train_params_path, "r") as train_param_file:
             train_params = yaml.safe_load(train_param_file)["training_params"]
 
@@ -87,23 +83,9 @@ class EvaluateNav(Node):
             self.get_parameter("data_path").get_parameter_value().string_value
         )
         self.data_path = os.path.join(goals_path, self.data_path)
-        # self.n_experiments = (
-        #     self.get_parameter("n_experiments").get_parameter_value().integer_value
-        # )
         self.n_experiments = int(train_params["--n-experiments"])
-        # self.change_episode = (
-        #     self.get_parameter("change_goal_and_pose")
-        #     .get_parameter_value()
-        #     .integer_value
-        # )
         self.change_episode = int(train_params["--change_goal_and_pose"])
-        # self.starting_episodes = (
-        #     self.get_parameter("starting_episodes").get_parameter_value().integer_value
-        # )
         self.starting_episodes = int(train_params["--starting_episodes"])
-        # self.timeout_steps = (
-        #     self.get_parameter("timeout_steps").get_parameter_value().integer_value
-        # )
         self.timeout_steps = int(train_params["--episode-max-steps"])
         self.robot_name = (
             self.get_parameter("robot_name").get_parameter_value().string_value
@@ -171,7 +153,6 @@ class EvaluateNav(Node):
         self.init_dwb_params = [0.4, 1.5, 20, 20, 0.02, 32.0, 24.0, 0.55]
         self.n_navigation_end = 0
         self.navigator = BasicNavigator()
-        # self.nav_metrics = Navigation_Metrics(main_params, self.logdir)
         self.nav_metrics = Navigation_Metrics(self.logdir)
 
         self.get_logger().info("Evaluate Navigation: Starting process")
@@ -236,7 +217,6 @@ class EvaluateNav(Node):
         self.get_logger().debug("Sending action at " + str(action_hz))
 
     def frequency_control(self):
-        # self.get_logger().debug("Sleeping for: "+str(1/self.params_update_freq) +' s')
         time.sleep(1 / self.params_update_freq)
 
     def get_sensor_data(self):
@@ -291,7 +271,7 @@ class EvaluateNav(Node):
         # check if navigation is complete
         if self.navigator.isNavComplete():
             result = self.check_navigation()
-            if result == NavigationResult.FAILED or result == NavigationResult.CANCELED:
+            if result == TaskResult.FAILED or result == TaskResult.CANCELED:
                 self.send_goal(self.goal_pose)
                 self.n_navigation_end = self.n_navigation_end + 1
                 if self.n_navigation_end == 20:
@@ -300,7 +280,7 @@ class EvaluateNav(Node):
                     )
                     return True, "nav2 failed"
 
-            if result == NavigationResult.SUCCEEDED:
+            if result == TaskResult.SUCCEEDED:
                 self.get_logger().info("Goal reached")
                 logging.info(f"Test Episode {self.episode+1}: Goal")
                 return True, "goal"
@@ -328,13 +308,13 @@ class EvaluateNav(Node):
         self,
     ):
         result = self.navigator.getResult()
-        if result == NavigationResult.SUCCEEDED:
+        if result == TaskResult.SUCCEEDED:
             print("Goal succeeded!")
-        elif result == NavigationResult.CANCELED:
+        elif result == TaskResult.CANCELED:
             print("Goal was canceled!")
-        elif result == NavigationResult.FAILED:
+        elif result == TaskResult.FAILED:
             print("Goal failed!")
-        elif result == NavigationResult.UNKNOWN:
+        elif result == TaskResult.UNKNOWN:
             print("Navigation Result UNKNOWN!")
         return result
 

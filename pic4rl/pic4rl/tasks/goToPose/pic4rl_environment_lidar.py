@@ -36,9 +36,7 @@ class Pic4rlEnvironmentLidar(Node):
         goals_path = os.path.join(
             get_package_share_directory(self.package_name), "goals_and_poses"
         )
-        # main_params_path = os.path.join(
-        #     get_package_share_directory(self.package_name), "config", "main_params.yaml"
-        # )
+
         train_params_path = os.path.join(
             get_package_share_directory(self.package_name),
             "config",
@@ -48,10 +46,6 @@ class Pic4rlEnvironmentLidar(Node):
             get_package_share_directory("gazebo_sim"), "models/goal_box/model.sdf"
         )
 
-        # with open(main_params_path, "r") as main_params_file:
-        #     main_params = yaml.safe_load(main_params_file)["main_node"][
-        #         "ros__parameters"
-        #     ]
         with open(train_params_path, "r") as train_param_file:
             train_params = yaml.safe_load(train_param_file)["training_params"]
 
@@ -60,9 +54,6 @@ class Pic4rlEnvironmentLidar(Node):
             parameters=[
                 ("mode", rclpy.Parameter.Type.STRING),
                 ("data_path", rclpy.Parameter.Type.STRING),
-                # ("change_goal_and_pose", train_params["--change_goal_and_pose"]),
-                # ("starting_episodes", train_params["--starting_episodes"]),
-                # ("timeout_steps", train_params["--episode-max-steps"]),
                 ("robot_name", rclpy.Parameter.Type.STRING),
                 ("goal_tolerance", rclpy.Parameter.Type.DOUBLE),
                 ("laser_param.max_distance", rclpy.Parameter.Type.DOUBLE),
@@ -136,7 +127,6 @@ class Pic4rlEnvironmentLidar(Node):
 
         self.get_logger().info(f"Gym mode: {self.mode}")
         if self.mode == "testing":
-            # self.nav_metrics = Navigation_Metrics(main_params, self.logdir)
             self.nav_metrics = Navigation_Metrics(self.logdir)
         self.get_logger().debug("PIC4RL_Environment: Starting process")
 
