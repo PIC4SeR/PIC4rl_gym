@@ -30,6 +30,8 @@ class Pic4rlEnvironmentLidar(Node):
         """ """
         super().__init__("pic4rl_training_lidar")
         self.declare_parameter("package_name", "pic4rl")
+        self.declare_parameter("training_params_path", rclpy.Parameter.Type.STRING)
+        self.declare_parameter("main_params_path", rclpy.Parameter.Type.STRING)
         self.package_name = (
             self.get_parameter("package_name").get_parameter_value().string_value
         )
@@ -37,11 +39,14 @@ class Pic4rlEnvironmentLidar(Node):
             get_package_share_directory(self.package_name), "goals_and_poses"
         )
 
-        train_params_path = os.path.join(
-            get_package_share_directory(self.package_name),
-            "config",
-            "training_params.yaml",
-        )
+        # train_params_path = os.path.join(
+        #     get_package_share_directory(self.package_name),
+        #     "config",
+        #     "training_params.yaml",
+        # )
+        self.main_params_path = self.get_parameter("main_params_path").get_parameter_value().string_value
+        train_params_path = self.get_parameter("training_params_path").get_parameter_value().string_value
+
         self.entity_path = os.path.join(
             get_package_share_directory("gazebo_sim"), "models/goal_box/model.sdf"
         )
@@ -208,7 +213,7 @@ class Pic4rlEnvironmentLidar(Node):
     def get_sensor_data(self):
         """ """
         sensor_data = {}
-        sensor_data["scan"], collision, _ = self.sensors.get_laser()
+        sensor_data["scan"], collision = self.sensors.get_laser()
         sensor_data["odom"] = self.sensors.get_odom(vel=False)
 
         if sensor_data["scan"] is None:

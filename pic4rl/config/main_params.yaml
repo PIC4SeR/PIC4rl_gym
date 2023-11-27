@@ -29,7 +29,7 @@ main_node:
     features: 12544
     channels: 1
     imu_enabled: "false"
-    camera_enabled: "true"
+    camera_enabled: "false"
     stereo_camera_enabled: "false"
     lidar_enabled: "true"
     sensors_topic:

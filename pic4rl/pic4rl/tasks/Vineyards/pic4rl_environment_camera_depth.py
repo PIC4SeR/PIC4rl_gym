@@ -254,7 +254,7 @@ class Pic4rlEnvironmentCamera(Node):
     def get_sensor_data(self):
         """ """
         sensor_data = {"depth": None}
-        sensor_data["scan"], collision, complete_laser_data = self.sensors.get_laser()
+        sensor_data["scan"], collision = self.sensors.get_laser()
         sensor_data["odom"], velocities = self.sensors.get_odom(vel=True)
         sensor_data["depth"] = self.sensors.get_depth()
 

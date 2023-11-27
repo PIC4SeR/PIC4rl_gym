@@ -15,6 +15,7 @@ def print_params(context, *args, **kwargs):
     task = LaunchConfiguration("task")
     pkg_name = LaunchConfiguration("pkg_name")
     main_params = LaunchConfiguration("main_params")
+    training_params = LaunchConfiguration("training_params")
     mode = LaunchConfiguration("mode")
     
     if not (
@@ -26,13 +27,13 @@ def print_params(context, *args, **kwargs):
                 param_rewrites={
                     "sensor": sensor,
                     "task": task,
-                    "package_name": pkg_name,
                     "mode": mode,
                 },
                 convert_types=True,
             ),
             allow_substs=True,
         )
+        print("parameters substituted")
     else:
         configured_params = ParameterFile(
             main_params,
@@ -40,9 +41,12 @@ def print_params(context, *args, **kwargs):
         )
     # open file of Parameters
     with open(configured_params.param_file[0].perform(context=context), "r") as file:
-        main_params = yaml.safe_load(file)["main_node"]["ros__parameters"]
-        sensor_name = main_params["sensor"]
-        task_name = main_params["task"]
+        # main_params = yaml.safe_load(file)["main_node"]["ros__parameters"]
+        main_params_dict = yaml.safe_load(file)["main_node"]['ros__parameters']
+        print(main_params_dict)
+
+        sensor_name = main_params_dict["sensor"]
+        task_name = main_params_dict["task"]
         print(camel_to_snake(task_name) + "_" + camel_to_snake(sensor_name))
         executable_name = camel_to_snake(task_name) + "_" + camel_to_snake(sensor_name)
 
@@ -53,7 +57,10 @@ def print_params(context, *args, **kwargs):
         output="screen",
         emulate_tty=True,
         parameters=[
-            main_params,
+            main_params_dict,
+            {"package_name": pkg_name},
+            {"main_params_path": main_params},
+            {"training_params_path": training_params},
         ],
     )
     return [task_node]
@@ -83,6 +90,12 @@ def generate_launch_description():
         description="main_params.yaml",
     )
 
+    training_params_arg = DeclareLaunchArgument(
+        "training_params",
+        default_value=PathJoinSubstitution([FindPackageShare(pkg_name), "config", "training_params.yaml"]),
+        description="training_params.yaml",
+    )
+
     mode_params_arg = DeclareLaunchArgument(
         "mode",
         default_value="",
@@ -95,6 +108,7 @@ def generate_launch_description():
     ld.add_action(task_arg)
     ld.add_action(pkg_name_arg)
     ld.add_action(main_params_arg)
+    ld.add_action(training_params_arg)
     ld.add_action(mode_params_arg)
     ld.add_action(OpaqueFunction(function=print_params))
     return ld

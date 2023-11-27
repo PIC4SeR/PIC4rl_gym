@@ -374,11 +374,13 @@ class Pic4rlCamera(Pic4rlEnvironmentCamera):
         # main_params_path = os.path.join(
         #     get_package_share_directory(self.package_name), "config", "main_params.yaml"
         # )
-        train_params_path = os.path.join(
-            get_package_share_directory(self.package_name),
-            "config",
-            "training_params.yaml",
-        )
+        # train_params_path = os.path.join(
+        #     get_package_share_directory(self.package_name),
+        #     "config",
+        #     "training_params.yaml",
+        # )
+        train_params_path = self.get_parameter(
+            "training_params_path").get_parameter_value().string_value
 
         # with open(main_params_path, "r") as main_params_file:
         #     main_params = yaml.safe_load(main_params_file)["main_node"][

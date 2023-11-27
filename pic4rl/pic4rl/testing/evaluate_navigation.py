@@ -269,7 +269,7 @@ class EvaluateNav(Node):
         feedback = self.navigator.getFeedback()
         # self.get_logger().debug('Navigator feedback: '+str(feedback))
         # check if navigation is complete
-        if self.navigator.isNavComplete():
+        if self.navigator.isTaskComplete():
             result = self.check_navigation()
             if result == TaskResult.FAILED or result == TaskResult.CANCELED:
                 self.send_goal(self.goal_pose)

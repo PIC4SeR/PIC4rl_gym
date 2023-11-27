@@ -311,14 +311,16 @@ class Pic4rlLidar(Pic4rlEnvironmentLidar):
     def parameters_declaration(self):
         """ """
         
-        self.package_name = (
-            self.get_parameter("package_name").get_parameter_value().string_value
-        )
-        train_params_path = os.path.join(
-            get_package_share_directory(self.package_name),
-            "config",
-            "training_params.yaml",
-        )
+        self.package_name = self.get_parameter(
+            "package_name").get_parameter_value().string_value
+        # train_params_path = os.path.join(
+        #     get_package_share_directory(self.package_name),
+        #     "config",
+        #     "training_params.yaml",
+        # )
+        train_params_path = self.get_parameter(
+            "training_params_path").get_parameter_value().string_value
+
         with open(train_params_path, "r") as train_param_file:
             train_params = yaml.safe_load(train_param_file)["training_params"]
 
