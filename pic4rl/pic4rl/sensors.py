@@ -88,7 +88,7 @@ class LaserScanSensor:
         # print(len(scan_range))
         # self.plot_points(points)
 
-        return scan_range, collision, raw_data
+        return scan_range, min_obstacle_distance, collision 
 
     def add_noise(self, points):
         noise = np.random.normal(loc=0.0, scale=0.05, size=points.shape)
@@ -248,9 +248,9 @@ class RGBCamera:
 
 
 class Sensors:
-    def __init__(self, node, testing=False):
+    def __init__(self, node):
         # super().__init__("generic_sensors_node")
-        self.param = self.get_param(testing)
+        self.param = self.get_param(node)
 
         self.odom_data = None
         self.laser_data = None
@@ -274,15 +274,8 @@ class Sensors:
         self.sensors = self.activate_sensors()
         self.bridge = CvBridge()
 
-    def get_param(self, testing):
-        if testing:
-            configFilepath = os.path.join(
-                get_package_share_directory("testing"), "config", "main_params.yaml"
-            )
-        else:
-            configFilepath = os.path.join(
-                get_package_share_directory("pic4rl"), "config", "main_params.yaml"
-            )
+    def get_param(self, node):
+        configFilepath = node.main_params_path
 
         # Load the topic parameters
         with open(configFilepath, "r") as file:
@@ -315,16 +308,7 @@ class Sensors:
                 self.param["depth_param"]["show_image"],
             )
             self.sensor_msg["depth"] = "None"
-
-        #      self.node.get_logger().info('RGB subscription done')
-        #      self.rgb_sub = self.node.create_subscription(
-        # Image,
-        # self.param["sensors_topic"]["rgb_topic"],
-        # self.rgb_camera_cb,
-        # 1)
-        #      self.rgb_process = RGBCamera(self.param["rgb_param"]["width"], self.param["rgb_param"]["height"], self.param["rgb_param"]["show_image"])
-        #      self.sensor_msg['rgb'] = 'None'
-
+            
         if self.param["lidar_enabled"] == "true":
             self.node.get_logger().debug("Laser scan subscription done")
             self.laser_sub = self.node.create_subscription(
@@ -416,7 +400,7 @@ class Sensors:
             data = self.imu_process.process_data(self.imu_data)
             return data
 
-    def get_laser(self):
+    def get_laser(self, min_obstacle_distance=False):
         if self.laser_sub is None:
             self.node.get_logger().warn("NO laser subscription")
             return None, False
@@ -424,7 +408,9 @@ class Sensors:
             self.node.get_logger().warn("NO laser data")
             return None, False
 
-        processed_data, collision, raw_data = self.laser_process.process_data(
+        processed_data, min_obstacle_distance, collision = self.laser_process.process_data(
             self.laser_data
         )
-        return processed_data, collision, raw_data
+        if min_obstacle_distance:
+            return processed_data, min_obstacle_distance, collision
+        return processed_data, collision

@@ -63,8 +63,6 @@
           </geometry>
           <material>
             <script>
-              <uri>model://media/materials/scripts/</uri>
-              <uri>model://media/materials/textures/</uri>
               <name>Gazebo/Grey</name>
             </script>
           </material>
@@ -123,8 +121,6 @@
           </geometry>
           <material>
             <script>
-              <uri>model://media/materials/scripts/</uri>
-              <uri>model://media/materials/textures/</uri>
               <name>Gazebo/Grey</name>
             </script>
             <ambient>0.435294 0.796078 0.67451 1</ambient>
@@ -169,8 +165,6 @@
           </geometry>
           <material>
             <script>
-              <uri>model://media/materials/scripts/</uri>
-              <uri>model://media/materials/textures/</uri>
               <name>Gazebo/Grey</name>
             </script>
             <ambient>0.435294 0.796078 0.67451 1</ambient>
@@ -215,8 +209,6 @@
           </geometry>
           <material>
             <script>
-              <uri>model://media/materials/scripts/</uri>
-              <uri>model://media/materials/textures/</uri>
               <name>Gazebo/Grey</name>
             </script>
             <ambient>0.435294 0.796078 0.67451 1</ambient>
@@ -261,8 +253,6 @@
           </geometry>
           <material>
             <script>
-              <uri>model://media/materials/scripts/</uri>
-              <uri>model://media/materials/textures/</uri>
               <name>Gazebo/Grey</name>
             </script>
             <ambient>0.435294 0.796078 0.67451 1</ambient>
@@ -307,8 +297,6 @@
           </geometry>
           <material>
             <script>
-              <uri>model://media/materials/scripts/</uri>
-              <uri>model://media/materials/textures/</uri>
               <name>Gazebo/Grey</name>
             </script>
             <ambient>0.435294 0.796078 0.67451 1</ambient>
@@ -353,8 +341,6 @@
           </geometry>
           <material>
             <script>
-              <uri>model://media/materials/scripts/</uri>
-              <uri>model://media/materials/textures/</uri>
               <name>Gazebo/Grey</name>
             </script>
             <ambient>0.435294 0.796078 0.67451 1</ambient>
@@ -399,8 +385,6 @@
           </geometry>
           <material>
             <script>
-              <uri>model://media/materials/scripts/</uri>
-              <uri>model://media/materials/textures/</uri>
               <name>Gazebo/Grey</name>
             </script>
             <ambient>0.435294 0.796078 0.67451 1</ambient>
@@ -445,8 +429,6 @@
           </geometry>
           <material>
             <script>
-              <uri>model://media/materials/scripts/</uri>
-              <uri>model://media/materials/textures/</uri>
               <name>Gazebo/Grey</name>
             </script>
             <ambient>0.435294 0.796078 0.67451 1</ambient>

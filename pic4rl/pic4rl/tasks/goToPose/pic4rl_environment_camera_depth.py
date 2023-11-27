@@ -31,20 +31,26 @@ class Pic4rlEnvironmentCamera(Node):
         super().__init__("pic4rl_training_camera")
 
         self.declare_parameter("package_name", "pic4rl")
+        self.declare_parameter("training_params_path", "")
+        self.declare_parameter("main_params_path", "")
+
         self.package_name = (
             self.get_parameter("package_name").get_parameter_value().string_value
         )
         goals_path = os.path.join(
             get_package_share_directory(self.package_name), "goals_and_poses"
         )
-        # main_params_path = os.path.join(
+        self.main_params_path = self.get_parameter("main_params_path").get_parameter_value().string_value
+        # os.path.join(
         #     get_package_share_directory(self.package_name), "config", "main_params.yaml"
         # )
-        train_params_path = os.path.join(
-            get_package_share_directory(self.package_name),
-            "config",
-            "training_params.yaml",
-        )
+        # train_params_path = os.path.join(
+        #     get_package_share_directory(self.package_name),
+        #     "config",
+        #     "training_params.yaml",
+        # )
+        train_params_path = self.get_parameter(
+            "training_params_path").get_parameter_value().string_value
         self.entity_path = os.path.join(
             get_package_share_directory("gazebo_sim"), "models/goal_box/model.sdf"
         )
@@ -250,7 +256,7 @@ class Pic4rlEnvironmentCamera(Node):
     def get_sensor_data(self):
         """ """
         sensor_data = {"depth": None}
-        sensor_data["scan"], collision, _ = self.sensors.get_laser()
+        sensor_data["scan"], collision = self.sensors.get_laser()
         sensor_data["odom"] = self.sensors.get_odom()
         sensor_data["depth"] = self.sensors.get_depth()
 
