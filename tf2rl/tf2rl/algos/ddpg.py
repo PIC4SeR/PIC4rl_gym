@@ -127,7 +127,7 @@ class DDPG(OffPolicyAgent):
             tf.constant(state), self.sigma * (1. - test),
             tf.constant(self.actor.max_action, dtype=tf.float32))
 
-        #print("action : ", action)
+        # print("action : ", action)
         if tensor:
             return action
         else:

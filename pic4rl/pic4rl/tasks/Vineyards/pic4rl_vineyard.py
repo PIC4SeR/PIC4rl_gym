@@ -266,7 +266,7 @@ class Pic4rlVineyards(Pic4rlEnvironmentCamera):
                     log_level=self.log_level,
                 )
                 self.get_logger().info("Instantiate SAC-AE agent...")
-
+            
             trainer = Trainer(policy, self, args, test_env=None)
             # self.get_logger().info('Starting process...')
             # trainer()
@@ -375,49 +375,56 @@ class Pic4rlVineyards(Pic4rlEnvironmentCamera):
 
     def parameters_declaration(self):
         """ """
-        self.declare_parameter("package_name", "pic4rl")
+        # self.declare_parameter("package_name", "pic4rl")
         self.package_name = (
             self.get_parameter("package_name").get_parameter_value().string_value
         )
-        main_params_path = os.path.join(
-            get_package_share_directory(self.package_name), "config", "main_params.yaml"
-        )
-        train_params_path = os.path.join(
-            get_package_share_directory(self.package_name),
-            "config",
-            "training_params.yaml",
-        )
+        # main_params_path = os.path.join(
+        #     get_package_share_directory(self.package_name), "config", "main_params.yaml"
+        # )
+        # train_params_path = os.path.join(
+        #     get_package_share_directory(self.package_name),
+        #     "config",
+        #     "training_params.yaml",
+        # )
+        train_params_path = self.get_parameter(
+            "training_params_path").get_parameter_value().string_value
 
-        with open(main_params_path, "r") as main_params_file:
-            main_params = yaml.safe_load(main_params_file)["main_node"][
-                "ros__parameters"
-            ]
+        # with open(main_params_path, "r") as main_params_file:
+        #     main_params = yaml.safe_load(main_params_file)["main_node"][
+        #         "ros__parameters"
+        #     ]
         with open(train_params_path, "r") as train_param_file:
             train_params = yaml.safe_load(train_param_file)["training_params"]
 
         self.declare_parameters(
             namespace="",
             parameters=[
-                ("policy", train_params["--policy"]),
-                ("policy_trainer", train_params["--policy_trainer"]),
-                ("max_lin_vel", main_params["max_lin_vel"]),
-                ("min_lin_vel", main_params["min_lin_vel"]),
-                ("max_ang_vel", main_params["max_ang_vel"]),
-                ("min_ang_vel", main_params["min_ang_vel"]),
-                ("gpu", train_params["--gpu"]),
-                ("batch_size", train_params["--batch-size"]),
-                ("n_warmup", train_params["--n-warmup"]),
-                ("tflite_flag", train_params["--tflite_flag"]),
-                ("tflite_model_path", train_params["--tflite_model_path"]),
+                # ("policy", train_params["--policy"]),
+                # ("policy_trainer", train_params["--policy_trainer"]),
+                ("max_lin_vel", rclpy.Parameter.Type.DOUBLE),
+                ("min_lin_vel", rclpy.Parameter.Type.DOUBLE),
+                ("max_ang_vel", rclpy.Parameter.Type.DOUBLE),
+                ("min_ang_vel", rclpy.Parameter.Type.DOUBLE),
+                # ("sensor", rclpy.Parameter.Type.STRING),
+                # ("visual_data", None),
+                # ("features", None),
+                # ("gpu", train_params["--gpu"]),
+                # ("batch_size", train_params["--batch-size"]),
+                # ("n_warmup", train_params["--n-warmup"]),
+                # ("tflite_flag", train_params["--tflite_flag"]),
+                # ("tflite_model_path", train_params["--tflite_model_path"]),
             ],
         )
 
-        self.train_policy = (
-            self.get_parameter("policy").get_parameter_value().string_value
-        )
-        self.policy_trainer = (
-            self.get_parameter("policy_trainer").get_parameter_value().string_value
-        )
+        # self.train_policy = (
+        #     self.get_parameter("policy").get_parameter_value().string_value
+        # )
+        self.train_policy = train_params["--policy"]
+        # self.policy_trainer = (
+        #     self.get_parameter("policy_trainer").get_parameter_value().string_value
+        # )
+        self.policy_trainer = train_params["--policy_trainer"]
         self.min_ang_vel = (
             self.get_parameter("min_ang_vel").get_parameter_value().double_value
         )
@@ -430,19 +437,33 @@ class Pic4rlVineyards(Pic4rlEnvironmentCamera):
         self.max_lin_vel = (
             self.get_parameter("max_lin_vel").get_parameter_value().double_value
         )
-        self.gpu = self.get_parameter("gpu").get_parameter_value().integer_value
-        self.batch_size = (
-            self.get_parameter("batch_size").get_parameter_value().integer_value
+        self.sensor_type = (
+            self.get_parameter("sensor").get_parameter_value().string_value
         )
-        self.n_warmup = (
-            self.get_parameter("n_warmup").get_parameter_value().integer_value
+        self.visual_data = (
+            self.get_parameter("visual_data").get_parameter_value().string_value
         )
-        self.tflite_flag = (
-            self.get_parameter("tflite_flag").get_parameter_value().bool_value
+        self.features = (
+            self.get_parameter("features").get_parameter_value().integer_value
         )
-        self.tflite_model_path = (
-            self.get_parameter("tflite_model_path").get_parameter_value().string_value
-        )
+        # self.gpu = self.get_parameter("gpu").get_parameter_value().integer_value
+        self.gpu = train_params["--gpu"]
+        # self.batch_size = (
+        #     self.get_parameter("batch_size").get_parameter_value().integer_value
+        # )
+        self.batch_size = train_params["--batch-size"]
+        # self.n_warmup = (
+        #     self.get_parameter("n_warmup").get_parameter_value().integer_value
+        # )
+        self.n_warmup = train_params["--n-warmup"]
+        # self.tflite_flag = (
+        #     self.get_parameter("tflite_flag").get_parameter_value().bool_value
+        # )
+        self.tflite_flag = train_params["--tflite_flag"]
+        # self.tflite_model_path = (
+        #     self.get_parameter("tflite_model_path").get_parameter_value().string_value
+        # )
+        self.tflite_model_path = train_params["--tflite_model_path"]
 
         if self.train_policy == "PPO":
             self.declare_parameters(
@@ -480,10 +501,28 @@ class Pic4rlVineyards(Pic4rlEnvironmentCamera):
             "policy": train_params["--policy"],
             "max_steps": train_params["--max-steps"],
             "max_episode_steps": train_params["--episode-max-steps"],
-            "sensor": main_params["sensor"],
-            "visual_data": main_params["visual_data"],
-            "features": main_params["features"],
+            # "sensor": main_params["sensor"],
+            "sensor": self.sensor_type,
+            # "visual_data": main_params["visual_data"],
+            "visual_data": self.visual_data,
+            # "features": main_params["features"],
+            "features": self.features,
             "gpu": train_params["--gpu"],
         }
 
         return train_params
+
+
+def main(args=None):
+    rclpy.init(args=args)
+    pic4rl_camera_vineyard = Pic4rlVineyards()
+    executor = SingleThreadedExecutor()
+    executor.add_node(pic4rl_camera_vineyard)
+    executor.spin()
+    executor.shutdown()
+    pic4rl_camera_vineyard.destroy_node()
+    rclpy.shutdown()
+
+
+if __name__ == "__main__":
+    main()

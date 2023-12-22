@@ -55,6 +55,42 @@ class Actor(tf.keras.Model):
 
     def model(self):
         return tf.keras.Model(inputs = self.state_input, outputs = self.call(self.state_input), name = self.model_name)
+    
+class ActorTanh(tf.keras.Model):
+    def __init__(self, state_shape, action_dim, max_action, min_action, units=(256, 256), name="Actor"):
+        super().__init__(name=name)
+        
+        self.model_name = name
+        self.state_input = Input(shape=state_shape)
+        self.action_dim = action_dim
+
+        # Base Layers
+        self.base_layers = []
+        for i in range(len(units)):
+            unit = units[i]
+            self.base_layers.append(Dense(unit, activation='relu'))
+
+        # Output Layer
+        self.out_layer = Dense(action_dim, activation = 'tanh')
+
+        self.max_action = tf.cast(max_action, dtype = tf.float32)
+        self.min_action = tf.cast(min_action, dtype = tf.float32)
+        self.act_width = (self.max_action - self.min_action)*0.5
+        self.act_bias = (self.max_action + self.min_action)*0.5
+        
+        with tf.device("/cpu:0"):
+            self(tf.constant(np.zeros(shape=(1,) + state_shape, dtype=np.float32)))
+
+    def call(self, features):
+        for cur_layer in self.base_layers:
+            features = cur_layer(features)
+        action = self.out_layer(features)
+        action = tf.multiply(action,self.act_width)
+        action += self.act_bias
+        return action
+
+    def model(self):
+        return tf.keras.Model(inputs = self.state_input, outputs = self.call(self.state_input), name = self.model_name)
 
 class ConvActor(tf.keras.Model):
     def __init__(self, state_shape, image_shape=(112,112,1,), action_dim=2, max_action=(0.4,1.), min_action=(0.,-1.), units=(256, 256),

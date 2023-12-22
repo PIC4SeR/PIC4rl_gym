@@ -22,60 +22,48 @@ from geometry_msgs.msg import Twist
 from ament_index_python.packages import get_package_share_directory
 from pic4rl.sensors import Sensors
 from pic4rl.utils.env_utils import *
-from pic4rl_testing.nav_metrics import Navigation_Metrics
+from pic4rl.testing.nav_metrics import Navigation_Metrics
 
 
 class Pic4rlEnvironmentCamera(Node):
-    def __init__(
-        self,
-    ):
+    def __init__(self):
         """ """
         super().__init__("pic4rl_training_vineyard_camera")
         self.declare_parameter("package_name", "pic4rl")
+        self.declare_parameter("training_params_path", rclpy.Parameter.Type.STRING)
+        self.declare_parameter("main_params_path", rclpy.Parameter.Type.STRING)
         self.package_name = (
             self.get_parameter("package_name").get_parameter_value().string_value
         )
         goals_path = os.path.join(
             get_package_share_directory(self.package_name), "goals_and_poses"
         )
-        main_params_path = os.path.join(
-            get_package_share_directory(self.package_name), "config", "main_params.yaml"
-        )
-        train_params_path = os.path.join(
-            get_package_share_directory(self.package_name),
-            "config",
-            "training_params.yaml",
-        )
+        self.main_params_path = self.get_parameter("main_params_path").get_parameter_value().string_value
+        train_params_path = self.get_parameter("training_params_path").get_parameter_value().string_value
         self.entity_path = os.path.join(
             get_package_share_directory("gazebo_sim"), "models/goal_box/model.sdf"
         )
 
-        with open(main_params_path, "r") as main_params_file:
-            main_params = yaml.safe_load(main_params_file)["main_node"][
-                "ros__parameters"
-            ]
         with open(train_params_path, "r") as train_param_file:
             train_params = yaml.safe_load(train_param_file)["training_params"]
 
         self.declare_parameters(
             namespace="",
             parameters=[
-                ("mode", main_params["mode"]),
-                ("data_path", main_params["data_path"]),
-                ("change_goal_and_pose", train_params["--change_goal_and_pose"]),
-                ("starting_episodes", train_params["--starting_episodes"]),
-                ("timeout_steps", train_params["--episode-max-steps"]),
-                ("robot_name", main_params["robot_name"]),
-                ("goal_tolerance", main_params["goal_tolerance"]),
-                ("visual_data", main_params["visual_data"]),
-                ("features", main_params["features"]),
-                ("channels", main_params["channels"]),
-                ("image_width", main_params["depth_param"]["width"]),
-                ("image_height", main_params["depth_param"]["height"]),
-                ("dist_cutoff", main_params["depth_param"]["dist_cutoff"]),
-                ("lidar_dist", main_params["laser_param"]["max_distance"]),
-                ("lidar_points", main_params["laser_param"]["num_points"]),
-                ("update_frequency", main_params["update_frequency"]),
+                ("mode", rclpy.Parameter.Type.STRING),
+                ("data_path", rclpy.Parameter.Type.STRING),
+                ("robot_name", rclpy.Parameter.Type.STRING),
+                ("goal_tolerance", rclpy.Parameter.Type.DOUBLE),
+                ("visual_data", rclpy.Parameter.Type.STRING),
+                ("features", rclpy.Parameter.Type.INTEGER),
+                ("channels", rclpy.Parameter.Type.INTEGER),
+                ("depth_param.width", rclpy.Parameter.Type.INTEGER),
+                ("depth_param.height", rclpy.Parameter.Type.INTEGER),
+                ("depth_param.dist_cutoff", rclpy.Parameter.Type.DOUBLE),
+                ("laser_param.max_distance", rclpy.Parameter.Type.DOUBLE),
+                ("laser_param.num_points", rclpy.Parameter.Type.INTEGER),
+                ("update_frequency", rclpy.Parameter.Type.DOUBLE),
+                ("sensor", rclpy.Parameter.Type.STRING),
             ],
         )
 
@@ -84,17 +72,10 @@ class Pic4rlEnvironmentCamera(Node):
             self.get_parameter("data_path").get_parameter_value().string_value
         )
         self.data_path = os.path.join(goals_path, self.data_path)
-        self.change_episode = (
-            self.get_parameter("change_goal_and_pose")
-            .get_parameter_value()
-            .integer_value
-        )
-        self.starting_episodes = (
-            self.get_parameter("starting_episodes").get_parameter_value().integer_value
-        )
-        self.timeout_steps = (
-            self.get_parameter("timeout_steps").get_parameter_value().integer_value
-        )
+        print(train_params["--change_goal_and_pose"])
+        self.change_episode = int(train_params["--change_goal_and_pose"])
+        self.starting_episodes = int(train_params["--starting_episodes"])
+        self.timeout_steps = int(train_params["--episode-max-steps"])
         self.robot_name = (
             self.get_parameter("robot_name").get_parameter_value().string_value
         )
@@ -111,30 +92,39 @@ class Pic4rlEnvironmentCamera(Node):
             self.get_parameter("channels").get_parameter_value().integer_value
         )
         self.image_width = (
-            self.get_parameter("image_width").get_parameter_value().integer_value
+            self.get_parameter("depth_param.width").get_parameter_value().integer_value
         )
         self.image_height = (
-            self.get_parameter("image_height").get_parameter_value().integer_value
+            self.get_parameter("depth_param.height").get_parameter_value().integer_value
         )
         self.max_depth = (
-            self.get_parameter("dist_cutoff").get_parameter_value().double_value
+            self.get_parameter("depth_param.dist_cutoff").get_parameter_value().double_value
         )
         self.lidar_distance = (
-            self.get_parameter("lidar_dist").get_parameter_value().double_value
+            self.get_parameter("laser_param.max_distance")
+            .get_parameter_value()
+            .double_value
         )
         self.lidar_points = (
-            self.get_parameter("lidar_points").get_parameter_value().integer_value
+            self.get_parameter("laser_param.num_points")
+            .get_parameter_value()
+            .integer_value
         )
         self.params_update_freq = (
             self.get_parameter("update_frequency").get_parameter_value().double_value
         )
+        self.sensor_type = (
+            self.get_parameter("sensor").get_parameter_value().string_value
+        )
 
         qos = QoSProfile(depth=10)
         self.sensors = Sensors(self)
+        log_path = os.path.join(get_package_share_directory(self.package_name),'../../../../', train_params["--logdir"])
 
         self.logdir = create_logdir(
-            train_params["--policy"], main_params["sensor"], train_params["--logdir"]
+            train_params["--policy"], self.sensor_type, log_path
         )
+        self.get_logger().info(self.logdir)
         self.spin_sensors_callbacks()
 
         self.cmd_vel_pub = self.create_publisher(Twist, "cmd_vel", qos)
@@ -149,18 +139,14 @@ class Pic4rlEnvironmentCamera(Node):
         self.collision_count = 0
         self.t0 = 0.0
         self.evaluate = False
-
-        # if want to use a DWA to provide demonstrative exploration episodes
-        self.explore_demo = 15
-        # self.controller = Pic4DWA()
+        self.index = 0
 
         self.initial_pose, self.goals, self.poses = self.get_goals_and_poses()
         self.goal_pose = self.goals[0]
 
         self.get_logger().info(f"Gym mode: {self.mode}")
         if self.mode == "testing":
-            self.nav_metrics = Navigation_Metrics(main_params, self.logdir)
-
+            self.nav_metrics = Navigation_Metrics(self.logdir)
         self.get_logger().debug("PIC4RL_Environment: Starting process")
 
     def step(self, action, episode_step=0):
@@ -231,29 +217,27 @@ class Pic4rlEnvironmentCamera(Node):
         self.get_logger().debug("spinning node...")
         rclpy.spin_once(self)
         while None in self.sensors.sensor_msg.values():
+            empty_measurements = [ k for k, v in self.sensors.sensor_msg.items() if v is None]
+            self.get_logger().debug(f"empty_measurements: {empty_measurements}")
             rclpy.spin_once(self)
             self.get_logger().debug("spin once ...")
         self.sensors.sensor_msg = dict.fromkeys(self.sensors.sensor_msg.keys(), None)
 
     def send_action(self, twist):
         """ """
-        # self.get_logger().debug("unpausing...")
-        # self.unpause()
-
-        # self.get_logger().debug("publishing twist...")
+        
         self.cmd_vel_pub.publish(twist)
-
         # Regulate frequency of send action if needed
-        freq, t1 = compute_frequency(self.t0)
-        t0 = t1
-        frequency_control(self.params_update_freq)
+        # freq, t1 = compute_frequency(self.t0)
+        # t0 = t1
+        # frequency_control(self.params_update_freq)
 
         # self.get_logger().debug("pausing...")
         # self.pause()
 
     def get_sensor_data(self):
         """ """
-        sensor_data = {"depth": None}
+        sensor_data = {}
         sensor_data["scan"], collision = self.sensors.get_laser()
         sensor_data["odom"], velocities = self.sensors.get_odom(vel=True)
         sensor_data["depth"] = self.sensors.get_depth()
@@ -266,7 +250,7 @@ class Pic4rlEnvironmentCamera(Node):
             sensor_data["odom"] = [0.0, 0.0, 0.0]
         if sensor_data["depth"] is None:
             sensor_data["depth"] = (
-                np.ones((self.image_height, self.image_width, 1)) * self.cutoff
+                np.ones((self.image_height, self.image_width, 1)) * self.max_depth
             )
 
         self.get_logger().debug("processing odom...")
@@ -510,34 +494,3 @@ class Pic4rlEnvironmentCamera(Node):
             self.get_logger().warn("service not available, waiting again...")
         future = self.unpause_physics_client.call_async(req)
         rclpy.spin_until_future_complete(self, future)
-
-    # def call_DWA(self):
-    #     """
-    #     """
-    #     self.spin_sensors_callbacks()
-    #     _, _, _, robot_pose, collision, velocities = self.get_sensor_data()
-
-    #     obs = self.dwa_process_lidar(self.laser_data, robot_pose)
-
-    #     x, ob, goal = self.controller.get_env_data(robot_pose, velocities, obs, self.goal_pose)
-    #     dw = self.controller.calc_dynamic_window(x)
-    #     u, trajectory = self.controller.calc_control_and_trajectory(x, dw, goal, ob)
-
-    #     return u
-
-    # def dwa_process_lidar(self, lidar_measurements, robot_pose):
-    #     """
-    #     """
-    #     actual_angle = self.laser_info[0]
-    #     increment = self.laser_info[2]
-    #     ob = []
-    #     ob_points = []
-
-    #     for point in lidar_measurements:
-    #         p = [point*math.cos(actual_angle), point*math.sin(actual_angle)]
-    #         p = tf_decompose(robot_pose,[p[0], p[1], 0.0, 1.0])
-
-    #         ob.append([p[0], p[1]])
-    #         actual_angle += increment
-
-    #     return ob

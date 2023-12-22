@@ -89,8 +89,6 @@ class Pic4rlLidar(Pic4rlEnvironmentLidar):
             [-math.pi, math.pi],  # goal angle or yaw
         ]
 
-        # for i in range(self.lidar_points):
-        #    state = state + [[0., 12.]]
 
         if len(state) > 0:
             low_state = []
@@ -143,7 +141,7 @@ class Pic4rlLidar(Pic4rlEnvironmentLidar):
                     epsilon_min=0.05,
                     log_level=self.log_level,
                 )
-                self.get_logger().info("Instanciate DDPG agent...")
+                self.get_logger().info("Instantiate DDPG agent...")
 
             if self.train_policy == "TD3":
                 self.get_logger().debug("Parsing TD3 parameters...")
@@ -200,7 +198,7 @@ class Pic4rlLidar(Pic4rlEnvironmentLidar):
                     epsilon_min=0.05,
                     log_level=self.log_level,
                 )
-                self.get_logger().info("Instanciate SAC agent...")
+                self.get_logger().info("Instantiate SAC agent...")
 
             trainer = Trainer(policy, self, args, test_env=None)
             # self.get_logger().info('Starting process...')
@@ -234,7 +232,7 @@ class Pic4rlLidar(Pic4rlEnvironmentLidar):
                     batch_size=self.batch_size,
                     log_level=self.log_level,
                 )
-                self.get_logger().info("Instanciate PPO agent...")
+                self.get_logger().info("Instantiate PPO agent...")
 
             trainer = OnPolicyTrainer(policy, self, args, test_env=None)
             # self.get_logger().info('Starting process...')
@@ -256,6 +254,7 @@ class Pic4rlLidar(Pic4rlEnvironmentLidar):
                 self.parser_list.append(k)
 
     def threadFunc(self):
+        """ """
         try:
             self.trainer()
         except Exception:
@@ -313,11 +312,6 @@ class Pic4rlLidar(Pic4rlEnvironmentLidar):
         
         self.package_name = self.get_parameter(
             "package_name").get_parameter_value().string_value
-        # train_params_path = os.path.join(
-        #     get_package_share_directory(self.package_name),
-        #     "config",
-        #     "training_params.yaml",
-        # )
         train_params_path = self.get_parameter(
             "training_params_path").get_parameter_value().string_value
 
