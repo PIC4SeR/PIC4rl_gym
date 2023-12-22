@@ -371,7 +371,7 @@ class Sensors:
 
     def get_depth(self):
         if self.depth_sub is None:
-            self.get_logger().warn("NO Depth subscription")
+            self.node.get_logger().warn("NO Depth subscription")
             return None
         if self.depth_data is None:
             self.node.get_logger().warn("NO depth image")
@@ -381,7 +381,7 @@ class Sensors:
 
     def get_rgb(self):
         if self.rgb_sub is None:
-            self.get_logger().warn("NO RGB subscription")
+            self.node.get_logger().warn("NO RGB subscription")
             return None
         if self.rgb_data is None:
             self.node.get_logger().warn("NO RGB image")
@@ -392,10 +392,10 @@ class Sensors:
 
     def get_imu(self):
         if self.imu_sub is None:
-            self.get_logger().warn("NO IMU subscription")
+            self.node.get_logger().warn("NO IMU subscription")
             return None
         elif self.imu_data is None:
-            self.get_logger().warn("NO IMU data")
+            self.node.get_logger().warn("NO IMU data")
         else:
             data = self.imu_process.process_data(self.imu_data)
             return data
@@ -407,10 +407,9 @@ class Sensors:
         if self.laser_data is None:
             self.node.get_logger().warn("NO laser data")
             return None, False
-
-        processed_data, min_obstacle_distance, collision = self.laser_process.process_data(
+        processed_data, min_obstacle_distance_v, collision = self.laser_process.process_data(
             self.laser_data
         )
         if min_obstacle_distance:
-            return processed_data, min_obstacle_distance, collision
+            return processed_data, min_obstacle_distance_v, collision
         return processed_data, collision

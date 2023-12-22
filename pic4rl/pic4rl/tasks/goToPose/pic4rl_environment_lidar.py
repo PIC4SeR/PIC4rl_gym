@@ -38,15 +38,8 @@ class Pic4rlEnvironmentLidar(Node):
         goals_path = os.path.join(
             get_package_share_directory(self.package_name), "goals_and_poses"
         )
-
-        # train_params_path = os.path.join(
-        #     get_package_share_directory(self.package_name),
-        #     "config",
-        #     "training_params.yaml",
-        # )
         self.main_params_path = self.get_parameter("main_params_path").get_parameter_value().string_value
         train_params_path = self.get_parameter("training_params_path").get_parameter_value().string_value
-
         self.entity_path = os.path.join(
             get_package_share_directory("gazebo_sim"), "models/goal_box/model.sdf"
         )
@@ -96,21 +89,18 @@ class Pic4rlEnvironmentLidar(Node):
         self.params_update_freq = (
             self.get_parameter("update_frequency").get_parameter_value().double_value
         )
-
         self.sensor_type = (
             self.get_parameter("sensor").get_parameter_value().string_value
         )
 
         qos = QoSProfile(depth=10)
         self.sensors = Sensors(self)
-
         log_path = os.path.join(get_package_share_directory(self.package_name),'../../../../', train_params["--logdir"])
 
         self.logdir = create_logdir(
             train_params["--policy"], self.sensor_type, log_path
         )
         self.get_logger().info(self.logdir)
-
         self.spin_sensors_callbacks()
 
         self.cmd_vel_pub = self.create_publisher(Twist, "cmd_vel", qos)
@@ -154,7 +144,12 @@ class Pic4rlEnvironmentLidar(Node):
 
         self.get_logger().debug("getting sensor data...")
         self.spin_sensors_callbacks()
-        lidar_measurements, goal_info, robot_pose, collision = self.get_sensor_data()
+        (
+            lidar_measurements,
+            goal_info,
+            robot_pose,
+            collision,
+        ) = self.get_sensor_data()
         if self.mode == "testing":
             self.nav_metrics.get_metrics_data(lidar_measurements, self.episode_step)
 
@@ -189,19 +184,19 @@ class Pic4rlEnvironmentLidar(Node):
 
     def spin_sensors_callbacks(self):
         """ """
+        self.get_logger().debug("spinning node...")
         rclpy.spin_once(self)
         while None in self.sensors.sensor_msg.values():
+            empty_measurements = [ k for k, v in self.sensors.sensor_msg.items() if v is None]
+            self.get_logger().debug(f"empty_measurements: {empty_measurements}")
             rclpy.spin_once(self)
+            self.get_logger().debug("spin once ...")
         self.sensors.sensor_msg = dict.fromkeys(self.sensors.sensor_msg.keys(), None)
 
     def send_action(self, twist):
         """ """
-        # self.get_logger().debug("unpausing...")
-        # self.unpause()
-
-        # self.get_logger().debug("publishing twist...")
+        
         self.cmd_vel_pub.publish(twist)
-
         # Regulate frequency of send action if needed
         # freq, t1 = compute_frequency(self.t0)
         # t0 = t1
@@ -281,8 +276,6 @@ class Pic4rlEnvironmentLidar(Node):
         """ """
         state_list = goal_info
 
-        # for point in lidar_measurements:
-        #    state_list.append(float(point))
 
         state = np.array(state_list, dtype=np.float32)
 
@@ -363,14 +356,6 @@ class Pic4rlEnvironmentLidar(Node):
             f"Ep {'evaluate' if self.evaluate else self.episode+1} goal pose [x, y]: {self.goal_pose}"
         )
 
-        # position = "{x: "+str(self.goal_pose[0])+",y: "+str(self.goal_pose[1])+",z: "+str(0.01)+"}"
-        # pose = "'{state: {name: 'goal',pose: {position: "+position+"}}}'"
-        # subprocess.run(
-        #     "ros2 service call /test/set_entity_state gazebo_msgs/srv/SetEntityState "+pose,
-        #     shell=True,
-        #     stdout=subprocess.DEVNULL
-        #     )
-        # time.sleep(0.25)
 
     def get_goal(self, index):
         """ """

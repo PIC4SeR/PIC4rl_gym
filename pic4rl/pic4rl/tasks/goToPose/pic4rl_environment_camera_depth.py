@@ -31,9 +31,8 @@ class Pic4rlEnvironmentCamera(Node):
         super().__init__("pic4rl_training_camera")
 
         self.declare_parameter("package_name", "pic4rl")
-        self.declare_parameter("training_params_path", "")
-        self.declare_parameter("main_params_path", "")
-
+        self.declare_parameter("training_params_path", rclpy.Parameter.Type.STRING)
+        self.declare_parameter("main_params_path", rclpy.Parameter.Type.STRING)
         self.package_name = (
             self.get_parameter("package_name").get_parameter_value().string_value
         )
@@ -41,24 +40,11 @@ class Pic4rlEnvironmentCamera(Node):
             get_package_share_directory(self.package_name), "goals_and_poses"
         )
         self.main_params_path = self.get_parameter("main_params_path").get_parameter_value().string_value
-        # os.path.join(
-        #     get_package_share_directory(self.package_name), "config", "main_params.yaml"
-        # )
-        # train_params_path = os.path.join(
-        #     get_package_share_directory(self.package_name),
-        #     "config",
-        #     "training_params.yaml",
-        # )
-        train_params_path = self.get_parameter(
-            "training_params_path").get_parameter_value().string_value
+        train_params_path = self.get_parameter("training_params_path").get_parameter_value().string_value
         self.entity_path = os.path.join(
             get_package_share_directory("gazebo_sim"), "models/goal_box/model.sdf"
         )
 
-        # with open(main_params_path, "r") as main_params_file:
-        #     main_params = yaml.safe_load(main_params_file)["main_node"][
-        #         "ros__parameters"
-        #     ]
         with open(train_params_path, "r") as train_param_file:
             train_params = yaml.safe_load(train_param_file)["training_params"]
 
@@ -67,9 +53,6 @@ class Pic4rlEnvironmentCamera(Node):
             parameters=[
                 ("mode", rclpy.Parameter.Type.STRING),
                 ("data_path", rclpy.Parameter.Type.STRING),
-                # ("change_goal_and_pose", train_params["--change_goal_and_pose"]),
-                # ("starting_episodes", train_params["--starting_episodes"]),
-                # ("timeout_steps", train_params["--episode-max-steps"]),
                 ("robot_name", rclpy.Parameter.Type.STRING),
                 ("goal_tolerance", rclpy.Parameter.Type.DOUBLE),
                 ("visual_data", rclpy.Parameter.Type.STRING),
@@ -77,6 +60,7 @@ class Pic4rlEnvironmentCamera(Node):
                 ("channels", rclpy.Parameter.Type.INTEGER),
                 ("depth_param.width", rclpy.Parameter.Type.INTEGER),
                 ("depth_param.height", rclpy.Parameter.Type.INTEGER),
+                ("depth_param.dist_cutoff", rclpy.Parameter.Type.DOUBLE),
                 ("laser_param.max_distance", rclpy.Parameter.Type.DOUBLE),
                 ("laser_param.num_points", rclpy.Parameter.Type.INTEGER),
                 ("update_frequency", rclpy.Parameter.Type.DOUBLE),
@@ -89,19 +73,9 @@ class Pic4rlEnvironmentCamera(Node):
             self.get_parameter("data_path").get_parameter_value().string_value
         )
         self.data_path = os.path.join(goals_path, self.data_path)
-        # self.change_episode = (
-        #     self.get_parameter("change_goal_and_pose")
-        #     .get_parameter_value()
-        #     .integer_value
-        # )
+        print(train_params["--change_goal_and_pose"])
         self.change_episode = int(train_params["--change_goal_and_pose"])
-        # self.starting_episodes = (
-        #     self.get_parameter("starting_episodes").get_parameter_value().integer_value
-        # )
         self.starting_episodes = int(train_params["--starting_episodes"])
-        # self.timeout_steps = (
-        #     self.get_parameter("timeout_steps").get_parameter_value().integer_value
-        # )
         self.timeout_steps = int(train_params["--episode-max-steps"])
         self.robot_name = (
             self.get_parameter("robot_name").get_parameter_value().string_value
@@ -124,6 +98,9 @@ class Pic4rlEnvironmentCamera(Node):
         self.image_height = (
             self.get_parameter("depth_param.height").get_parameter_value().integer_value
         )
+        self.max_depth = (
+            self.get_parameter("depth_param.dist_cutoff").get_parameter_value().double_value
+        )
         self.lidar_distance = (
             self.get_parameter("laser_param.max_distance")
             .get_parameter_value()
@@ -143,9 +120,12 @@ class Pic4rlEnvironmentCamera(Node):
 
         qos = QoSProfile(depth=10)
         self.sensors = Sensors(self)
+        log_path = os.path.join(get_package_share_directory(self.package_name),'../../../../', train_params["--logdir"])
+
         self.logdir = create_logdir(
-            train_params["--policy"], self.sensor_type, train_params["--logdir"]
+            train_params["--policy"], self.sensor_type, log_path
         )
+        self.get_logger().info(self.logdir)
         self.spin_sensors_callbacks()
 
         self.cmd_vel_pub = self.create_publisher(Twist, "cmd_vel", qos)
@@ -160,14 +140,14 @@ class Pic4rlEnvironmentCamera(Node):
         self.collision_count = 0
         self.t0 = 0.0
         self.evaluate = False
+        self.index = 0
 
         self.initial_pose, self.goals, self.poses = self.get_goals_and_poses()
         self.goal_pose = self.goals[0]
 
+        self.get_logger().info(f"Gym mode: {self.mode}")
         if self.mode == "testing":
-            # self.nav_metrics = Navigation_Metrics(main_params, self.logdir)
             self.nav_metrics = Navigation_Metrics(self.logdir)
-
         self.get_logger().debug("PIC4RL_Environment: Starting process")
 
     def step(self, action, episode_step=0):
@@ -234,28 +214,27 @@ class Pic4rlEnvironmentCamera(Node):
         self.get_logger().debug("spinning node...")
         rclpy.spin_once(self)
         while None in self.sensors.sensor_msg.values():
+            empty_measurements = [ k for k, v in self.sensors.sensor_msg.items() if v is None]
+            self.get_logger().debug(f"empty_measurements: {empty_measurements}")
             rclpy.spin_once(self)
             self.get_logger().debug("spin once ...")
         self.sensors.sensor_msg = dict.fromkeys(self.sensors.sensor_msg.keys(), None)
 
     def send_action(self, twist):
         """ """
-        # self.get_logger().debug("unpausing...")
-        # self.unpause()
-
-        # self.get_logger().debug("publishing twist...")
+        
         self.cmd_vel_pub.publish(twist)
         # Regulate frequency of send action if needed
-        freq, t1 = compute_frequency(self.t0)
-        t0 = t1
-        frequency_control(self.params_update_freq)
+        # freq, t1 = compute_frequency(self.t0)
+        # t0 = t1
+        # frequency_control(self.params_update_freq)
 
         # self.get_logger().debug("pausing...")
         # self.pause()
 
     def get_sensor_data(self):
         """ """
-        sensor_data = {"depth": None}
+        sensor_data = {}
         sensor_data["scan"], collision = self.sensors.get_laser()
         sensor_data["odom"] = self.sensors.get_odom()
         sensor_data["depth"] = self.sensors.get_depth()
@@ -268,7 +247,7 @@ class Pic4rlEnvironmentCamera(Node):
             sensor_data["odom"] = [0.0, 0.0, 0.0]
         if sensor_data["depth"] is None:
             sensor_data["depth"] = (
-                np.ones((self.image_height, self.image_width, 1)) * self.cutoff
+                np.ones((self.image_height, self.image_width, 1)) * self.max_depth
             )
 
         self.get_logger().debug("processing odom...")
@@ -410,14 +389,6 @@ class Pic4rlEnvironmentCamera(Node):
             f"Ep {'evaluate' if self.evaluate else self.episode+1} goal pose [x, y]: {self.goal_pose}"
         )
 
-        # position = "{x: "+str(self.goal_pose[0])+",y: "+str(self.goal_pose[1])+",z: "+str(0.01)+"}"
-        # pose = "'{state: {name: 'goal',pose: {position: "+position+"}}}'"
-        # subprocess.run(
-        #     "ros2 service call /test/set_entity_state gazebo_msgs/srv/SetEntityState "+pose,
-        #     shell=True,
-        #     stdout=subprocess.DEVNULL
-        #     )
-        # time.sleep(0.25)
 
     def get_goal(self, index):
         """ """

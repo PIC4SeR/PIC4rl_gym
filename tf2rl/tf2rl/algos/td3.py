@@ -4,7 +4,7 @@ from tensorflow.keras.layers import Dense, Input
 
 from tf2rl.algos.ddpg import DDPG
 from tf2rl.misc.target_update_ops import update_target_variables
-from tf2rl.networks.actor_critic_networks import Actor, ConvActor, CriticTD3, ConvMixCriticTD3
+from tf2rl.networks.actor_critic_networks import Actor, ActorTanh, ConvActor, CriticTD3, ConvMixCriticTD3
 
 
 class TD3(DDPG):
@@ -69,8 +69,8 @@ class TD3(DDPG):
 
         # Define and initialize Actor network
         if network=='mlp':
-            self.actor = Actor(state_shape, action_dim, max_action, min_action, actor_units)
-            self.actor_target = Actor(state_shape, action_dim, max_action, min_action, actor_units)
+            self.actor = ActorTanh(state_shape, action_dim, max_action, min_action, actor_units)
+            self.actor_target = ActorTanh(state_shape, action_dim, max_action, min_action, actor_units)
         elif network=='conv':
             self.actor = ConvActor(state_shape, image_shape, action_dim, max_action, min_action, actor_units)
             self.actor_target = ConvActor(state_shape, image_shape, action_dim, max_action, min_action, actor_units)

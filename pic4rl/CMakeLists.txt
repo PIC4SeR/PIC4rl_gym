@@ -36,6 +36,11 @@ install(PROGRAMS
   DESTINATION lib/${PROJECT_NAME}
 )
 
+install(PROGRAMS
+  scripts/vineyards_camera
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 
 install(
   DIRECTORY launch config goals_and_poses
