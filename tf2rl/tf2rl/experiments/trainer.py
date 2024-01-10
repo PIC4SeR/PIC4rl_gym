@@ -204,6 +204,8 @@ class Trainer:
                 tf.summary.scalar(
                     name="Common/average_test_episode_length", data=avg_test_steps)
                 tf.summary.scalar(name="Common/fps", data=fps)
+                ## to reset the env after the test
+                obs = self._env.reset(n_episode, total_steps)
 
             if total_steps % self._save_model_interval == 0:
                 self.checkpoint_manager.save()
