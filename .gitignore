@@ -1,7 +1,7 @@
 /gazebo_sim/worlds
 /gazebo_sim/models
 pic4rl/results
-pic4rl/models
+pic4rl/models/*
 pic4rl/goals_and_poses/*
 pic4rl/pic4rl/tasks/goToPoseDWA
 *.pyc

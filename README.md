@@ -12,13 +12,12 @@
 The PIC4rl_gym project is intended to develop a set of ROS2 packages in order to easily train deep reinforcement learning algorithms for autonomous navigation in a Gazebo simulation environment. A great variety of different sensors (cameras, LiDARs, etc) and platforms are available for custom simulations in both indoor and outdoor stages. Official paper of the project: https://ieeexplore.ieee.org/abstract/document/10193996. Please consider citing our research if you find it useful for your work, google scholar reference at the bottom.
 
 The repository is organized as follows:
-- **training** contains all the ROS 2 packages that handles the communication with Gazebo and define the task environment. It also contains all the DRL packages dedicated to policy selection and training
-- **testing** contains the ROS 2 package to test agent policy
-- **gazebo_sim** contains whatever related to simulation environments
+- **pic4rl** contains all the ROS 2 packages that handles the communication between the DRL trainer and Gazebo simulation. The package presentis organized in tasks, one for each specific navigation problem. A training class and an environment constitutes the code that define the task together with common utils and tools to plot rewards and organize metrics file. Testing is also possible with the same package, simply enabling the right parameters in the config file. Configuring the training and testing process is possible through two parameters file: main_params.yaml contains all the ROS related configurations, whilst training_params.yaml handles the DRL library. Moreover, in the goal_and_poses folder you can set the list of starting poses and goals for the robot simualation.
+- **gazebo_sim** contains simple scripts, models and worlds to start up simulation environments in Gazebo. This package can be substituted by any other launch packages for Gazebo robot simulation, if necessary in your project.
 
-- The PIC4rl-gym is intended to provide a flexible configurable Gazebo simulation for your training. You can use whatever robotic platform that you have in a ROS 2 / Gazebo package. If you would like to start your work with a set of ready-to-go platforms you can download and add to your workspace the repo PIC4rl_gym_Platforms: https://github.com/PIC4SeR/PIC4rl_gym_Platforms.
+**robot platforms**: the PIC4rl-gym is intended to provide a flexible configurable Gazebo simulation for your training. You can use whatever robotic platform that you have in a ROS 2 / Gazebo package. If you would like to start your work with a set of ready-to-go platforms you can download and add to your workspace the repo PIC4rl_gym_Platforms: https://github.com/PIC4SeR/PIC4rl_gym_Platforms.
 
-You can download a full set of worlds and models for Gazebo if you want to use our work for your research:
+You should create your models and worlds for the Gazebo simulation and the respective folders. You can download a full set of worlds and models for Gazebo if you want to use our work for your research:
 - worlds download link: https://naspic4ser.polito.it/files/sharing/nehiOIHkY
 - models download link: https://naspic4ser.polito.it/files/sharing/9EFOxow8b
 (Ask us the password by email: mauro.martini@polito.it, andrea.eirale@polito.it)
@@ -29,17 +28,13 @@ You can download a full set of worlds and models for Gazebo if you want to use o
 ## User Guide
 
 **Main scripts in pic4rl training package:**
-- **pic4rl_trainer.py** (instanciate the agent and start the main training loop)
-- **pic4rl_training_.py** (inherits environment class: task specific, select and define the agent, define action and state spaces)
-- **pic4rl_environment_.py** (specific for the Task: interact with the agent with the 'step()' and 'reset()' functions, compute observation and rewards, publish goal, check end of episode condition, call Gazebo services to respawn robot)
+- **pic4rl_task.py** (inherits environment class: task specific, select and define the agent, define action and state spaces. It is used for both training and testing: load weights of previously trained policy agents)
+- **pic4rl_environment_task.py** (specific for the task: interact with the agent with the 'step()' and 'reset()' functions, compute observation and rewards, publish goal, check end of episode condition, call Gazebo services to respawn robot)
 - sensors.py: start the necessary sensors topic subscription and contain all the necessary method to preprocess sensor data
-**Main scripts in pic4rl testing package:**
-- **pic4rl_tester.py** (load weights and instanciate policy agents and environment)
-- metrics.py: contain all the metrics computed during testing
-
-**ROS Nodes:**
-- pic4rl_training(pic4rl_environment(Node))
-- pic4rl_testing(pic4rl_environment(Node))
+- plot_reward.py: utils to plot reward trends for training and validation obtained in a simulation.
+- nav_metrics.py: contain all the metrics computed during testing
+- evaluate_controller.py: evaluate a generic controller in the same testing framework for metrics comparison and algorithms benchmarking
+- evaluate_navigation.py: evaluate a navigation task using the Nav2 framework (simple commander) for benchmarking (Nav2 packages required)
 
 **Config files:**
 - main_param.yaml (simulation, sensors, topics, policy selection)
@@ -49,14 +44,12 @@ You can download a full set of worlds and models for Gazebo if you want to use o
 - **terminal 1: launch gazebo simulation**
 ros2 launch gazebo_sim simulation.launch.py
 - **terminal 2: start trainer**
-ros2 run pic4rl pic4rl_trainer
+ros2 launch pic4rl pic4rl_starter.launch.py
 
 After a training, we can plot the reward evolution we need to edit the script pic4rl/utils/plot_reward.py and write down the path to the directory of the training (father_path). Then:
 - ros2 run pic4rl plot_reward.py
 
-
-To run the tester, we must copy the results of the training to the models directory in pic4rl. Modify the param model-dir in pic4rl_testing/config/training_params.yaml write the path to the proper model directory. Launch simulation and then
-- ros2 run pic4rl_testing pic4rl_tester
+To run the tester, we must modify the param file in pic4rl/config/training_params.yaml. In particular, uncomment the parameter "evaluate" and in "model-dir" write the path to the proper model directory where the checkpoints have been saved. You can copy promising models in the folder pic4rl/models for simplicity. Launch simulation and then the starter with the same terminal commands (colcon-build the workspace if needed).
 
 
 <img src="/images/Indoor_scenario.png" width="45%" height="45%">

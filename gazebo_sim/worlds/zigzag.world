@@ -42,13 +42,13 @@
                 <mu2>50</mu2>
               </ode>
               <torsional>
-                <ode />
+                <ode/>
               </torsional>
             </friction>
             <contact>
-              <ode />
+              <ode/>
             </contact>
-            <bounce />
+            <bounce/>
           </surface>
           <max_contacts>10</max_contacts>
         </collision>
@@ -62,8 +62,7 @@
           </geometry>
           <material>
             <script>
-              <uri>model://media/materials/scripts/</uri>
-              <uri>model://media/materials/textures/</uri>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
           </material>
@@ -75,7 +74,7 @@
     </model>
     <gravity>0 0 -9.8</gravity>
     <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
-    <atmosphere type='adiabatic' />
+    <atmosphere type='adiabatic'/>
 
     <actor name="goal_box">
       <link name="box_link">
@@ -173,7 +172,7 @@
       <background>0.7 0.7 0.7 1</background>
       <shadows>1</shadows>
     </scene>
-    <wind />
+    <wind/>
     <spherical_coordinates>
       <surface_model>EARTH_WGS84</surface_model>
       <latitude_deg>0</latitude_deg>
@@ -194,14 +193,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode />
+              <ode/>
             </contact>
-            <bounce />
+            <bounce/>
             <friction>
               <torsional>
-                <ode />
+                <ode/>
               </torsional>
-              <ode />
+              <ode/>
             </friction>
           </surface>
         </collision>
@@ -214,8 +213,7 @@
           </geometry>
           <material>
             <script>
-              <uri>model://media/materials/scripts/</uri>
-              <uri>model://media/materials/textures/</uri>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -240,14 +238,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode />
+              <ode/>
             </contact>
-            <bounce />
+            <bounce/>
             <friction>
               <torsional>
-                <ode />
+                <ode/>
               </torsional>
-              <ode />
+              <ode/>
             </friction>
           </surface>
         </collision>
@@ -260,8 +258,7 @@
           </geometry>
           <material>
             <script>
-              <uri>model://media/materials/scripts/</uri>
-              <uri>model://media/materials/textures/</uri>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -286,14 +283,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode />
+              <ode/>
             </contact>
-            <bounce />
+            <bounce/>
             <friction>
               <torsional>
-                <ode />
+                <ode/>
               </torsional>
-              <ode />
+              <ode/>
             </friction>
           </surface>
         </collision>
@@ -306,8 +303,7 @@
           </geometry>
           <material>
             <script>
-              <uri>model://media/materials/scripts/</uri>
-              <uri>model://media/materials/textures/</uri>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -332,14 +328,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode />
+              <ode/>
             </contact>
-            <bounce />
+            <bounce/>
             <friction>
               <torsional>
-                <ode />
+                <ode/>
               </torsional>
-              <ode />
+              <ode/>
             </friction>
           </surface>
         </collision>
@@ -352,8 +348,7 @@
           </geometry>
           <material>
             <script>
-              <uri>model://media/materials/scripts/</uri>
-              <uri>model://media/materials/textures/</uri>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -378,14 +373,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode />
+              <ode/>
             </contact>
-            <bounce />
+            <bounce/>
             <friction>
               <torsional>
-                <ode />
+                <ode/>
               </torsional>
-              <ode />
+              <ode/>
             </friction>
           </surface>
         </collision>
@@ -398,8 +393,7 @@
           </geometry>
           <material>
             <script>
-              <uri>model://media/materials/scripts/</uri>
-              <uri>model://media/materials/textures/</uri>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -424,14 +418,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode />
+              <ode/>
             </contact>
-            <bounce />
+            <bounce/>
             <friction>
               <torsional>
-                <ode />
+                <ode/>
               </torsional>
-              <ode />
+              <ode/>
             </friction>
           </surface>
         </collision>
@@ -444,8 +438,7 @@
           </geometry>
           <material>
             <script>
-              <uri>model://media/materials/scripts/</uri>
-              <uri>model://media/materials/textures/</uri>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -470,14 +463,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode />
+              <ode/>
             </contact>
-            <bounce />
+            <bounce/>
             <friction>
               <torsional>
-                <ode />
+                <ode/>
               </torsional>
-              <ode />
+              <ode/>
             </friction>
           </surface>
         </collision>
@@ -490,8 +483,7 @@
           </geometry>
           <material>
             <script>
-              <uri>model://media/materials/scripts/</uri>
-              <uri>model://media/materials/textures/</uri>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -516,14 +508,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode />
+              <ode/>
             </contact>
-            <bounce />
+            <bounce/>
             <friction>
               <torsional>
-                <ode />
+                <ode/>
               </torsional>
-              <ode />
+              <ode/>
             </friction>
           </surface>
         </collision>
@@ -536,8 +528,7 @@
           </geometry>
           <material>
             <script>
-              <uri>model://media/materials/scripts/</uri>
-              <uri>model://media/materials/textures/</uri>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -562,14 +553,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode />
+              <ode/>
             </contact>
-            <bounce />
+            <bounce/>
             <friction>
               <torsional>
-                <ode />
+                <ode/>
               </torsional>
-              <ode />
+              <ode/>
             </friction>
           </surface>
         </collision>
@@ -582,8 +573,7 @@
           </geometry>
           <material>
             <script>
-              <uri>model://media/materials/scripts/</uri>
-              <uri>model://media/materials/textures/</uri>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -608,14 +598,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode />
+              <ode/>
             </contact>
-            <bounce />
+            <bounce/>
             <friction>
               <torsional>
-                <ode />
+                <ode/>
               </torsional>
-              <ode />
+              <ode/>
             </friction>
           </surface>
         </collision>
@@ -628,8 +618,7 @@
           </geometry>
           <material>
             <script>
-              <uri>model://media/materials/scripts/</uri>
-              <uri>model://media/materials/textures/</uri>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -658,14 +647,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode />
+              <ode/>
             </contact>
-            <bounce />
+            <bounce/>
             <friction>
               <torsional>
-                <ode />
+                <ode/>
               </torsional>
-              <ode />
+              <ode/>
             </friction>
           </surface>
         </collision>
@@ -678,8 +667,7 @@
           </geometry>
           <material>
             <script>
-              <uri>model://media/materials/scripts/</uri>
-              <uri>model://media/materials/textures/</uri>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -704,14 +692,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode />
+              <ode/>
             </contact>
-            <bounce />
+            <bounce/>
             <friction>
               <torsional>
-                <ode />
+                <ode/>
               </torsional>
-              <ode />
+              <ode/>
             </friction>
           </surface>
         </collision>
@@ -724,8 +712,7 @@
           </geometry>
           <material>
             <script>
-              <uri>model://media/materials/scripts/</uri>
-              <uri>model://media/materials/textures/</uri>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -750,14 +737,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode />
+              <ode/>
             </contact>
-            <bounce />
+            <bounce/>
             <friction>
               <torsional>
-                <ode />
+                <ode/>
               </torsional>
-              <ode />
+              <ode/>
             </friction>
           </surface>
         </collision>
@@ -770,8 +757,7 @@
           </geometry>
           <material>
             <script>
-              <uri>model://media/materials/scripts/</uri>
-              <uri>model://media/materials/textures/</uri>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -796,14 +782,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode />
+              <ode/>
             </contact>
-            <bounce />
+            <bounce/>
             <friction>
               <torsional>
-                <ode />
+                <ode/>
               </torsional>
-              <ode />
+              <ode/>
             </friction>
           </surface>
         </collision>
@@ -816,8 +802,7 @@
           </geometry>
           <material>
             <script>
-              <uri>model://media/materials/scripts/</uri>
-              <uri>model://media/materials/textures/</uri>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -842,14 +827,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode />
+              <ode/>
             </contact>
-            <bounce />
+            <bounce/>
             <friction>
               <torsional>
-                <ode />
+                <ode/>
               </torsional>
-              <ode />
+              <ode/>
             </friction>
           </surface>
         </collision>
@@ -862,8 +847,7 @@
           </geometry>
           <material>
             <script>
-              <uri>model://media/materials/scripts/</uri>
-              <uri>model://media/materials/textures/</uri>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -888,14 +872,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode />
+              <ode/>
             </contact>
-            <bounce />
+            <bounce/>
             <friction>
               <torsional>
-                <ode />
+                <ode/>
               </torsional>
-              <ode />
+              <ode/>
             </friction>
           </surface>
         </collision>
@@ -908,8 +892,7 @@
           </geometry>
           <material>
             <script>
-              <uri>model://media/materials/scripts/</uri>
-              <uri>model://media/materials/textures/</uri>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -934,14 +917,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode />
+              <ode/>
             </contact>
-            <bounce />
+            <bounce/>
             <friction>
               <torsional>
-                <ode />
+                <ode/>
               </torsional>
-              <ode />
+              <ode/>
             </friction>
           </surface>
         </collision>
@@ -954,8 +937,7 @@
           </geometry>
           <material>
             <script>
-              <uri>model://media/materials/scripts/</uri>
-              <uri>model://media/materials/textures/</uri>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -980,14 +962,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode />
+              <ode/>
             </contact>
-            <bounce />
+            <bounce/>
             <friction>
               <torsional>
-                <ode />
+                <ode/>
               </torsional>
-              <ode />
+              <ode/>
             </friction>
           </surface>
         </collision>
@@ -1000,8 +982,7 @@
           </geometry>
           <material>
             <script>
-              <uri>model://media/materials/scripts/</uri>
-              <uri>model://media/materials/textures/</uri>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -1026,14 +1007,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode />
+              <ode/>
             </contact>
-            <bounce />
+            <bounce/>
             <friction>
               <torsional>
-                <ode />
+                <ode/>
               </torsional>
-              <ode />
+              <ode/>
             </friction>
           </surface>
         </collision>
@@ -1046,8 +1027,7 @@
           </geometry>
           <material>
             <script>
-              <uri>model://media/materials/scripts/</uri>
-              <uri>model://media/materials/textures/</uri>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -1072,14 +1052,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode />
+              <ode/>
             </contact>
-            <bounce />
+            <bounce/>
             <friction>
               <torsional>
-                <ode />
+                <ode/>
               </torsional>
-              <ode />
+              <ode/>
             </friction>
           </surface>
         </collision>
@@ -1092,8 +1072,7 @@
           </geometry>
           <material>
             <script>
-              <uri>model://media/materials/scripts/</uri>
-              <uri>model://media/materials/textures/</uri>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
               <name>Gazebo/Grey</name>
             </script>
             <ambient>1 1 1 1</ambient>
@@ -1139,14 +1118,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode />
+              <ode/>
             </contact>
-            <bounce />
+            <bounce/>
             <friction>
               <torsional>
-                <ode />
+                <ode/>
               </torsional>
-              <ode />
+              <ode/>
             </friction>
           </surface>
         </collision>
@@ -1173,30 +1152,28 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>
-                model://models/aws_robomaker_residential_ChairA_01/meshes/aws_ChairA_01_collision.DAE</uri>
+              <uri>model://models/aws_robomaker_residential_ChairA_01/meshes/aws_ChairA_01_collision.DAE</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode />
+              <ode/>
             </contact>
-            <bounce />
+            <bounce/>
             <friction>
               <torsional>
-                <ode />
+                <ode/>
               </torsional>
-              <ode />
+              <ode/>
             </friction>
           </surface>
         </collision>
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>
-                model://models/aws_robomaker_residential_ChairA_01/meshes/aws_ChairA_01_visual.DAE</uri>
+              <uri>model://models/aws_robomaker_residential_ChairA_01/meshes/aws_ChairA_01_visual.DAE</uri>
             </mesh>
           </geometry>
           <meta>
@@ -1226,30 +1203,28 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>
-                model://models/aws_robomaker_residential_KitchenTable_01/meshes/aws_KitchenTable_01_collision.DAE</uri>
+              <uri>model://models/aws_robomaker_residential_KitchenTable_01/meshes/aws_KitchenTable_01_collision.DAE</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode />
+              <ode/>
             </contact>
-            <bounce />
+            <bounce/>
             <friction>
               <torsional>
-                <ode />
+                <ode/>
               </torsional>
-              <ode />
+              <ode/>
             </friction>
           </surface>
         </collision>
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>
-                model://models/aws_robomaker_residential_KitchenTable_01/meshes/aws_KitchenTable_01_visual.DAE</uri>
+              <uri>model://models/aws_robomaker_residential_KitchenTable_01/meshes/aws_KitchenTable_01_visual.DAE</uri>
             </mesh>
           </geometry>
           <meta>
@@ -1279,22 +1254,21 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>
-                model://models/aws_robomaker_residential_SofaB_01/meshes/aws_SofaB_01_collision.DAE</uri>
+              <uri>model://models/aws_robomaker_residential_SofaB_01/meshes/aws_SofaB_01_collision.DAE</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode />
+              <ode/>
             </contact>
-            <bounce />
+            <bounce/>
             <friction>
               <torsional>
-                <ode />
+                <ode/>
               </torsional>
-              <ode />
+              <ode/>
             </friction>
           </surface>
         </collision>
@@ -1337,14 +1311,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode />
+              <ode/>
             </contact>
-            <bounce />
+            <bounce/>
             <friction>
               <torsional>
-                <ode />
+                <ode/>
               </torsional>
-              <ode />
+              <ode/>
             </friction>
           </surface>
         </collision>
@@ -1388,14 +1362,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode />
+              <ode/>
             </contact>
-            <bounce />
+            <bounce/>
             <friction>
               <torsional>
-                <ode />
+                <ode/>
               </torsional>
-              <ode />
+              <ode/>
             </friction>
           </surface>
         </collision>
@@ -1425,14 +1399,14 @@
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode />
+              <ode/>
             </contact>
-            <bounce />
+            <bounce/>
             <friction>
               <torsional>
-                <ode />
+                <ode/>
               </torsional>
-              <ode />
+              <ode/>
             </friction>
           </surface>
         </collision>
@@ -1458,30 +1432,28 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>
-                model://models/aws_robomaker_residential_Refrigerator_01/meshes/aws_Refrigerator_01_collision.DAE</uri>
+              <uri>model://models/aws_robomaker_residential_Refrigerator_01/meshes/aws_Refrigerator_01_collision.DAE</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
-              <ode />
+              <ode/>
             </contact>
-            <bounce />
+            <bounce/>
             <friction>
               <torsional>
-                <ode />
+                <ode/>
               </torsional>
-              <ode />
+              <ode/>
             </friction>
           </surface>
         </collision>
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>
-                model://models/aws_robomaker_residential_Refrigerator_01/meshes/aws_Refrigerator_01_visual.DAE</uri>
+              <uri>model://models/aws_robomaker_residential_Refrigerator_01/meshes/aws_Refrigerator_01_visual.DAE</uri>
             </mesh>
           </geometry>
           <meta>
