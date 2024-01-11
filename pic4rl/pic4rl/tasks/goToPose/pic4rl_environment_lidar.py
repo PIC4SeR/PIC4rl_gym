@@ -62,6 +62,7 @@ class Pic4rlEnvironmentLidar(Node):
         )
 
         self.mode = self.get_parameter("mode").get_parameter_value().string_value
+        goals_path = os.path.join(goals_path, self.mode)
         self.data_path = (
             self.get_parameter("data_path").get_parameter_value().string_value
         )
