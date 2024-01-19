@@ -177,15 +177,15 @@ class Pic4rlEnvironmentCamera(Node):
             robot_pose,
             collision,
         ) = self.get_sensor_data()
-        if self.mode == "testing":
-            self.nav_metrics.get_metrics_data(lidar_measurements, self.episode_step)
-
-        self.get_logger().debug("checking events...")
-        done, event = self.check_events(
-            lidar_measurements, goal_info, robot_pose, collision
-        )
-
+        
         if not reset_step:
+            if self.mode == "testing":
+                self.nav_metrics.get_metrics_data(lidar_measurements, self.episode_step)
+
+            self.get_logger().debug("checking events...")
+            done, event = self.check_events(
+                lidar_measurements, goal_info, robot_pose, collision
+            )
             self.get_logger().debug("getting reward...")
             reward = self.get_reward(
                 twist, lidar_measurements, goal_info, robot_pose, done, event
@@ -198,6 +198,8 @@ class Pic4rlEnvironmentCamera(Node):
         else:
             reward = None
             observation = None
+            done = False
+            event = None
 
         # Send observation and reward
         self.update_state(twist, depth_image, goal_info, robot_pose, done, event)

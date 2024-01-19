@@ -111,7 +111,7 @@ class Pic4rlEnvironmentCamera(Node):
             .get_parameter_value()
             .integer_value
         )
-        self.params_update_freq = (
+        self.update_freq = (
             self.get_parameter("update_frequency").get_parameter_value().double_value
         )
         self.sensor_type = (
@@ -141,9 +141,12 @@ class Pic4rlEnvironmentCamera(Node):
         self.t0 = 0.0
         self.evaluate = False
         self.index = 0
+        self.explore_demo = 20
+        
 
         self.initial_pose, self.goals, self.poses = self.get_goals_and_poses()
         self.goal_pose = self.goals[0]
+        self.starting_pose = self.initial_pose
 
         self.get_logger().info(f"Gym mode: {self.mode}")
         if self.mode == "testing":
@@ -178,15 +181,14 @@ class Pic4rlEnvironmentCamera(Node):
             _,
         ) = self.get_sensor_data()
 
-        if self.mode == "testing":
-            self.nav_metrics.get_metrics_data(lidar_measurements, self.episode_step)
-
-        self.get_logger().debug("checking events...")
-        done, event = self.check_events(
-            lidar_measurements, goal_info, robot_pose, collision
-        )
-
         if not reset_step:
+            if self.mode == "testing":
+                self.nav_metrics.get_metrics_data(lidar_measurements, self.episode_step)
+
+            self.get_logger().debug("checking events...")
+            done, event = self.check_events(
+                goal_info, robot_pose, collision
+            )
             self.get_logger().debug("getting reward...")
             reward = self.get_reward(
                 twist, lidar_measurements, goal_info, robot_pose, done, event
@@ -199,6 +201,8 @@ class Pic4rlEnvironmentCamera(Node):
         else:
             reward = None
             observation = None
+            done = False
+            event = None
 
         # Send observation and reward
         self.update_state(twist, depth_image, goal_info, robot_pose, done, event)
@@ -222,16 +226,18 @@ class Pic4rlEnvironmentCamera(Node):
             self.get_logger().debug(f"empty_measurements: {empty_measurements}")
             rclpy.spin_once(self)
             self.get_logger().debug("spin once ...")
+        self.get_logger().debug("spin sensor callback complete ...")
         self.sensors.sensor_msg = dict.fromkeys(self.sensors.sensor_msg.keys(), None)
 
     def send_action(self, twist):
         """ """
-        
         self.cmd_vel_pub.publish(twist)
         # Regulate frequency of send action if needed
-        # freq, t1 = compute_frequency(self.t0)
-        # t0 = t1
-        # frequency_control(self.params_update_freq)
+        freq, t1 = compute_frequency(self.t0)
+        self.get_logger().debug(f"frequency : {freq}")
+        self.t0 = t1
+        if freq > self.update_freq:
+            frequency_control(self.update_freq)
 
         # self.get_logger().debug("pausing...")
         # self.pause()
@@ -268,29 +274,33 @@ class Pic4rlEnvironmentCamera(Node):
             velocities,
         )
 
-    def check_events(self, lidar_measurements, goal_info, robot_pose, collision):
+    def check_events(self, goal_info, robot_pose, collision):
         """ """
         # FOR VINEYARD ONLY ##
-        # if math.fabs(robot_pose[2]) > 1.57:
-        #     robot_pose[2] = math.fabs(robot_pose[2]) - 3.14
-        # #print('robot pose :', robot_pose)
+        if math.fabs(robot_pose[2]) > 1.57:
+            robot_pose[2] = math.fabs(robot_pose[2]) - 3.14
+        if math.fabs(self.starting_pose[2]) > 1.57:
+            start_yaw = math.fabs(self.starting_pose[2]) - 3.14
+        else:
+            start_yaw = self.starting_pose[2]
+        #print('robot pose :', robot_pose)
 
-        # yaw_limit = math.fabs(robot_pose[2])-1.4835  #check yaw is less than 85°
-        # self.get_logger().debug("Yaw limit: {}".format(yaw_limit))
+        yaw_diff = math.fabs(robot_pose[2])-math.fabs(start_yaw)
+        self.get_logger().debug("Yaw difference: {}".format(yaw_diff))
 
-        # if yaw_limit > 0:
-        #     self.get_logger().info('Reverse: yaw too high')
-        #     return True, "reverse"
+        if yaw_diff > 1.48: # check yaw is less than 85°
+            self.get_logger().info('Reverse: yaw too high')
+            return True, "reverse"
 
-        # if collision:
-        #     self.collision_count += 1
-        #     if self.collision_count >= 3:
-        #         self.collision_count = 0
-        #         self.get_logger().info(f"Ep {'evaluate' if self.evaluate else self.episode+1}: Collision")
-        #         logging.info(f"Ep {'evaluate' if self.evaluate else self.episode+1}: Collision")
-        #         return True, "collision"
-        #     else:
-        #         return False, "None"
+        if collision:
+            self.collision_count += 1
+            if self.collision_count >= 3:
+                self.collision_count = 0
+                self.get_logger().info(f"Ep {'evaluate' if self.evaluate else self.episode+1}: Collision")
+                logging.info(f"Ep {'evaluate' if self.evaluate else self.episode+1}: Collision")
+                return True, "collision"
+            else:
+                return False, "None"
 
         if goal_info[0] < self.goal_tolerance:
             self.get_logger().info(
@@ -328,6 +338,7 @@ class Pic4rlEnvironmentCamera(Node):
             reward = 300
         elif event == "collision":
             # reward = -1000*math.fabs(v)**2
+            print("lidar min measure ", np.min(lidar_measurements))
             reward = -100
         elif event == "reverse":
             reward = -200
@@ -386,22 +397,14 @@ class Pic4rlEnvironmentCamera(Node):
         self.get_logger().debug("Performing null step to reset variables")
         self.episode_step = 0
 
-        (
-            _,
-            _,
-            _,
-        ) = self._step(reset_step=True)
-        (
-            observation,
-            _,
-            _,
-        ) = self._step()
+        ( _, _, _) = self._step(reset_step=True)
+        (observation, _, _) = self._step()
 
-        # if self.episode < 50 or (self.episode % self.explore_demo == 0.) and not self.evaluate:
-        #    exploration_ep = True
-        #    self.get_logger().info("Pseudo-Demonstrative exploration episode ...")
-        # else:
-        exploration_ep = False
+        if self.episode < 50 or (self.episode % self.explore_demo == 0.) and not self.evaluate:
+           exploration_ep = True
+           self.get_logger().info("Pseudo-Demonstrative exploration episode ...")
+        else:
+            exploration_ep = False
 
         return observation, exploration_ep
 
@@ -458,6 +461,7 @@ class Pic4rlEnvironmentCamera(Node):
         else:
             x, y, yaw = tuple(self.poses[index])
 
+        self.starting_pose = [x,y,yaw]
         qz = np.sin(yaw / 2)
         qw = np.cos(yaw / 2)
 

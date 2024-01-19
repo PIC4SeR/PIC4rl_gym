@@ -7,23 +7,10 @@ import os
 
 from numpy import savetxt
 import math
-import subprocess
-import json
-import random
-import sys
 import time
 import datetime
-import yaml
 import logging
 from pathlib import Path
-
-from geometry_msgs.msg import Pose,PoseStamped
-import rclpy
-from rclpy.qos import QoSProfile
-from std_srvs.srv import Empty
-from geometry_msgs.msg import Twist
-from ament_index_python.packages import get_package_share_directory
-
 
 def frequency_control(params_update_freq):
     #print("Sleeping for: "+str(1/params_update_freq) +' s')

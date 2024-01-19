@@ -87,7 +87,7 @@ class Pic4rlEnvironmentLidar(Node):
             .get_parameter_value()
             .integer_value
         )
-        self.params_update_freq = (
+        self.update_freq = (
             self.get_parameter("update_frequency").get_parameter_value().double_value
         )
         self.sensor_type = (
@@ -151,15 +151,15 @@ class Pic4rlEnvironmentLidar(Node):
             robot_pose,
             collision,
         ) = self.get_sensor_data()
-        if self.mode == "testing":
-            self.nav_metrics.get_metrics_data(lidar_measurements, self.episode_step)
-
-        self.get_logger().debug("checking events...")
-        done, event = self.check_events(
-            lidar_measurements, goal_info, robot_pose, collision
-        )
 
         if not reset_step:
+            if self.mode == "testing":
+                self.nav_metrics.get_metrics_data(lidar_measurements, self.episode_step)
+
+            self.get_logger().debug("checking events...")
+            done, event = self.check_events(
+                lidar_measurements, goal_info, robot_pose, collision
+            )
             self.get_logger().debug("getting reward...")
             reward = self.get_reward(
                 twist, lidar_measurements, goal_info, robot_pose, done, event
@@ -172,6 +172,8 @@ class Pic4rlEnvironmentLidar(Node):
         else:
             reward = None
             observation = None
+            done = False
+            event = None
 
         self.update_state(twist, lidar_measurements, goal_info, robot_pose, done, event)
 
@@ -199,9 +201,11 @@ class Pic4rlEnvironmentLidar(Node):
         
         self.cmd_vel_pub.publish(twist)
         # Regulate frequency of send action if needed
-        # freq, t1 = compute_frequency(self.t0)
-        # t0 = t1
-        # frequency_control(self.params_update_freq)
+        freq, t1 = compute_frequency(self.t0)
+        self.get_logger().debug(f"frequency : {freq}")
+        self.t0 = t1
+        if freq > self.update_freq:
+            frequency_control(self.update_freq)
 
         # self.get_logger().debug("pausing...")
         # self.pause()
@@ -310,16 +314,8 @@ class Pic4rlEnvironmentLidar(Node):
         self.get_logger().debug("Performing null step to reset variables")
         self.episode_step = 0
 
-        (
-            _,
-            _,
-            _,
-        ) = self._step(reset_step=True)
-        (
-            observation,
-            _,
-            _,
-        ) = self._step()
+        _, _, _ = self._step(reset_step=True)
+        observation, _, _ = self._step()
 
         return observation
 

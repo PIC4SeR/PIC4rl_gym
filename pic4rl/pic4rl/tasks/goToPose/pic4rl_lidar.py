@@ -245,10 +245,12 @@ class Pic4rlLidar(Pic4rlEnvironmentLidar):
         self.parser_list = []
         for k, v in params.items():
             if v is not None:
-                kv = k + "=" + str(v)
-                if k == "--log-dir":
-                    k += self.logdir
-                    self.get_logger().info(f"logdir set to: {k}")
+                kv = k + "=" 
+                if k == "--logdir":
+                    kv += self.logdir
+                    self.get_logger().info(f"logdir set to: {kv}")
+                else:
+                    kv += str(v)
                 self.parser_list.append(kv)
             else:
                 self.parser_list.append(k)

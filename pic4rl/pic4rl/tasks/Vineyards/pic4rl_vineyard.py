@@ -72,7 +72,6 @@ class Pic4rlVineyards(Pic4rlEnvironmentCamera):
         """
         action = [
             [self.min_lin_vel, self.max_lin_vel],  # x_speed
-            # [self.min_lin_vel, self.max_lin_vel], # y_speed
             [self.min_ang_vel, self.max_ang_vel],  # w_speed
         ]
 
@@ -93,7 +92,6 @@ class Pic4rlVineyards(Pic4rlEnvironmentCamera):
             # [0., 15.], # goal_distance
             # [-math.pi, math.pi], # goal angle or yaw
             [self.min_lin_vel, self.max_lin_vel],  # x_speed
-            # [self.min_lin_vel, self.max_lin_vel], # y_speed
             [self.min_ang_vel, self.max_ang_vel],  # w_speed
         ]
 
@@ -312,10 +310,12 @@ class Pic4rlVineyards(Pic4rlEnvironmentCamera):
         self.parser_list = []
         for k, v in params.items():
             if v is not None:
-                kv = k + "=" + str(v)
-                if k == "--log-dir":
-                    k += self.logdir
-                    self.get_logger().info(f"logdir set to: {k}")
+                kv = k + "=" 
+                if k == "--logdir":
+                    kv += self.logdir
+                    self.get_logger().info(f"logdir set to: {kv}")
+                else:
+                    kv += str(v)
                 self.parser_list.append(kv)
             else:
                 self.parser_list.append(k)
