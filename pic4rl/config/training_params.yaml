@@ -6,10 +6,10 @@ training_params:
 # --show-progress: # Call ``render`` function during training
     --save-model-interval: 1000 # (int) Interval to save model. The default is ``int(1e4)``
     --save-summary-interval: 1000 # (int) Interval to save summary. The default is ``int(1e3)``
-#    --model-dir: 'src/PIC4rl_gym/pic4rl/trained_agents/vineyards/20231017T211306.665432_SAC_' # (str) Directory to restore model.
+    --model-dir: 'src/PIC4rl_gym/pic4rl/trained_agents/vineyards/20231017T211306.665432_SAC_' # (str) Directory to restore model.
 #    --dir-suffix: ""  # (str) Suffix for directory that stores results.
 #    --normalize-obs: # Whether normalize observation
-    --logdir: src/Results/ # (str) Output directory name. The default is ``"results"`` (it is relative to workspace directory).
+    --logdir: 'src/Results' # (str) Output directory name. The default is ``"results"`` (it is relative to workspace directory).
 
 # ENABLE TESTING MODE    
 #    --evaluate: THIS FLAG ENABLE TESTING MODE
@@ -27,14 +27,14 @@ training_params:
     --logging-level: INFO # (DEBUG, INFO, WARNING) Choose logging level. The default is ``INFO``
     --policy: 'SAC' # training policy
     --policy_trainer: 'off-policy' # trainer off-policy / on-policy
-    --change_goal_and_pose: 5
+    --change_goal_and_pose: 3
     --starting_episodes: 0
     --batch-size: 64 # (int) Batch size for training. The default is ``32``.
     --gpu: 0 # (int) GPU id. ``-1`` disables GPU. The default is ``0``.
 
 # For all off-policy algos (DDPG, TD3, SAC)
     --n-warmup: 12000 # (int) Number of warmup steps before training. The default is ``1e4``.
-    --memory-capacity: 150000  # (int) Replay Buffer size. The default is ``1e6``.
+    --memory-capacity: 200000  # (int) Replay Buffer size. The default is ``1e6``.
 
 # For only SAC
     --alpha: 0.2 # (float) Temperature parameter. The default is ``0.2``.

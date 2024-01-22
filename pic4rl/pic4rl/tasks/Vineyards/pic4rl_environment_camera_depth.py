@@ -125,7 +125,10 @@ class Pic4rlEnvironmentCamera(Node):
         self.logdir = create_logdir(
             train_params["--policy"], self.sensor_type, log_path
         )
-        self.get_logger().info(self.logdir)
+        self.get_logger().info(f"Logdir: {self.logdir}")
+        
+        if train_params["--model-dir"] is not None:
+            self.model_path = os.path.join(get_package_share_directory(self.package_name),'../../../../', train_params["--model-dir"])
         self.spin_sensors_callbacks()
 
         self.cmd_vel_pub = self.create_publisher(Twist, "cmd_vel", qos)
@@ -141,7 +144,7 @@ class Pic4rlEnvironmentCamera(Node):
         self.t0 = 0.0
         self.evaluate = False
         self.index = 0
-        self.explore_demo = 20
+        self.explore_demo = 15
         
 
         self.initial_pose, self.goals, self.poses = self.get_goals_and_poses()
@@ -283,9 +286,8 @@ class Pic4rlEnvironmentCamera(Node):
             start_yaw = math.fabs(self.starting_pose[2]) - 3.14
         else:
             start_yaw = self.starting_pose[2]
-        #print('robot pose :', robot_pose)
 
-        yaw_diff = math.fabs(robot_pose[2])-math.fabs(start_yaw)
+        yaw_diff = math.fabs(robot_pose[2]-start_yaw)
         self.get_logger().debug("Yaw difference: {}".format(yaw_diff))
 
         if yaw_diff > 1.48: # check yaw is less than 85°
@@ -322,23 +324,19 @@ class Pic4rlEnvironmentCamera(Node):
 
     def get_reward(self, twist, lidar_measurements, goal_info, robot_pose, done, event):
         """ """
-        yaw_reward = (1 - 3 * math.sqrt(math.fabs(goal_info[1] / math.pi))) * 0.1
-        # y_reward = (-2**(math.fabs(0.45 - 2*robot_pose[1]))+1)*10
-        # distance_reward = 2*((2 * self.previous_goal_distance) / \
-        #   (self.previous_goal_distance + goal_distance) - 1)
-        # distance_reward = (2 - 2**(self.goal_distance / self.init_goal_distance))
+        yaw_reward = (1 - 3*math.sqrt(math.fabs(goal_info[1] / math.pi))) * 0.3
         distance_reward = (self.previous_goal_info[0] - goal_info[0]) * 5
         v = twist.linear.x
         w = twist.angular.z
-        # speed_reward = (v - math.fabs(w))
+        speed_reward = (v - 0.5 - 0.5*math.fabs(w))
 
-        reward = yaw_reward + distance_reward
+        reward = yaw_reward + distance_reward + speed_reward
 
         if event == "goal":
             reward = 300
         elif event == "collision":
             # reward = -1000*math.fabs(v)**2
-            print("lidar min measure ", np.min(lidar_measurements))
+            #print("lidar min measure ", np.min(lidar_measurements))
             reward = -100
         elif event == "reverse":
             reward = -200
@@ -472,7 +470,7 @@ class Pic4rlEnvironmentCamera(Node):
             f"Ep {'evaluate' if self.evaluate else self.episode+1} robot pose [x,y,yaw]: {[x, y, yaw]}"
         )
 
-        position = "position: {x: " + str(x) + ",y: " + str(y) + ",z: " + str(0.1) + "}"
+        position = "position: {x: " + str(x) + ",y: " + str(y) + ",z: " + str(0.05) + "}"
         orientation = "orientation: {z: " + str(qz) + ",w: " + str(qw) + "}"
         pose = position + ", " + orientation
         state = "'{state: {name: '" + self.robot_name + "',pose: {" + pose + "}}}'"

@@ -11,7 +11,7 @@ main_node:
     robot_type: "rectangular" # rectangular or circular
     robot_radius: 0.3 # [m], If robot_type is cicrular
     robot_size: [0.508, 0.430] #[0.508, 0.430] # [m, m], Lenght, Width if robot_type is rectangular
-    collision_tolerance: 0.05 # [m], tollerance of collision added to robot_radius or robot_size
+    collision_tolerance: 0.01 # [m], tollerance of collision added to robot_radius or robot_size
     warning_tolerance: 0.1 # [m], warning window added to robot_radius or robot_size
     goal_tolerance: 0.40
 

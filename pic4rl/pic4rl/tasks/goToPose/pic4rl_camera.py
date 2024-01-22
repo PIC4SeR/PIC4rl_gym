@@ -305,6 +305,9 @@ class Pic4rlCamera(Pic4rlEnvironmentCamera):
                 if k == "--logdir":
                     kv += self.logdir
                     self.get_logger().info(f"logdir set to: {kv}")
+                elif k == "--model-dir":
+                    kv += self.model_path
+                    self.get_logger().info(f"model path set to: {kv}")
                 else:
                     kv += str(v)
                 self.parser_list.append(kv)

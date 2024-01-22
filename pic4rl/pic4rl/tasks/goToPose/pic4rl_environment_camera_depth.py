@@ -126,7 +126,10 @@ class Pic4rlEnvironmentCamera(Node):
         self.logdir = create_logdir(
             train_params["--policy"], self.sensor_type, log_path
         )
-        self.get_logger().info(self.logdir)
+        self.get_logger().info(f"Logdir: {self.logdir}")
+        
+        if train_params["--model-dir"] is not None:
+            self.model_path = os.path.join(get_package_share_directory(self.package_name),'../../../../', train_params["--model-dir"])
         self.spin_sensors_callbacks()
 
         self.cmd_vel_pub = self.create_publisher(Twist, "cmd_vel", qos)
