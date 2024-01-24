@@ -137,8 +137,8 @@ class Trainer:
         while total_steps < self._max_steps:
             if exploration_ep:
                 #action = self._env.call_DWA()
-                action = np.array([0.46, 0.00])
-                noise = np.random.normal(loc=0.0, scale=0.1, size=action.shape)
+                action = np.array([0.48, 0.00])
+                noise = np.random.normal(loc=0.0, scale=0.025, size=action.shape)
                 action += noise
                 action = np.minimum(action, [0.5, 1.0])
 

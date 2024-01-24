@@ -126,8 +126,8 @@ class Pic4rlEnvironmentCamera(Node):
             train_params["--policy"], self.sensor_type, log_path
         )
         self.get_logger().info(f"Logdir: {self.logdir}")
-        
-        if train_params["--model-dir"] is not None:
+
+        if "--model-dir" in train_params:
             self.model_path = os.path.join(get_package_share_directory(self.package_name),'../../../../', train_params["--model-dir"])
         self.spin_sensors_callbacks()
 
@@ -194,7 +194,7 @@ class Pic4rlEnvironmentCamera(Node):
             )
             self.get_logger().debug("getting reward...")
             reward = self.get_reward(
-                twist, lidar_measurements, goal_info, robot_pose, done, event
+                twist, lidar_measurements, goal_info, event
             )
 
             self.get_logger().debug("getting observation...")
@@ -322,13 +322,13 @@ class Pic4rlEnvironmentCamera(Node):
 
         return False, "None"
 
-    def get_reward(self, twist, lidar_measurements, goal_info, robot_pose, done, event):
+    def get_reward(self, twist, lidar_measurements, goal_info, event):
         """ """
         yaw_reward = (1 - 3*math.sqrt(math.fabs(goal_info[1] / math.pi))) * 0.3
         distance_reward = (self.previous_goal_info[0] - goal_info[0]) * 5
         v = twist.linear.x
         w = twist.angular.z
-        speed_reward = (v - 0.5 - 0.5*math.fabs(w))
+        speed_reward = (v - 0.25 - 0.5*math.fabs(w))
 
         reward = yaw_reward + distance_reward + speed_reward
 
@@ -337,7 +337,7 @@ class Pic4rlEnvironmentCamera(Node):
         elif event == "collision":
             # reward = -1000*math.fabs(v)**2
             #print("lidar min measure ", np.min(lidar_measurements))
-            reward = -100
+            reward = -150
         elif event == "reverse":
             reward = -200
         else:
@@ -470,7 +470,7 @@ class Pic4rlEnvironmentCamera(Node):
             f"Ep {'evaluate' if self.evaluate else self.episode+1} robot pose [x,y,yaw]: {[x, y, yaw]}"
         )
 
-        position = "position: {x: " + str(x) + ",y: " + str(y) + ",z: " + str(0.05) + "}"
+        position = "position: {x: " + str(x) + ",y: " + str(y) + ",z: " + str(0.065) + "}"
         orientation = "orientation: {z: " + str(qz) + ",w: " + str(qw) + "}"
         pose = position + ", " + orientation
         state = "'{state: {name: '" + self.robot_name + "',pose: {" + pose + "}}}'"

@@ -103,7 +103,7 @@ class Pic4rlEnvironmentLidar(Node):
         )
         self.get_logger().info(f"Logdir: {self.logdir}")
         
-        if train_params["--model-dir"] is not None:
+        if "--model-dir" in train_params:
             self.model_path = os.path.join(get_package_share_directory(self.package_name),'../../../../', train_params["--model-dir"])
         self.spin_sensors_callbacks()
 
