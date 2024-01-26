@@ -6,7 +6,7 @@ training_params:
 # --show-progress: # Call ``render`` function during training
     --save-model-interval: 10000 # (int) Interval to save model. The default is ``int(1e4)``
     --save-summary-interval: 10000 # (int) Interval to save summary. The default is ``int(1e3)``
-    --model-dir: 'src/PIC4rl_gym/pic4rl/trained_agents/covivio_SAC/20240123_121352.737161_camera_SAC_550k/20240123T121354.560252_SAC_' # (str) Directory to restore model.
+#    --model-dir: '' # (str) Directory to restore model.
 #    --dir-suffix: ""  # (str) Suffix for directory that stores results.
 #    --normalize-obs: # Whether normalize observation
     --logdir: 'src/Results' # (str) Output directory name. The default is ``"results"`` (it is relative to workspace directory).

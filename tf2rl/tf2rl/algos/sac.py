@@ -42,7 +42,7 @@ class SAC(OffPolicyAgent):
             init_temperature=None,
             n_warmup=int(1e4),
             memory_capacity=int(1e6),
-            epsilon = 1.0, 
+            epsilon = 0.0, 
             epsilon_decay = 0.998, 
             epsilon_min = 0.05,
             log_level = 20,

@@ -234,7 +234,7 @@ class Trainer:
             self.logger.info("Restored {}".format(self._latest_path_ckpt))
 
         while True:
-            _, ep_steps = self.evaluate_policy(total_steps, n_episode)
+            _, ep_steps, _ = self.evaluate_policy(total_steps, n_episode)
             total_steps += int(ep_steps)
             n_episode += 1
 
