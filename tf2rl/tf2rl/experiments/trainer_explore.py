@@ -178,7 +178,7 @@ class Trainer:
                 obs, exploration_ep = self._env.reset(n_episode, total_steps)
                 tf.summary.scalar(name="Common/training_return", data=episode_return)
                 tf.summary.scalar(name="Common/training_episode_length", data=episode_steps)
-
+                tf.summary.scalar(name="Common/training_fps", data=fps)
                 episode_steps = 0
                 episode_return = 0
                 episode_start_time = time.perf_counter()
@@ -205,15 +205,16 @@ class Trainer:
                         samples["indexes"], np.abs(td_error) + 1e-6)
 
             if total_steps % self._test_interval == 0:
-                avg_test_return, avg_test_steps = self.evaluate_policy(total_steps, n_episode)
+                avg_test_return, avg_test_steps, avg_test_fps = self.evaluate_policy(total_steps, n_episode)
                 self.logger.info("Evaluation Total Steps: {0: 7} Average Reward {1: 5.4f} over {2: 2} episodes".format(
                     total_steps, avg_test_return, self._test_episodes))
                 tf.summary.scalar(
                     name="Common/average_test_return", data=avg_test_return)
                 tf.summary.scalar(
                     name="Common/average_test_episode_length", data=avg_test_steps)
-                tf.summary.scalar(name="Common/fps", data=fps)
-
+                tf.summary.scalar(name="Common/avg_test_fps", data=avg_test_fps)
+                ## to reset the env after the test
+                obs, _ = self._env.reset(n_episode, total_steps)
             if total_steps % self._save_model_interval == 0:
                 self.checkpoint_manager.save()
                 if self._rb_path is not None:
@@ -233,6 +234,12 @@ class Trainer:
         total_steps = 0
         ep_steps = 0
 
+        latest_path_ckpt = tf.train.latest_checkpoint(self._model_dir)
+        if self._latest_path_ckpt != latest_path_ckpt:
+            self._latest_path_ckpt = latest_path_ckpt
+            self._checkpoint.restore(self._latest_path_ckpt)
+            self.logger.info("Restored {}".format(self._latest_path_ckpt))
+
         while True:
             _, ep_steps = self.evaluate_policy(total_steps, n_episode)
             total_steps += int(ep_steps)
@@ -245,6 +252,7 @@ class Trainer:
                 *self._env.normalizer.get_params())
         avg_test_return = 0.
         avg_test_steps = 0
+        avg_fps = 0.
         if self._save_test_path:
             replay_buffer = get_replay_buffer(
                 self._policy, self._test_env, size=self._episode_max_steps)
@@ -253,6 +261,8 @@ class Trainer:
             frames = []
             obs, _ = self._test_env.reset(n_episode, total_steps, evaluate=True)
             avg_test_steps += 1
+            episode_start_time = time.perf_counter()
+
             for episode_step in range(self._episode_max_steps):
                 action = self._policy.get_action(obs, test=True)
                 next_obs, reward, done, _ = self._test_env.step(action, episode_step)
@@ -268,6 +278,7 @@ class Trainer:
                 episode_return += reward
                 obs = next_obs
                 if done:
+                    fps = episode_step / (time.perf_counter() - episode_start_time)
                     break
             prefix = "step_{0:08d}_epi_{1:02d}_return_{2:010.4f}".format(
                 total_steps, i, episode_return)
@@ -278,12 +289,13 @@ class Trainer:
             if self._save_test_movie:
                 frames_to_gif(frames, prefix, self._output_dir)
             avg_test_return += episode_return
+            avg_fps += fps
         if self._show_test_images:
             images = tf.cast(
                 tf.expand_dims(np.array(obs).transpose(2, 0, 1), axis=3),
                 tf.uint8)
             tf.summary.image('train/input_img', images,)
-        return avg_test_return / self._test_episodes, avg_test_steps / self._test_episodes
+        return avg_test_return / self._test_episodes, avg_test_steps / self._test_episodes, avg_fps / self._test_episodes
 
     def _set_from_args(self, args):
         # experiment settings
