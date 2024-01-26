@@ -10,7 +10,6 @@ import math
 import os
 import traceback
 
-# os.environ["CUDA_VISIBLE_DEVICES"]="-1"
 import tensorflow as tf
 
 import rclpy

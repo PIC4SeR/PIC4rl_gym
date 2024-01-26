@@ -5,6 +5,7 @@ from rclpy.node import Node
 from rclpy.executors import MultiThreadedExecutor
 from pic4rl.tasks.Vineyards.pic4rl_vineyard import Pic4rlVineyards
 import tensorflow as tf
+import os 
 
 gpus = tf.config.experimental.list_physical_devices('GPU')
 

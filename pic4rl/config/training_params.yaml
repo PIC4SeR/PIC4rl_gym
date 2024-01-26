@@ -6,13 +6,13 @@ training_params:
 # --show-progress: # Call ``render`` function during training
     --save-model-interval: 10000 # (int) Interval to save model. The default is ``int(1e4)``
     --save-summary-interval: 10000 # (int) Interval to save summary. The default is ``int(1e3)``
-#    --model-dir: 'src/PIC4rl_gym/pic4rl/trained_agents/vineyards/20231017T211306.665432_SAC_' # (str) Directory to restore model.
+    --model-dir: 'src/PIC4rl_gym/pic4rl/trained_agents/covivio_SAC/20240123_121352.737161_camera_SAC_550k/20240123T121354.560252_SAC_' # (str) Directory to restore model.
 #    --dir-suffix: ""  # (str) Suffix for directory that stores results.
 #    --normalize-obs: # Whether normalize observation
     --logdir: 'src/Results' # (str) Output directory name. The default is ``"results"`` (it is relative to workspace directory).
 
 # ENABLE TESTING MODE    
-#    --evaluate: THIS FLAG ENABLE TESTING MODE
+    --evaluate:  # THIS FLAG ENABLE TESTING MODE
     --test-interval: 10000 # (int) Interval to evaluate trained model. The default is ``int(1e4)``
 # --show-test-progress: # Call ``render`` function during evaluation.
     --test-episodes: 1 # (int) Number of episodes at validation to be averaged. # IF TESTING MODE SET TO 1, default validation '3' or '5'

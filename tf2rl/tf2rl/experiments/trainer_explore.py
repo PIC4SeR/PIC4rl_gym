@@ -110,6 +110,8 @@ class Trainer:
             self._latest_path_ckpt = tf.train.latest_checkpoint(model_dir)
             self._checkpoint.restore(self._latest_path_ckpt)
             self.logger.info("Restored {}".format(self._latest_path_ckpt))
+            # to save the model in keras format
+            #self._policy.actor.save('/root/gym_ws/src/PIC4rl_gym/pic4rl/trained_agents/covivio_SAC/20240123_121352.737161_camera_SAC_550k/model_camera_SAC_550k')
 
     def __call__(self):
         """
@@ -230,12 +232,6 @@ class Trainer:
         n_episode = 0
         total_steps = 0
         ep_steps = 0
-
-        latest_path_ckpt = tf.train.latest_checkpoint(self._model_dir)
-        if self._latest_path_ckpt != latest_path_ckpt:
-            self._latest_path_ckpt = latest_path_ckpt
-            self._checkpoint.restore(self._latest_path_ckpt)
-            self.logger.info("Restored {}".format(self._latest_path_ckpt))
 
         while True:
             _, ep_steps = self.evaluate_policy(total_steps, n_episode)

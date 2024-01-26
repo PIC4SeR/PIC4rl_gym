@@ -148,7 +148,9 @@ class SAC(OffPolicyAgent):
         is_single_state = len(state.shape) == self.state_ndim
 
         state = np.expand_dims(state, axis=0) if is_single_state else state
+        print(state.shape)
         action = self._get_action_body(tf.constant(state), test)
+        print(action)
         return action.numpy()[0] if is_single_state else action
 
     @tf.function

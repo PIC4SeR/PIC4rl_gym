@@ -1,7 +1,7 @@
 main_node:
   ros__parameters:
     # Mode
-    mode: "training" # Training or testing
+    mode: "testing" # Training or testing
     # Robot parameters
     robot_name: "jackal" # robot entity name in gazebo
     max_lin_vel: 0.5

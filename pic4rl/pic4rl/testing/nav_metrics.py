@@ -57,18 +57,18 @@ class Navigation_Metrics(Node):
         self.declare_parameters(
             namespace="",
             parameters=[
-                ("robot_name", None),
-                ("robot_poses", None),
-                ("robot_velocities", None),
-                ("path_distance", None),
-                ("distance_path_ratio", None),
-                ("clearance_time", None),
-                ("mean_velocities", None),
-                ("max_min_accelerations", None),
-                ("cumulative_heading_average", None),
-                ("following_heading_metrics", None),
-                ("obstacle_clearance", None),
-                ("row_crop_path_comparison", None),
+                ("robot_name", rclpy.Parameter.Type.STRING),
+                ("robot_poses", rclpy.Parameter.Type.BOOL),
+                ("robot_velocities", rclpy.Parameter.Type.BOOL),
+                ("path_distance", rclpy.Parameter.Type.BOOL),
+                ("distance_path_ratio", rclpy.Parameter.Type.BOOL),
+                ("clearance_time", rclpy.Parameter.Type.BOOL),
+                ("mean_velocities", rclpy.Parameter.Type.BOOL),
+                ("max_min_accelerations", rclpy.Parameter.Type.BOOL),
+                ("cumulative_heading_average", rclpy.Parameter.Type.BOOL),
+                ("following_heading_metrics", rclpy.Parameter.Type.BOOL),
+                ("obstacle_clearance", rclpy.Parameter.Type.BOOL),
+                ("row_crop_path_comparison", rclpy.Parameter.Type.BOOL),
             ],
         )
 
@@ -105,7 +105,7 @@ class Navigation_Metrics(Node):
             "following_heading_metrics": self.get_parameter("following_heading_metrics")
             .get_parameter_value()
             .bool_value,
-            "obstacle_clereance": self.get_parameter("obstacle_clereance")
+            "obstacle_clearance": self.get_parameter("obstacle_clearance")
             .get_parameter_value()
             .bool_value,
             "row_crop_path_comparison": self.get_parameter("row_crop_path_comparison")

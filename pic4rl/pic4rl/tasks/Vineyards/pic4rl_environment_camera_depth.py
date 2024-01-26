@@ -398,7 +398,7 @@ class Pic4rlEnvironmentCamera(Node):
         ( _, _, _) = self._step(reset_step=True)
         (observation, _, _) = self._step()
 
-        if self.episode < 50 or (self.episode % self.explore_demo == 0.) and not self.evaluate:
+        if (self.episode < 50 or (self.episode % self.explore_demo == 0.)) and not self.evaluate:
            exploration_ep = True
            self.get_logger().info("Pseudo-Demonstrative exploration episode ...")
         else:
