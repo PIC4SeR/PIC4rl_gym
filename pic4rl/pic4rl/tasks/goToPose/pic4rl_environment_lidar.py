@@ -105,6 +105,9 @@ class Pic4rlEnvironmentLidar(Node):
         
         if "--model-dir" in train_params:
             self.model_path = os.path.join(get_package_share_directory(self.package_name),'../../../../', train_params["--model-dir"])
+        if "--rb-path-load" in train_params:
+            self.rb_path_load = os.path.join(get_package_share_directory(self.package_name),'../../../../', train_params["--rb-path-load"])
+
         self.spin_sensors_callbacks()
 
         self.cmd_vel_pub = self.create_publisher(Twist, "cmd_vel", qos)

@@ -22,8 +22,8 @@ training_params:
     --use-prioritized-rb: # Use prioritized experience replay
     --use-nstep-rb: # Use Nstep experience replay
     --n-step: 4 # (int) Number of steps for nstep experience reward. The default is ``4``
-    #--restore-rb: # Load experience replay buffer
-    #--rb-path: 'src/Results/vineyard/last_rb_SAC_150k_pr_ns4.npz'
+    # --rb-path-save: '' # Save experience replay buffer in case of save
+    # --rb-path-load: 'src/Results/<name_of_the_model_to_restore>' # Load experience replay buffer in case of restore
     --logging-level: INFO # (DEBUG, INFO, WARNING) Choose logging level. The default is ``INFO``
     --policy: 'SAC' # training policy
     --policy_trainer: 'off-policy' # trainer off-policy / on-policy

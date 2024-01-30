@@ -308,6 +308,12 @@ class Pic4rlCamera(Pic4rlEnvironmentCamera):
                 elif k == "--model-dir":
                     kv += self.model_path
                     self.get_logger().info(f"model path set to: {kv}")
+                elif k == "--rb-path-save":
+                    kv += self.logdir + '/' + v
+                    self.get_logger().info(f"rb path save set to: {kv}")
+                elif k == "--rb-path-load":
+                    kv += self.rb_path_load
+                    self.get_logger().info(f"rb path load set to: {kv}")
                 else:
                     kv += str(v)
                 self.parser_list.append(kv)

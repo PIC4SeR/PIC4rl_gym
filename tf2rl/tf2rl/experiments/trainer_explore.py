@@ -131,8 +131,8 @@ class Trainer:
             self._policy, self._env, self._use_prioritized_rb,
             self._use_nstep_rb, self._n_step)
             
-        if self._restore_rb:
-            replay_buffer.load_transitions(self._rb_path)
+        if self._rb_path_load is not None:
+            replay_buffer.load_transitions(self._rb_path_load)
             
         obs, exploration_ep = self._env.reset(n_episode, total_steps)
 
@@ -217,8 +217,8 @@ class Trainer:
                 obs, _ = self._env.reset(n_episode, total_steps)
             if total_steps % self._save_model_interval == 0:
                 self.checkpoint_manager.save()
-                if self._rb_path is not None:
-                    replay_buffer.save_transitions(self._rb_path, safe=True)
+                if self._rb_path_save is not None:
+                    replay_buffer.save_transitions(self._rb_path_save, safe=True)
 
         tf.summary.flush()
 
@@ -315,8 +315,8 @@ class Trainer:
         self._use_prioritized_rb = args.use_prioritized_rb
         self._use_nstep_rb = args.use_nstep_rb
         self._n_step = args.n_step
-        self._restore_rb = args.restore_rb
-        self._rb_path = args.rb_path
+        self._rb_path_load = args.rb_path_load
+        self._rb_path_save = args.rb_path_save
         # test settings
         self._evaluate = args.evaluate
         self._test_interval = args.test_interval
@@ -395,9 +395,9 @@ class Trainer:
                             help='Flag to use nstep experience replay')
         parser.add_argument('--n-step', type=int, default=4,
                             help='Number of steps to look over')
-        parser.add_argument('--restore-rb', action='store_true',
-                            help='Flag to load replay buffer')
-        parser.add_argument('--rb-path', type=str, default=None,
+        parser.add_argument('--rb-path-save', type=str, default=None,
+                            help='Path to save the replay buffer')
+        parser.add_argument('--rb-path-load', type=str, default=None,
                             help='Path to restore replay buffer')
         # others
         parser.add_argument('--logging-level', choices=['DEBUG', 'INFO', 'WARNING'],
