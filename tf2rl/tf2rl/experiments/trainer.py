@@ -116,7 +116,10 @@ class Trainer:
         Execute training
         """
         if self._evaluate:
+            self._test_episodes  = len(self._env.goals)
             self.evaluate_policy_continuously()
+            self._env.pause()
+            return
 
         total_steps = 0
         tf.summary.experimental.set_step(total_steps)
@@ -235,8 +238,9 @@ class Trainer:
             self._latest_path_ckpt = latest_path_ckpt
             self._checkpoint.restore(self._latest_path_ckpt)
             self.logger.info("Restored {}".format(self._latest_path_ckpt))
-
-        while True:
+        
+        for n in range(self._n_experiments):
+            self.logger.info("Testing Experiment {}".format(n+1))
             _, ep_steps, _ = self.evaluate_policy(total_steps, n_episode)
             total_steps += int(ep_steps)
             n_episode += 1
@@ -254,6 +258,7 @@ class Trainer:
                 self._policy, self._test_env, size=self._episode_max_steps)
 
         for i in range(self._test_episodes):
+            self.logger.info("Testing Episode {}".format(i+1))
             episode_return = 0.
             frames = []
             obs = self._test_env.reset(n_episode, total_steps, evaluate=True)
