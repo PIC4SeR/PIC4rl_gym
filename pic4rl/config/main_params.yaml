@@ -4,7 +4,7 @@ main_node:
     mode: "training" # Training or testing
     # Robot parameters
     robot_name: "jackal" # robot entity name in gazebo
-    max_lin_vel: 0.6
+    max_lin_vel: 0.5
     min_lin_vel: 0.0
     max_ang_vel: 1.0
     min_ang_vel: -1.0
@@ -16,11 +16,11 @@ main_node:
     goal_tolerance: 0.40
 
     # World parameters
-    world_name: "filare_ad_arco.world" # Leave empty to obtain no world
-    data_path: "filare_ad_arco.json" # Indicate a goals and poses json file from goals_and_poses folder
+    world_name: ".world" # Leave empty to obtain no world
+    data_path: ".json" # Indicate a goals and poses json file from goals_and_poses folder
 
     # Task parameters
-    task: 'Vineyards' # goToPose, Following, Vineyards
+    task: 'goToPose' # goToPose, Following, Vineyards
     
     # Sensors parameters
     update_frequency: 15.0
