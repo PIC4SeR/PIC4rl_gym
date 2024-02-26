@@ -20,7 +20,7 @@ main_node:
     data_path: ".json" # Indicate a goals and poses json file from goals_and_poses folder
 
     # Task parameters
-    task: 'goToPose' # goToPose, Following, Vineyards
+    task: 'Vineyards' # goToPose, Following, Vineyards
     
     # Sensors parameters
     update_frequency: 15.0
