@@ -1,6 +1,7 @@
 /gazebo_sim/worlds/*
 /gazebo_sim/models/*
-pic4rl/trained_agents/*
-pic4rl/pic4rl/tasks/goToPoseDWA
-pic4rl/config/*
+/pic4rl/trained_agents/*
+/pic4rl/pic4rl/tasks/goToPoseDWA
+/pic4rl/config/main_params.yaml
+/pic4rl/config/training_params.yaml
 *.pyc
