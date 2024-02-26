@@ -120,7 +120,7 @@ class Pic4rlVineyards(Pic4rlEnvironmentCamera):
         )
 
         # Set Epsilon-greedy starting value for exploration policy (minimum 0.05)
-        epsilon = 0.2
+        epsilon = 0.6
 
         self.print_log()
         if self.mode == "testing":
@@ -410,9 +410,9 @@ class Pic4rlVineyards(Pic4rlEnvironmentCamera):
             parameters=[
                 # ("policy", train_params["--policy"]),
                 # ("policy_trainer", train_params["--policy_trainer"]),
-                ("max_lin_vel", rclpy.Parameter.Type.DOUBLE),
+                # ("max_lin_vel", rclpy.Parameter.Type.DOUBLE),
                 ("min_lin_vel", rclpy.Parameter.Type.DOUBLE),
-                ("max_ang_vel", rclpy.Parameter.Type.DOUBLE),
+                # ("max_ang_vel", rclpy.Parameter.Type.DOUBLE),
                 ("min_ang_vel", rclpy.Parameter.Type.DOUBLE),
                 # ("sensor", rclpy.Parameter.Type.STRING),
                 # ("visual_data", None),

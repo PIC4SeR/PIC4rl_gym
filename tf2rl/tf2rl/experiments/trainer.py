@@ -263,6 +263,7 @@ class Trainer:
             frames = []
             obs = self._test_env.reset(n_episode, total_steps, evaluate=True)
             avg_test_steps += 1
+            fps = 0.
             episode_start_time = time.perf_counter()
 
             for episode_step in range(self._episode_max_steps):

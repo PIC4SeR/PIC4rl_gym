@@ -53,6 +53,8 @@ class Pic4rlEnvironmentCamera(Node):
                 ("mode", rclpy.Parameter.Type.STRING),
                 ("data_path", rclpy.Parameter.Type.STRING),
                 ("robot_name", rclpy.Parameter.Type.STRING),
+                ("max_lin_vel", rclpy.Parameter.Type.DOUBLE),
+                ("max_ang_vel", rclpy.Parameter.Type.DOUBLE),
                 ("goal_tolerance", rclpy.Parameter.Type.DOUBLE),
                 ("visual_data", rclpy.Parameter.Type.STRING),
                 ("features", rclpy.Parameter.Type.INTEGER),
@@ -117,6 +119,12 @@ class Pic4rlEnvironmentCamera(Node):
         self.sensor_type = (
             self.get_parameter("sensor").get_parameter_value().string_value
         )
+        self.max_lin_vel = (
+            self.get_parameter('max_lin_vel').get_parameter_value().double_value
+        )
+        self.max_ang_vel = (
+            self.get_parameter('max_ang_vel').get_parameter_value().double_value
+        )
 
         qos = QoSProfile(depth=10)
         self.sensors = Sensors(self)
@@ -148,7 +156,15 @@ class Pic4rlEnvironmentCamera(Node):
         self.evaluate = False
         self.index = 0
         self.explore_demo = 15
-        
+
+        self.smooth_vel = True
+        self.previous_ema = np.zeros(2)
+        self.alpha = 0.3
+        self.max_lin_acc = 1.0
+        self.max_ang_acc = 3.2
+        self.dt = 1/self.update_freq
+        self.min_delta_vel = [-self.max_lin_acc*self.dt, -self.max_ang_acc*self.dt]
+        self.max_delta_vel = [self.max_lin_acc*self.dt, self.max_ang_acc*self.dt]
 
         self.initial_pose, self.goals, self.poses = self.get_goals_and_poses()
         self.goal_pose = self.goals[0]
@@ -161,9 +177,12 @@ class Pic4rlEnvironmentCamera(Node):
 
     def step(self, action, episode_step=0):
         """ """
-        twist = Twist()
-        twist.linear.x = float(action[0])
-        twist.angular.z = float(action[1])
+        if self.smooth_vel:
+            twist = self.velocity_smoother(action)
+        else:
+            twist = Twist()
+            twist.linear.x = float(action[0])
+            twist.angular.z = float(action[1])
         self.episode_step = episode_step
 
         observation, reward, done = self._step(twist)
@@ -247,6 +266,26 @@ class Pic4rlEnvironmentCamera(Node):
 
         # self.get_logger().debug("pausing...")
         # self.pause()
+    
+    def velocity_smoother(self, action):
+        """ """
+        prev_action = np.array([self.previous_twist.linear.x, self.previous_twist.angular.z])
+        # acceleration contraints on velocity
+        max_vel = prev_action + self.max_delta_vel
+        min_vel = prev_action + self.min_delta_vel
+        action = np.clip(action, min_vel, max_vel)
+        self.get_logger().debug(f"previous_ema: {self.previous_ema}")
+        self.get_logger().debug(f"action: {action}")
+        # ema filter
+        if self.t0 > 0.0:
+            self.get_logger().debug(f"EMA filter action: {action}")
+            action = self.alpha*action + (1. - self.alpha)*self.previous_ema
+        self.previous_ema = action
+
+        twist = Twist()
+        twist.linear.x = float(action[0])
+        twist.angular.z = float(action[1])
+        return twist
 
     def get_sensor_data(self):
         """ """
@@ -327,20 +366,33 @@ class Pic4rlEnvironmentCamera(Node):
 
     def get_reward(self, twist, lidar_measurements, goal_info, event):
         """ """
-        yaw_reward = (1 - 3*math.sqrt(math.fabs(goal_info[1] / math.pi))) * 0.3
-        distance_reward = (self.previous_goal_info[0] - goal_info[0]) * 5
+        # Distance Reward
+        # Positive reward if the distance to the goal is decreased
+        cd = 1.0
+        Rd = (self.previous_goal_info[0] - goal_info[0])*10.0
+        
+        Rd = np.minimum(Rd, 2.0) 
+        Rd = np.maximum(Rd, -2.0)
+
+        # Heading Reward
+        ch = 0.6 # 0.8
+        Rh = (1-3*math.sqrt(math.fabs(goal_info[1]/math.pi))) #heading reward v.2
+        
+        # Velocity Reward
+        cv = 0.6 # 1.0
         v = twist.linear.x
         w = twist.angular.z
-        speed_reward = (v - 0.25 - 0.5*math.fabs(w))
-
-        reward = yaw_reward + distance_reward + speed_reward
+        Rv = (v - 0.5*self.max_lin_vel - 0.5*math.fabs(w))
+        #Rv = (v - self.max_lin_vel)/self.max_lin_vel # velocity reward
+        
+        reward = ch*Rh + cd*Rd + cv*Rv
 
         if event == "goal":
             reward = 300
         elif event == "collision":
             # reward = -1000*math.fabs(v)**2
             #print("lidar min measure ", np.min(lidar_measurements))
-            reward = -150
+            reward = -200
         elif event == "reverse":
             reward = -200
         else:

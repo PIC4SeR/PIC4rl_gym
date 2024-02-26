@@ -6,13 +6,13 @@ training_params:
 # --show-progress: # Call ``render`` function during training
     --save-model-interval: 10000 # (int) Interval to save model. The default is ``int(1e4)``
     --save-summary-interval: 10000 # (int) Interval to save summary. The default is ``int(1e3)``
-#    --model-dir: '' # (str) Directory to restore model.
+#    --model-dir: 'src/PIC4rl_gym/pic4rl/trained_agents/covivio_SAC/20240123_121352.737161_camera_SAC_550k/20240123T121354.560252_SAC_' # (str) Directory to restore model.
 #    --dir-suffix: ""  # (str) Suffix for directory that stores results.
 #    --normalize-obs: # Whether normalize observation
     --logdir: 'src/Results' # (str) Output directory name. The default is ``"results"`` (it is relative to workspace directory).
 
 # ENABLE TESTING MODE    
-    --evaluate:  # THIS FLAG ENABLE TESTING MODE
+#    --evaluate:  # THIS FLAG ENABLE TESTING MODE
     --test-interval: 10000 # (int) Interval to evaluate trained model. The default is ``int(1e4)``
 # --show-test-progress: # Call ``render`` function during evaluation.
     --test-episodes: 1 # (int) Number of episodes at validation to be averaged. # IF TESTING MODE SET TO 1, default validation '3' or '5'
@@ -25,7 +25,7 @@ training_params:
     # --rb-path-save: '' # Save experience replay buffer in case of save
     # --rb-path-load: 'src/Results/<name_of_the_model_to_restore>' # Load experience replay buffer in case of restore
     --logging-level: INFO # (DEBUG, INFO, WARNING) Choose logging level. The default is ``INFO``
-    --policy: 'SAC' # training policy
+    --policy: 'TD3' # training policy
     --policy_trainer: 'off-policy' # trainer off-policy / on-policy
     --change_goal_and_pose: 3
     --starting_episodes: 0
@@ -37,8 +37,8 @@ training_params:
     --memory-capacity: 200000  # (int) Replay Buffer size. The default is ``1e6``.
 
 # For only SAC
-    --alpha: 0.2 # (float) Temperature parameter. The default is ``0.2``.
-    --auto-alpha: # Automatic alpha tuning
+#    --alpha: 0.2 # (float) Temperature parameter. The default is ``0.2``.
+#    --auto-alpha: # Automatic alpha tuning
 # For only SAC-AE
     # --stop-q-grad: # Whether stop gradient after convolutional layers at Encoder
 
