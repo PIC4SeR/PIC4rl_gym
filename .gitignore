@@ -2,4 +2,5 @@
 /gazebo_sim/models/*
 pic4rl/trained_agents/*
 pic4rl/pic4rl/tasks/goToPoseDWA
+pic4rl/config/*
 *.pyc
