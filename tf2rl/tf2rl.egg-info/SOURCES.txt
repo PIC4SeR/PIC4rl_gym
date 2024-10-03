@@ -96,6 +96,7 @@ tf2rl/experiments/me_trpo_trainer.py
 tf2rl/experiments/mpc_trainer.py
 tf2rl/experiments/on_policy_trainer.py
 tf2rl/experiments/tester.py
+tf2rl/experiments/tester_real.py
 tf2rl/experiments/trainer.py
 tf2rl/experiments/trainer_explore.py
 tf2rl/experiments/utils.py
